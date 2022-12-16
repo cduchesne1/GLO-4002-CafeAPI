@@ -193,6 +193,6 @@ public class ExceptionMappersTest {
     public void whenThrowingUnexpectedException_shouldGiveBadRequest() {
         Response response = when().get(baseUrl + "/UnexpectedException");
 
-        assertEquals(400, response.getStatusCode());
+        assertEquals(500, response.getStatusCode());
     }
 }
