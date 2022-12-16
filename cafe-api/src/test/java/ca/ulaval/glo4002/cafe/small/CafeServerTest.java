@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.small.config;
+package ca.ulaval.glo4002.cafe.small;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -7,8 +7,8 @@ import io.restassured.response.Response;
 
 import org.junit.jupiter.api.Test;
 
+import ca.ulaval.glo4002.CafeServer;
 import ca.ulaval.glo4002.cafe.fixture.FakeHeartBeatContextFixture;
-import ca.ulaval.glo4002.config.CafeServer;
 
 import static io.restassured.RestAssured.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;

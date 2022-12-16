@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.config;
+package ca.ulaval.glo4002.context;
 
 import org.glassfish.jersey.server.ResourceConfig;
 

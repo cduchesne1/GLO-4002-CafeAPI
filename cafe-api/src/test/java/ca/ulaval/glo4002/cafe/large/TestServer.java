@@ -9,8 +9,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-import ca.ulaval.glo4002.config.ApplicationContext;
-import ca.ulaval.glo4002.config.ProductionApplicationContext;
+import ca.ulaval.glo4002.context.ApplicationContext;
+import ca.ulaval.glo4002.context.ProductionApplicationContext;
 
 public class TestServer {
     private static final Logger ORG_GLASSFISH_JERSEY_LOGGER = Logger.getLogger("org.glassfish.jersey");

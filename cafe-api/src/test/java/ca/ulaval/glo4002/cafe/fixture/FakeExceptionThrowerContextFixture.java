@@ -21,7 +21,7 @@ import ca.ulaval.glo4002.cafe.domain.exception.InvalidGroupTipRateException;
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidMenuOrderException;
 import ca.ulaval.glo4002.cafe.domain.exception.NoGroupSeatsException;
 import ca.ulaval.glo4002.cafe.domain.exception.NoReservationsFoundException;
-import ca.ulaval.glo4002.config.ApplicationContext;
+import ca.ulaval.glo4002.context.ApplicationContext;
 
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.GET;

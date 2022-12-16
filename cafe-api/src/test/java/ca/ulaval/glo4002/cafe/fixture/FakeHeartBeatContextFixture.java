@@ -2,7 +2,7 @@ package ca.ulaval.glo4002.cafe.fixture;
 
 import org.glassfish.jersey.server.ResourceConfig;
 
-import ca.ulaval.glo4002.config.ApplicationContext;
+import ca.ulaval.glo4002.context.ApplicationContext;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

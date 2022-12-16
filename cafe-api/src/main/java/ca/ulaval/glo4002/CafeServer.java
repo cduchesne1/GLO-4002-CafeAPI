@@ -1,10 +1,12 @@
-package ca.ulaval.glo4002.config;
+package ca.ulaval.glo4002;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
+
+import ca.ulaval.glo4002.context.ApplicationContext;
 
 public class CafeServer implements Runnable {
     private final ApplicationContext applicationContext;
