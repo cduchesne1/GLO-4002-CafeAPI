@@ -10,8 +10,8 @@ import org.mockito.ArgumentCaptor;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
 import ca.ulaval.glo4002.cafe.domain.CafeFactory;
+import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.fixture.CafeFixture;
-import ca.ulaval.glo4002.cafe.service.CafeRepository;
 import ca.ulaval.glo4002.cafe.service.CafeService;
 import ca.ulaval.glo4002.cafe.service.dto.InventoryDTO;
 import ca.ulaval.glo4002.cafe.service.dto.LayoutDTO;
@@ -19,7 +19,9 @@ import ca.ulaval.glo4002.cafe.service.parameter.ConfigurationParams;
 import ca.ulaval.glo4002.cafe.service.parameter.IngredientsParams;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class CafeServiceTest {
     private static final Cafe A_CAFE = new CafeFixture().build();

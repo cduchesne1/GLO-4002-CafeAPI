@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.domain.Cafe;
+import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupSize;
 import ca.ulaval.glo4002.cafe.domain.reservation.Reservation;
@@ -13,14 +14,15 @@ import ca.ulaval.glo4002.cafe.domain.reservation.ReservationFactory;
 import ca.ulaval.glo4002.cafe.fixture.CafeFixture;
 import ca.ulaval.glo4002.cafe.fixture.ReservationDTOFixture;
 import ca.ulaval.glo4002.cafe.fixture.ReservationFixture;
-import ca.ulaval.glo4002.cafe.service.CafeRepository;
 import ca.ulaval.glo4002.cafe.service.reservation.ReservationService;
 import ca.ulaval.glo4002.cafe.service.reservation.dto.ReservationDTO;
 import ca.ulaval.glo4002.cafe.service.reservation.parameter.ReservationRequestParams;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ReservationServiceTest {
     private static final GroupName A_GROUP_NAME = new GroupName("My Hero Academia");

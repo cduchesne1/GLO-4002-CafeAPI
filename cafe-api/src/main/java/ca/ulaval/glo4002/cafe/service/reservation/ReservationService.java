@@ -1,9 +1,9 @@
 package ca.ulaval.glo4002.cafe.service.reservation;
 
 import ca.ulaval.glo4002.cafe.domain.Cafe;
+import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.reservation.Reservation;
 import ca.ulaval.glo4002.cafe.domain.reservation.ReservationFactory;
-import ca.ulaval.glo4002.cafe.service.CafeRepository;
 import ca.ulaval.glo4002.cafe.service.reservation.dto.ReservationDTO;
 import ca.ulaval.glo4002.cafe.service.reservation.parameter.ReservationRequestParams;
 

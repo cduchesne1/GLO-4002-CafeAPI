@@ -1,6 +1,4 @@
-package ca.ulaval.glo4002.cafe.service;
-
-import ca.ulaval.glo4002.cafe.domain.Cafe;
+package ca.ulaval.glo4002.cafe.domain;
 
 public interface CafeRepository {
     void saveOrUpdate(Cafe cafe);
