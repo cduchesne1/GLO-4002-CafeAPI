@@ -4,10 +4,10 @@ import java.net.URI;
 
 import ca.ulaval.glo4002.cafe.api.operation.request.CheckInRequest;
 import ca.ulaval.glo4002.cafe.api.operation.request.CheckOutRequest;
-import ca.ulaval.glo4002.cafe.application.CafeService;
 import ca.ulaval.glo4002.cafe.application.customer.CustomerService;
 import ca.ulaval.glo4002.cafe.application.customer.query.CheckInCustomerQuery;
 import ca.ulaval.glo4002.cafe.application.customer.query.CheckOutCustomerQuery;
+import ca.ulaval.glo4002.cafe.application.operation.OperationService;
 
 import jakarta.validation.Valid;
 import jakarta.ws.rs.POST;
@@ -19,18 +19,18 @@ import jakarta.ws.rs.core.Response;
 @Path("")
 @Produces(MediaType.APPLICATION_JSON)
 public class OperationResource {
-    private final CafeService cafeService;
+    private final OperationService operationService;
     private final CustomerService customersService;
 
-    public OperationResource(CafeService cafeService, CustomerService customersService) {
-        this.cafeService = cafeService;
+    public OperationResource(OperationService operationService, CustomerService customersService) {
+        this.operationService = operationService;
         this.customersService = customersService;
     }
 
     @POST
     @Path("/close")
     public Response close() {
-        cafeService.closeCafe();
+        operationService.closeCafe();
         return Response.ok().build();
     }
 

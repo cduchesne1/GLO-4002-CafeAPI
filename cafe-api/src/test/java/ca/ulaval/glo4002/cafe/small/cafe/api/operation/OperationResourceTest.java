@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import ca.ulaval.glo4002.cafe.api.operation.OperationResource;
 import ca.ulaval.glo4002.cafe.api.operation.request.CheckInRequest;
 import ca.ulaval.glo4002.cafe.api.operation.request.CheckOutRequest;
-import ca.ulaval.glo4002.cafe.application.CafeService;
 import ca.ulaval.glo4002.cafe.application.customer.CustomerService;
 import ca.ulaval.glo4002.cafe.application.customer.query.CheckInCustomerQuery;
 import ca.ulaval.glo4002.cafe.application.customer.query.CheckOutCustomerQuery;
+import ca.ulaval.glo4002.cafe.application.operation.OperationService;
 import ca.ulaval.glo4002.cafe.fixture.request.CheckInRequestFixture;
 import ca.ulaval.glo4002.cafe.fixture.request.CheckOutRequestFixture;
 
@@ -25,22 +25,22 @@ public class OperationResourceTest {
     private static final String CUSTOMER_NAME = "Bob";
     private static final String GROUP_NAME = "team";
 
-    private CafeService cafeService;
+    private OperationService operationService;
     private CustomerService customerService;
     private OperationResource operationResource;
 
     @BeforeEach
     public void createOperationResource() {
-        cafeService = mock(CafeService.class);
+        operationService = mock(OperationService.class);
         customerService = mock(CustomerService.class);
-        operationResource = new OperationResource(cafeService, customerService);
+        operationResource = new OperationResource(operationService, customerService);
     }
 
     @Test
     public void whenClosing_shouldCloseCafe() {
         operationResource.close();
 
-        verify(cafeService).closeCafe();
+        verify(operationService).closeCafe();
     }
 
     @Test

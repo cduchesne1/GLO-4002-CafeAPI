@@ -43,34 +43,4 @@ public class CafeServiceTest {
 
         assertEquals(expectedLayoutPayload, actualLayoutPayload);
     }
-
-    @Test
-    public void whenClosingCafe_shouldGetCafe() {
-        Cafe mockCafe = mock(Cafe.class);
-        when(cafeRepository.get()).thenReturn(mockCafe);
-
-        cafeService.closeCafe();
-
-        verify(cafeRepository).get();
-    }
-
-    @Test
-    public void whenClosingCafe_shouldCloseCafe() {
-        Cafe mockCafe = mock(Cafe.class);
-        when(cafeRepository.get()).thenReturn(mockCafe);
-
-        cafeService.closeCafe();
-
-        verify(mockCafe).close();
-    }
-
-    @Test
-    public void whenClosingCafe_shouldUpdateCafe() {
-        Cafe mockCafe = mock(Cafe.class);
-        when(cafeRepository.get()).thenReturn(mockCafe);
-
-        cafeService.closeCafe();
-
-        verify(cafeRepository).saveOrUpdate(mockCafe);
-    }
 }

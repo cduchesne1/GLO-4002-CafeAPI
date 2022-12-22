@@ -15,10 +15,4 @@ public class CafeService {
         Cafe cafe = cafeRepository.get();
         return LayoutPayload.fromCafe(cafe);
     }
-
-    public void closeCafe() {
-        Cafe cafe = cafeRepository.get();
-        cafe.close();
-        cafeRepository.saveOrUpdate(cafe);
-    }
 }
