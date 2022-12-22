@@ -8,17 +8,14 @@ import org.junit.jupiter.api.Test;
 import ca.ulaval.glo4002.cafe.api.CafeResource;
 import ca.ulaval.glo4002.cafe.api.request.CheckInRequest;
 import ca.ulaval.glo4002.cafe.api.request.CheckOutRequest;
-import ca.ulaval.glo4002.cafe.api.request.ConfigurationRequest;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.fixture.request.CheckInRequestFixture;
 import ca.ulaval.glo4002.cafe.fixture.request.CheckOutRequestFixture;
-import ca.ulaval.glo4002.cafe.fixture.request.ConfigurationRequestFixture;
 import ca.ulaval.glo4002.cafe.service.CafeService;
 import ca.ulaval.glo4002.cafe.service.customer.CustomerService;
 import ca.ulaval.glo4002.cafe.service.customer.parameter.CheckInCustomerParams;
 import ca.ulaval.glo4002.cafe.service.customer.parameter.CheckOutCustomerParams;
 import ca.ulaval.glo4002.cafe.service.dto.LayoutDTO;
-import ca.ulaval.glo4002.cafe.service.parameter.ConfigurationParams;
 
 import jakarta.ws.rs.core.Response;
 
@@ -34,13 +31,6 @@ public class CafeResourceTest {
     private static final String CUSTOMER_ID = "customerId";
     private static final String CUSTOMER_NAME = "Bob";
     private static final String GROUP_NAME = "team";
-    private static final int CUBE_SIZE = 1;
-    private static final String ORGANISATION_NAME = "Bob";
-    private static final String GROUP_RESERVATION_METHOD = "Default";
-    private static final String COUNTRY = "CA";
-    private static final String PROVINCE = "QC";
-    private static final String STATE = "";
-    private static final int GROUP_TIP_RATE = 0;
 
     private CafeService cafeService;
     private CustomerService customerService;
@@ -157,41 +147,5 @@ public class CafeResourceTest {
         Response response = cafeResource.checkOut(checkOutRequest);
 
         assertTrue(response.getLocation().toString().contains("/customers/" + CUSTOMER_ID + "/bill"));
-    }
-
-    @Test
-    public void whenUpdatingConfiguration_shouldUpdateConfiguration() {
-        ConfigurationRequest configurationRequest = new ConfigurationRequestFixture()
-            .withCubeSize(CUBE_SIZE)
-            .withOrganizationName(ORGANISATION_NAME)
-            .withGroupReservationMethod(GROUP_RESERVATION_METHOD)
-            .withCountry(COUNTRY)
-            .withProvince(PROVINCE)
-            .withState(STATE)
-            .withTipRate(GROUP_TIP_RATE)
-            .build();
-        ConfigurationParams configurationParams =
-            new ConfigurationParams(CUBE_SIZE, ORGANISATION_NAME, GROUP_RESERVATION_METHOD, COUNTRY, PROVINCE, STATE, GROUP_TIP_RATE);
-
-        cafeResource.updateConfiguration(configurationRequest);
-
-        verify(cafeService).updateConfiguration(configurationParams);
-    }
-
-    @Test
-    public void givenValidRequest_whenUpdatingConfiguration_shouldReturn200() {
-        ConfigurationRequest configurationRequest = new ConfigurationRequestFixture()
-            .withCubeSize(CUBE_SIZE)
-            .withOrganizationName(ORGANISATION_NAME)
-            .withGroupReservationMethod(GROUP_RESERVATION_METHOD)
-            .withCountry(COUNTRY)
-            .withProvince(PROVINCE)
-            .withState(STATE)
-            .withTipRate(GROUP_TIP_RATE)
-            .build();
-
-        Response response = cafeResource.updateConfiguration(configurationRequest);
-
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 }

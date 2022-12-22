@@ -30,7 +30,7 @@ public class InventoryResourceTest {
     private InventoryResource inventoryResource;
 
     @BeforeEach
-    public void createCafeResource() {
+    public void createInventoryResource() {
         cafeService = mock(CafeService.class);
         inventoryResource = new InventoryResource(cafeService);
     }

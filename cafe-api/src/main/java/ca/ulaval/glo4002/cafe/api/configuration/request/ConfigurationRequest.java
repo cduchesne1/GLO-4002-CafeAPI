@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.api.request;
+package ca.ulaval.glo4002.cafe.api.configuration.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
