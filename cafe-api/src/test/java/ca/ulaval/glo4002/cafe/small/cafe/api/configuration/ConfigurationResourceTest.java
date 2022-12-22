@@ -28,7 +28,7 @@ public class ConfigurationResourceTest {
     private ConfigurationResource configurationResource;
 
     @BeforeEach
-    public void createCafeResource() {
+    public void createConfigurationResource() {
         cafeService = mock(CafeService.class);
         configurationResource = new ConfigurationResource(cafeService);
     }
