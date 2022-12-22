@@ -3,13 +3,13 @@ package ca.ulaval.glo4002.context;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 
-import ca.ulaval.glo4002.cafe.api.CafeResource;
 import ca.ulaval.glo4002.cafe.api.configuration.ConfigurationResource;
 import ca.ulaval.glo4002.cafe.api.customer.CustomerResource;
 import ca.ulaval.glo4002.cafe.api.exception.mapper.CafeExceptionMapper;
 import ca.ulaval.glo4002.cafe.api.exception.mapper.CatchallExceptionMapper;
 import ca.ulaval.glo4002.cafe.api.exception.mapper.ConstraintViolationExceptionMapper;
 import ca.ulaval.glo4002.cafe.api.inventory.InventoryResource;
+import ca.ulaval.glo4002.cafe.api.layout.LayoutResource;
 import ca.ulaval.glo4002.cafe.api.operation.OperationResource;
 import ca.ulaval.glo4002.cafe.api.reservation.ReservationResource;
 import ca.ulaval.glo4002.cafe.domain.CafeFactory;
@@ -34,7 +34,7 @@ public class ProductionApplicationContext implements ApplicationContext {
         cafeService.initializeCafe();
 
         return new ResourceConfig().packages("ca.ulaval.glo4002.cafe").property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true)
-            .register(new ConfigurationResource(cafeService)).register(new CafeResource(cafeService))
+            .register(new ConfigurationResource(cafeService)).register(new LayoutResource(cafeService))
             .register(new OperationResource(cafeService, customersService)).register(new CustomerResource(customersService))
             .register(new InventoryResource(cafeService)).register(new ReservationResource(groupService)).register(new CafeExceptionMapper())
             .register(new CatchallExceptionMapper()).register(new ConstraintViolationExceptionMapper());

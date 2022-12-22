@@ -1,11 +1,11 @@
-package ca.ulaval.glo4002.cafe.small.cafe.api;
+package ca.ulaval.glo4002.cafe.small.cafe.api.layout;
 
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ca.ulaval.glo4002.cafe.api.CafeResource;
+import ca.ulaval.glo4002.cafe.api.layout.LayoutResource;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.service.CafeService;
 import ca.ulaval.glo4002.cafe.service.dto.LayoutDTO;
@@ -17,17 +17,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class CafeResourceTest {
+public class LayoutResourceTest {
     private static final CafeName A_CAFE_NAME = new CafeName("Bob");
     private static final LayoutDTO A_LAYOUT_DTO = new LayoutDTO(A_CAFE_NAME, new ArrayList<>());
 
     private CafeService cafeService;
-    private CafeResource cafeResource;
+    private LayoutResource cafeResource;
 
     @BeforeEach
     public void createCafeResource() {
         cafeService = mock(CafeService.class);
-        cafeResource = new CafeResource(cafeService);
+        cafeResource = new LayoutResource(cafeService);
     }
 
     @Test

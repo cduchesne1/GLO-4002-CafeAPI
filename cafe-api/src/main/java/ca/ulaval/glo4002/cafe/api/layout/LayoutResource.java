@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.api;
+package ca.ulaval.glo4002.cafe.api.layout;
 
 import ca.ulaval.glo4002.cafe.api.layout.assembler.LayoutResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.layout.response.LayoutResponse;
@@ -12,11 +12,11 @@ import jakarta.ws.rs.core.Response;
 
 @Path("")
 @Produces(MediaType.APPLICATION_JSON)
-public class CafeResource {
+public class LayoutResource {
     private final CafeService cafeService;
     private final LayoutResponseAssembler layoutResponseAssembler = new LayoutResponseAssembler();
 
-    public CafeResource(CafeService cafeService) {
+    public LayoutResource(CafeService cafeService) {
         this.cafeService = cafeService;
     }
 

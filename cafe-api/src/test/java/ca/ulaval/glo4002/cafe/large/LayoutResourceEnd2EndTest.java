@@ -18,7 +18,7 @@ import ca.ulaval.glo4002.cafe.fixture.SeatFixture;
 import static io.restassured.RestAssured.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CafeResourceEnd2EndTest {
+class LayoutResourceEnd2EndTest {
     private static final String BASE_URL = "http://localhost:8181";
 
     private TestServer server;
