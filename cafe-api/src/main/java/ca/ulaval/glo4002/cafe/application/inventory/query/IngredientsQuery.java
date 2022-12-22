@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.application.query;
+package ca.ulaval.glo4002.cafe.application.inventory.query;
 
 import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
 import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;

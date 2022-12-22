@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.inventory.assembler.InventoryResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.inventory.response.InventoryResponse;
-import ca.ulaval.glo4002.cafe.application.payload.InventoryPayload;
+import ca.ulaval.glo4002.cafe.application.inventory.payload.InventoryPayload;
 import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
 import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;

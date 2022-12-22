@@ -6,14 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.application.CafeService;
-import ca.ulaval.glo4002.cafe.application.payload.InventoryPayload;
-import ca.ulaval.glo4002.cafe.application.query.IngredientsQuery;
+import ca.ulaval.glo4002.cafe.application.inventory.InventoryService;
+import ca.ulaval.glo4002.cafe.application.inventory.query.IngredientsQuery;
 import ca.ulaval.glo4002.cafe.application.query.UpdateConfigurationQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNoBillException;
-import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.reservation.Reservation;
 import ca.ulaval.glo4002.cafe.fixture.CustomerFixture;
@@ -27,11 +26,12 @@ public class CafeServiceTest {
     private static final CafeName NEW_CAFE_NAME = new CafeName("Les 4-Ogres");
     private static final Customer A_CUSTOMER = new CustomerFixture().build();
     private static final Reservation A_RESERVATION = new ReservationFixture().build();
-    private static final IngredientsQuery INGREDIENTS_QUERY = new IngredientsQuery(25, 20, 15, 10);
+    private static final IngredientsQuery INGREDIENTS_QUERY = new IngredientsQuery(100, 100, 100, 100);
     private static final UpdateConfigurationQuery UPDATE_CONFIGURATION_QUERY =
         new UpdateConfigurationQuery(5, NEW_CAFE_NAME.value(), "Default", "CA", "QC", "", 5);
 
     private CafeService cafeService;
+    private InventoryService inventoryService;
     private Cafe cafe;
     private CafeRepository cafeRepository;
 
@@ -39,6 +39,7 @@ public class CafeServiceTest {
     public void instanciateAttributes() {
         cafeRepository = CafeRepositoryTestUtil.createCafeRepositoryWithDefaultCafe();
         cafeService = new CafeService(cafeRepository);
+        inventoryService = new InventoryService(cafeRepository);
         cafe = cafeRepository.get();
     }
 
@@ -73,21 +74,10 @@ public class CafeServiceTest {
 
     @Test
     public void givenNonEmptyInventory_whenClosing_shouldClearInventory() {
-        cafeService.addIngredientsToInventory(INGREDIENTS_QUERY);
+        inventoryService.addIngredientsToInventory(INGREDIENTS_QUERY);
 
         cafeService.closeCafe();
 
-        assertEquals(0, cafeService.getInventory().ingredients().size());
-    }
-
-    @Test
-    public void whenAddingIngredientsToInventory_shouldAddIngredientsToInventory() {
-        cafeService.addIngredientsToInventory(INGREDIENTS_QUERY);
-
-        InventoryPayload inventory = cafeService.getInventory();
-        assertEquals(INGREDIENTS_QUERY.chocolate().quantity(), inventory.ingredients().get(IngredientType.Chocolate).quantity());
-        assertEquals(INGREDIENTS_QUERY.milk().quantity(), inventory.ingredients().get(IngredientType.Milk).quantity());
-        assertEquals(INGREDIENTS_QUERY.water().quantity(), inventory.ingredients().get(IngredientType.Water).quantity());
-        assertEquals(INGREDIENTS_QUERY.espresso().quantity(), inventory.ingredients().get(IngredientType.Espresso).quantity());
+        assertEquals(0, inventoryService.getInventory().ingredients().size());
     }
 }

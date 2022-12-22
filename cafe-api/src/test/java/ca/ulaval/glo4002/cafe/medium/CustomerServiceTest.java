@@ -14,7 +14,8 @@ import ca.ulaval.glo4002.cafe.application.customer.payload.OrderPayload;
 import ca.ulaval.glo4002.cafe.application.customer.query.CheckInCustomerQuery;
 import ca.ulaval.glo4002.cafe.application.customer.query.CheckOutCustomerQuery;
 import ca.ulaval.glo4002.cafe.application.customer.query.CustomerOrderQuery;
-import ca.ulaval.glo4002.cafe.application.query.IngredientsQuery;
+import ca.ulaval.glo4002.cafe.application.inventory.InventoryService;
+import ca.ulaval.glo4002.cafe.application.inventory.query.IngredientsQuery;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.SeatNumber;
@@ -42,12 +43,14 @@ public class CustomerServiceTest {
     CustomerService customerService;
     CafeRepository cafeRepository;
     CafeService cafeService;
+    InventoryService inventoryService;
 
     @BeforeEach
     public void instanciateAttributes() {
         cafeRepository = CafeRepositoryTestUtil.createCafeRepositoryWithDefaultCafe();
         customerService = new CustomerService(cafeRepository, new CustomerFactory());
         cafeService = new CafeService(cafeRepository);
+        inventoryService = new InventoryService(cafeRepository);
     }
 
     @Test
@@ -79,7 +82,7 @@ public class CustomerServiceTest {
     public void givenSavedCustomer_whenPlacingOrder_shouldSaveOrderForCustomer() {
         Order expectedOrder = new OrderFixture().build();
         customerService.checkIn(CHECK_IN_CUSTOMER_QUERY);
-        cafeService.addIngredientsToInventory(INGREDIENTS_QUERY);
+        inventoryService.addIngredientsToInventory(INGREDIENTS_QUERY);
 
         customerService.placeOrder(CUSTOMER_ORDER_QUERY);
         OrderPayload actualOrder = customerService.getOrder(A_CUSTOMER_ID);
@@ -101,7 +104,7 @@ public class CustomerServiceTest {
     public void givenSavedCustomerWithOrder_whenGettingOrder_shouldReturnValidOrderPayload() {
         OrderPayload expectedOrderPayload = new OrderPayload(CUSTOMER_ORDER_QUERY.order().items());
         customerService.checkIn(CHECK_IN_CUSTOMER_QUERY);
-        cafeService.addIngredientsToInventory(INGREDIENTS_QUERY);
+        inventoryService.addIngredientsToInventory(INGREDIENTS_QUERY);
         customerService.placeOrder(CUSTOMER_ORDER_QUERY);
 
         OrderPayload actualOrderPayload = customerService.getOrder(CHECK_IN_CUSTOMER_QUERY.customerId());
@@ -114,7 +117,7 @@ public class CustomerServiceTest {
         BillPayload expectedBillPayload =
             new BillPayload(new LinkedList<>(CUSTOMER_ORDER_QUERY.order().items()), new Amount(0), new Amount(2.25f), new Amount(0), new Amount(2.25f));
         customerService.checkIn(CHECK_IN_CUSTOMER_QUERY);
-        cafeService.addIngredientsToInventory(INGREDIENTS_QUERY);
+        inventoryService.addIngredientsToInventory(INGREDIENTS_QUERY);
         customerService.placeOrder(CUSTOMER_ORDER_QUERY);
         customerService.checkOut(CHECK_OUT_CUSTOMER_QUERY);
 

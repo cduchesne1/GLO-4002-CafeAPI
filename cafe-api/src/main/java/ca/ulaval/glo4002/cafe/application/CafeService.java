@@ -1,10 +1,6 @@
 package ca.ulaval.glo4002.cafe.application;
 
-import java.util.List;
-
-import ca.ulaval.glo4002.cafe.application.payload.InventoryPayload;
 import ca.ulaval.glo4002.cafe.application.payload.LayoutPayload;
-import ca.ulaval.glo4002.cafe.application.query.IngredientsQuery;
 import ca.ulaval.glo4002.cafe.application.query.UpdateConfigurationQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
@@ -36,16 +32,5 @@ public class CafeService {
         Cafe cafe = cafeRepository.get();
         cafe.close();
         cafeRepository.saveOrUpdate(cafe);
-    }
-
-    public void addIngredientsToInventory(IngredientsQuery ingredientsQuery) {
-        Cafe cafe = cafeRepository.get();
-        cafe.addIngredientsToInventory(List.of(ingredientsQuery.chocolate(), ingredientsQuery.milk(), ingredientsQuery.water(), ingredientsQuery.espresso()));
-        cafeRepository.saveOrUpdate(cafe);
-    }
-
-    public InventoryPayload getInventory() {
-        Cafe cafe = cafeRepository.get();
-        return InventoryPayload.fromInventory(cafe.getInventory());
     }
 }

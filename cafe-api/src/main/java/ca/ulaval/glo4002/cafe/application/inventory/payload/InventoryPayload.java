@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.application.payload;
+package ca.ulaval.glo4002.cafe.application.inventory.payload;
 
 import java.util.HashMap;
 
