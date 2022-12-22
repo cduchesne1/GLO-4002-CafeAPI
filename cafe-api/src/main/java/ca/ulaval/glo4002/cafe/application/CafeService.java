@@ -1,15 +1,15 @@
-package ca.ulaval.glo4002.cafe.service;
+package ca.ulaval.glo4002.cafe.application;
 
 import java.util.List;
 
+import ca.ulaval.glo4002.cafe.application.dto.InventoryDTO;
+import ca.ulaval.glo4002.cafe.application.dto.LayoutDTO;
+import ca.ulaval.glo4002.cafe.application.parameter.ConfigurationParams;
+import ca.ulaval.glo4002.cafe.application.parameter.IngredientsParams;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
 import ca.ulaval.glo4002.cafe.domain.CafeFactory;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
-import ca.ulaval.glo4002.cafe.service.dto.InventoryDTO;
-import ca.ulaval.glo4002.cafe.service.dto.LayoutDTO;
-import ca.ulaval.glo4002.cafe.service.parameter.ConfigurationParams;
-import ca.ulaval.glo4002.cafe.service.parameter.IngredientsParams;
 
 public class CafeService {
     private final CafeRepository cafeRepository;

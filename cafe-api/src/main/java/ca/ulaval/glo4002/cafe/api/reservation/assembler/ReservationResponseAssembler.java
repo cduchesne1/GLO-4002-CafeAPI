@@ -3,7 +3,7 @@ package ca.ulaval.glo4002.cafe.api.reservation.assembler;
 import java.util.List;
 
 import ca.ulaval.glo4002.cafe.api.reservation.response.ReservationResponse;
-import ca.ulaval.glo4002.cafe.service.reservation.dto.ReservationDTO;
+import ca.ulaval.glo4002.cafe.application.reservation.dto.ReservationDTO;
 
 public class ReservationResponseAssembler {
     public List<ReservationResponse> toReservationsResponse(ReservationDTO reservationDTO) {

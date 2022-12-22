@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.customer.assembler.OrdersResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.customer.response.OrdersResponse;
+import ca.ulaval.glo4002.cafe.application.customer.dto.OrderDTO;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Coffee;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.CoffeeType;
 import ca.ulaval.glo4002.cafe.fixture.OrderFixture;
-import ca.ulaval.glo4002.cafe.service.customer.dto.OrderDTO;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.inventory.assembler.InventoryResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.inventory.response.InventoryResponse;
+import ca.ulaval.glo4002.cafe.application.dto.InventoryDTO;
 import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
 import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
 import ca.ulaval.glo4002.cafe.domain.inventory.Quantity;
-import ca.ulaval.glo4002.cafe.service.dto.InventoryDTO;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.service.exception;
+package ca.ulaval.glo4002.cafe.application.exception;
 
 import ca.ulaval.glo4002.cafe.domain.exception.CafeException;
 

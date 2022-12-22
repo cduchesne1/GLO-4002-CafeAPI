@@ -5,8 +5,8 @@ import java.util.List;
 import ca.ulaval.glo4002.cafe.api.reservation.assembler.ReservationResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.reservation.request.ReservationRequest;
 import ca.ulaval.glo4002.cafe.api.reservation.response.ReservationResponse;
-import ca.ulaval.glo4002.cafe.service.reservation.ReservationService;
-import ca.ulaval.glo4002.cafe.service.reservation.parameter.ReservationRequestParams;
+import ca.ulaval.glo4002.cafe.application.reservation.ReservationService;
+import ca.ulaval.glo4002.cafe.application.reservation.parameter.ReservationRequestParams;
 
 import jakarta.validation.Valid;
 import jakarta.ws.rs.GET;

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.service.parameter;
+package ca.ulaval.glo4002.cafe.application.parameter;
 
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.domain.Location;

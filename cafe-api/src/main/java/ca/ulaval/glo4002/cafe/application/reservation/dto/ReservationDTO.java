@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.service.reservation.dto;
+package ca.ulaval.glo4002.cafe.application.reservation.dto;
 
 import java.util.List;
 

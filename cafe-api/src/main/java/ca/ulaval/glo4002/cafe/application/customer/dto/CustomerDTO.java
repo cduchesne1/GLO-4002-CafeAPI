@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.service.customer.dto;
+package ca.ulaval.glo4002.cafe.application.customer.dto;
 
 import java.util.Optional;
 

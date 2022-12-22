@@ -7,9 +7,9 @@ import ca.ulaval.glo4002.cafe.api.customer.request.OrderRequest;
 import ca.ulaval.glo4002.cafe.api.customer.response.BillResponse;
 import ca.ulaval.glo4002.cafe.api.customer.response.CustomerResponse;
 import ca.ulaval.glo4002.cafe.api.customer.response.OrdersResponse;
+import ca.ulaval.glo4002.cafe.application.customer.CustomerService;
+import ca.ulaval.glo4002.cafe.application.customer.parameter.CustomerOrderParams;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
-import ca.ulaval.glo4002.cafe.service.customer.CustomerService;
-import ca.ulaval.glo4002.cafe.service.customer.parameter.CustomerOrderParams;
 
 import jakarta.validation.Valid;
 import jakarta.ws.rs.GET;

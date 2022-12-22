@@ -1,8 +1,8 @@
 package ca.ulaval.glo4002.cafe.api.configuration;
 
 import ca.ulaval.glo4002.cafe.api.configuration.request.ConfigurationRequest;
-import ca.ulaval.glo4002.cafe.service.CafeService;
-import ca.ulaval.glo4002.cafe.service.parameter.ConfigurationParams;
+import ca.ulaval.glo4002.cafe.application.CafeService;
+import ca.ulaval.glo4002.cafe.application.parameter.ConfigurationParams;
 
 import jakarta.validation.Valid;
 import jakarta.ws.rs.POST;

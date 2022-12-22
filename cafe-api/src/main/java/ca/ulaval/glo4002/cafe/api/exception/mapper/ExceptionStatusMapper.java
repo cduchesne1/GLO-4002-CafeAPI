@@ -2,6 +2,7 @@ package ca.ulaval.glo4002.cafe.api.exception.mapper;
 
 import java.util.WeakHashMap;
 
+import ca.ulaval.glo4002.cafe.application.exception.CafeNotFoundException;
 import ca.ulaval.glo4002.cafe.domain.exception.CafeException;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerAlreadyVisitedException;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNoBillException;
@@ -23,7 +24,6 @@ import ca.ulaval.glo4002.cafe.domain.exception.InvalidQuantityException;
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidSeatNumberException;
 import ca.ulaval.glo4002.cafe.domain.exception.NoGroupSeatsException;
 import ca.ulaval.glo4002.cafe.domain.exception.NoReservationsFoundException;
-import ca.ulaval.glo4002.cafe.service.exception.CafeNotFoundException;
 
 import jakarta.ws.rs.core.Response;
 

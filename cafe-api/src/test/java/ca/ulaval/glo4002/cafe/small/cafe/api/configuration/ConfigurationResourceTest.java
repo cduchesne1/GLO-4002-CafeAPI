@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.configuration.ConfigurationResource;
 import ca.ulaval.glo4002.cafe.api.configuration.request.ConfigurationRequest;
+import ca.ulaval.glo4002.cafe.application.CafeService;
+import ca.ulaval.glo4002.cafe.application.parameter.ConfigurationParams;
 import ca.ulaval.glo4002.cafe.fixture.request.ConfigurationRequestFixture;
-import ca.ulaval.glo4002.cafe.service.CafeService;
-import ca.ulaval.glo4002.cafe.service.parameter.ConfigurationParams;
 
 import jakarta.ws.rs.core.Response;
 

@@ -1,5 +1,11 @@
-package ca.ulaval.glo4002.cafe.service.customer;
+package ca.ulaval.glo4002.cafe.application.customer;
 
+import ca.ulaval.glo4002.cafe.application.customer.dto.BillDTO;
+import ca.ulaval.glo4002.cafe.application.customer.dto.CustomerDTO;
+import ca.ulaval.glo4002.cafe.application.customer.dto.OrderDTO;
+import ca.ulaval.glo4002.cafe.application.customer.parameter.CheckInCustomerParams;
+import ca.ulaval.glo4002.cafe.application.customer.parameter.CheckOutCustomerParams;
+import ca.ulaval.glo4002.cafe.application.customer.parameter.CustomerOrderParams;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
@@ -8,12 +14,6 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill.Bill;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Order;
-import ca.ulaval.glo4002.cafe.service.customer.dto.BillDTO;
-import ca.ulaval.glo4002.cafe.service.customer.dto.CustomerDTO;
-import ca.ulaval.glo4002.cafe.service.customer.dto.OrderDTO;
-import ca.ulaval.glo4002.cafe.service.customer.parameter.CheckInCustomerParams;
-import ca.ulaval.glo4002.cafe.service.customer.parameter.CheckOutCustomerParams;
-import ca.ulaval.glo4002.cafe.service.customer.parameter.CustomerOrderParams;
 
 public class CustomerService {
     private final CafeRepository cafeRepository;

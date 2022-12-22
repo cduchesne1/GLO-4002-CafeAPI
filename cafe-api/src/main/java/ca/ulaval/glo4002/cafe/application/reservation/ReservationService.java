@@ -1,11 +1,11 @@
-package ca.ulaval.glo4002.cafe.service.reservation;
+package ca.ulaval.glo4002.cafe.application.reservation;
 
+import ca.ulaval.glo4002.cafe.application.reservation.dto.ReservationDTO;
+import ca.ulaval.glo4002.cafe.application.reservation.parameter.ReservationRequestParams;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.reservation.Reservation;
 import ca.ulaval.glo4002.cafe.domain.reservation.ReservationFactory;
-import ca.ulaval.glo4002.cafe.service.reservation.dto.ReservationDTO;
-import ca.ulaval.glo4002.cafe.service.reservation.parameter.ReservationRequestParams;
 
 public class ReservationService {
     private final CafeRepository cafeRepository;

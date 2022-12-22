@@ -7,13 +7,13 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.reservation.assembler.ReservationResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.reservation.response.ReservationResponse;
+import ca.ulaval.glo4002.cafe.application.reservation.dto.ReservationDTO;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupSize;
 import ca.ulaval.glo4002.cafe.domain.reservation.Reservation;
 import ca.ulaval.glo4002.cafe.fixture.ReservationDTOFixture;
 import ca.ulaval.glo4002.cafe.fixture.ReservationFixture;
 import ca.ulaval.glo4002.cafe.fixture.ReservationResponseFixture;
-import ca.ulaval.glo4002.cafe.service.reservation.dto.ReservationDTO;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.service.customer.parameter;
+package ca.ulaval.glo4002.cafe.application.customer.parameter;
 
 import java.util.Optional;
 

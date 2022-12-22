@@ -7,15 +7,17 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.reservation.ReservationResource;
 import ca.ulaval.glo4002.cafe.api.reservation.request.ReservationRequest;
+import ca.ulaval.glo4002.cafe.application.reservation.ReservationService;
+import ca.ulaval.glo4002.cafe.application.reservation.dto.ReservationDTO;
+import ca.ulaval.glo4002.cafe.application.reservation.parameter.ReservationRequestParams;
 import ca.ulaval.glo4002.cafe.fixture.request.ReservationRequestFixture;
-import ca.ulaval.glo4002.cafe.service.reservation.ReservationService;
-import ca.ulaval.glo4002.cafe.service.reservation.dto.ReservationDTO;
-import ca.ulaval.glo4002.cafe.service.reservation.parameter.ReservationRequestParams;
 
 import jakarta.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ReservationResourceTest {
     private static final String GROUP_NAME = "Les 4-Fées";

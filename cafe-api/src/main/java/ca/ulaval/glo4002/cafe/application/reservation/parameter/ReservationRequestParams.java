@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.service.reservation.parameter;
+package ca.ulaval.glo4002.cafe.application.reservation.parameter;
 
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupSize;
