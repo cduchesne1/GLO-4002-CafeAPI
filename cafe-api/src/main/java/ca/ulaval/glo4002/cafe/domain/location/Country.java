@@ -1,33 +1,30 @@
-package ca.ulaval.glo4002.cafe.domain;
+package ca.ulaval.glo4002.cafe.domain.location;
 
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidConfigurationCountryException;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Tax;
 
-public enum State {
-    AL(new Tax(0.04f)),
-    AZ(new Tax(0.056f)),
-    CA(new Tax(0.0725f)),
-    FL(new Tax(0.06f)),
-    ME(new Tax(0.055f)),
-    NY(new Tax(0.04f)),
-    TX(new Tax(0.0625f));
+public enum Country {
+    CA(new Tax(0.05f)),
+    US(new Tax(0)),
+    CL(new Tax(0.19f)),
+    None(new Tax(0));
 
     private final Tax tax;
 
-    State(Tax tax) {
+    Country(Tax tax) {
         this.tax = tax;
     }
 
-    public static State fromString(String state) {
-        if (State.contains(state)) {
-            return State.valueOf(state);
+    public static Country fromString(String country) {
+        if (Country.contains(country)) {
+            return Country.valueOf(country);
         }
         throw new InvalidConfigurationCountryException();
     }
 
     private static boolean contains(String other) {
-        for (State state : State.values()) {
-            if (state.name().equals(other)) {
+        for (Country country : Country.values()) {
+            if (country.name().equals(other)) {
                 return true;
             }
         }

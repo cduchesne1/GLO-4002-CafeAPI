@@ -1,10 +1,10 @@
 package ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill;
 
-import ca.ulaval.glo4002.cafe.domain.Location;
 import ca.ulaval.glo4002.cafe.domain.TipRate;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Amount;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Tax;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Order;
+import ca.ulaval.glo4002.cafe.domain.location.Location;
 
 public class BillFactory {
     public Bill createBill(Order order, Location location, TipRate groupTipRate, boolean isInGroup) {

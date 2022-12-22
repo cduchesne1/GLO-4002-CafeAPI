@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.small.cafe.service.customer;
+package ca.ulaval.glo4002.cafe.small.cafe.application.customer;
 
 import java.util.List;
 

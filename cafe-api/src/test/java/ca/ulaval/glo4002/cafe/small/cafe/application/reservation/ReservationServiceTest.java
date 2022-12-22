@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.small.cafe.service.reservation;
+package ca.ulaval.glo4002.cafe.small.cafe.application.reservation;
 
 import java.util.List;
 

@@ -1,17 +1,19 @@
-package ca.ulaval.glo4002.cafe.small.cafe.domain;
+package ca.ulaval.glo4002.cafe.small.cafe.domain.location;
 
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
-import ca.ulaval.glo4002.cafe.domain.Country;
-import ca.ulaval.glo4002.cafe.domain.Location;
-import ca.ulaval.glo4002.cafe.domain.Province;
-import ca.ulaval.glo4002.cafe.domain.State;
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidConfigurationCountryException;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Tax;
+import ca.ulaval.glo4002.cafe.domain.location.Country;
+import ca.ulaval.glo4002.cafe.domain.location.Location;
+import ca.ulaval.glo4002.cafe.domain.location.Province;
+import ca.ulaval.glo4002.cafe.domain.location.State;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LocationTest {

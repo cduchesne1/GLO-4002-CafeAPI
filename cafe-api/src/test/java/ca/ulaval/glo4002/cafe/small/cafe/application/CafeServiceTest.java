@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.small.cafe.service;
+package ca.ulaval.glo4002.cafe.small.cafe.application;
 
 import java.util.HashMap;
 import java.util.List;
