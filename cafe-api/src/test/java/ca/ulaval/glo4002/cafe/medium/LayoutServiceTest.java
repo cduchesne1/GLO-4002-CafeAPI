@@ -3,29 +3,29 @@ package ca.ulaval.glo4002.cafe.medium;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ca.ulaval.glo4002.cafe.application.CafeService;
-import ca.ulaval.glo4002.cafe.application.payload.LayoutPayload;
+import ca.ulaval.glo4002.cafe.application.layout.LayoutService;
+import ca.ulaval.glo4002.cafe.application.layout.payload.LayoutPayload;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.util.CafeRepositoryTestUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CafeServiceTest {
-    private CafeService cafeService;
+public class LayoutServiceTest {
+    private LayoutService layoutService;
     private Cafe cafe;
     private CafeRepository cafeRepository;
 
     @BeforeEach
-    public void instanciateAttributes() {
+    public void setupLayoutService() {
         cafeRepository = CafeRepositoryTestUtil.createCafeRepositoryWithDefaultCafe();
-        cafeService = new CafeService(cafeRepository);
+        layoutService = new LayoutService(cafeRepository);
         cafe = cafeRepository.get();
     }
 
     @Test
     public void whenGettingLayout_shouldReturnLayoutPayload() {
-        LayoutPayload layoutPayload = cafeService.getLayout();
+        LayoutPayload layoutPayload = layoutService.getLayout();
 
         cafe = cafeRepository.get();
         assertEquals(cafe.getName(), layoutPayload.name());

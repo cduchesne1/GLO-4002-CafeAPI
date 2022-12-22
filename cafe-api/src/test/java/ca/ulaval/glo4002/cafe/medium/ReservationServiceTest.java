@@ -22,7 +22,7 @@ public class ReservationServiceTest {
     private ReservationService reservationService;
 
     @BeforeEach
-    public void instanciateAttributes() {
+    public void setupReservationService() {
         CafeRepository cafeRepository = CafeRepositoryTestUtil.createCafeRepositoryWithDefaultCafe();
         reservationService = new ReservationService(cafeRepository, new ReservationFactory());
     }

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.application.payload;
+package ca.ulaval.glo4002.cafe.application.layout.payload;
 
 import java.util.List;
 

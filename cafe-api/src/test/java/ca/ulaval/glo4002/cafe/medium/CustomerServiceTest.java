@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ca.ulaval.glo4002.cafe.application.CafeService;
 import ca.ulaval.glo4002.cafe.application.customer.CustomerService;
 import ca.ulaval.glo4002.cafe.application.customer.payload.BillPayload;
 import ca.ulaval.glo4002.cafe.application.customer.payload.CustomerPayload;
@@ -42,14 +41,12 @@ public class CustomerServiceTest {
 
     CustomerService customerService;
     CafeRepository cafeRepository;
-    CafeService cafeService;
     InventoryService inventoryService;
 
     @BeforeEach
-    public void instanciateAttributes() {
+    public void setupCustomerService() {
         cafeRepository = CafeRepositoryTestUtil.createCafeRepositoryWithDefaultCafe();
         customerService = new CustomerService(cafeRepository, new CustomerFactory());
-        cafeService = new CafeService(cafeRepository);
         inventoryService = new InventoryService(cafeRepository);
     }
 

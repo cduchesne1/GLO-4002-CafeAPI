@@ -1,13 +1,13 @@
-package ca.ulaval.glo4002.cafe.application;
+package ca.ulaval.glo4002.cafe.application.layout;
 
-import ca.ulaval.glo4002.cafe.application.payload.LayoutPayload;
+import ca.ulaval.glo4002.cafe.application.layout.payload.LayoutPayload;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 
-public class CafeService {
+public class LayoutService {
     private final CafeRepository cafeRepository;
 
-    public CafeService(CafeRepository cafeRepository) {
+    public LayoutService(CafeRepository cafeRepository) {
         this.cafeRepository = cafeRepository;
     }
 

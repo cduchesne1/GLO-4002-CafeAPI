@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.layout.LayoutResource;
-import ca.ulaval.glo4002.cafe.application.CafeService;
-import ca.ulaval.glo4002.cafe.application.payload.LayoutPayload;
+import ca.ulaval.glo4002.cafe.application.layout.LayoutService;
+import ca.ulaval.glo4002.cafe.application.layout.payload.LayoutPayload;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 
 import jakarta.ws.rs.core.Response;
@@ -21,27 +21,27 @@ public class LayoutResourceTest {
     private static final CafeName A_CAFE_NAME = new CafeName("Bob");
     private static final LayoutPayload A_LAYOUT_PAYLOAD = new LayoutPayload(A_CAFE_NAME, new ArrayList<>());
 
-    private CafeService cafeService;
+    private LayoutService layoutService;
     private LayoutResource cafeResource;
 
     @BeforeEach
     public void createCafeResource() {
-        cafeService = mock(CafeService.class);
-        cafeResource = new LayoutResource(cafeService);
+        layoutService = mock(LayoutService.class);
+        cafeResource = new LayoutResource(layoutService);
     }
 
     @Test
     public void whenGettingLayout_shouldGetLayout() {
-        when(cafeService.getLayout()).thenReturn(A_LAYOUT_PAYLOAD);
+        when(layoutService.getLayout()).thenReturn(A_LAYOUT_PAYLOAD);
 
         cafeResource.layout();
 
-        verify(cafeService).getLayout();
+        verify(layoutService).getLayout();
     }
 
     @Test
     public void whenGettingLayout_shouldReturn200() {
-        when(cafeService.getLayout()).thenReturn(A_LAYOUT_PAYLOAD);
+        when(layoutService.getLayout()).thenReturn(A_LAYOUT_PAYLOAD);
 
         Response response = cafeResource.layout();
 
