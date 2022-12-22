@@ -39,7 +39,8 @@ import ca.ulaval.glo4002.cafe.domain.location.State;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupSize;
 import ca.ulaval.glo4002.cafe.domain.reservation.Reservation;
-import ca.ulaval.glo4002.cafe.domain.reservation.ReservationType;
+import ca.ulaval.glo4002.cafe.domain.reservation.strategies.DefaultStrategy;
+import ca.ulaval.glo4002.cafe.domain.reservation.strategies.FullCubesStrategy;
 import ca.ulaval.glo4002.cafe.fixture.CafeConfigurationFixture;
 import ca.ulaval.glo4002.cafe.fixture.CustomerFixture;
 import ca.ulaval.glo4002.cafe.fixture.OrderFixture;
@@ -256,7 +257,7 @@ public class CafeTest {
 
     @Test
     public void whenMakingReservation_shouldUseProvidedReservationStrategy() {
-        Cafe cafe = new Cafe(SOME_CUBE_NAMES, new CafeConfigurationFixture().withReservationType(ReservationType.FullCubes).build());
+        Cafe cafe = new Cafe(SOME_CUBE_NAMES, new CafeConfigurationFixture().withReservationStrategy(new FullCubesStrategy()).build());
 
         cafe.makeReservation(A_RESERVATION_FOR_TWO);
 
@@ -280,10 +281,10 @@ public class CafeTest {
     }
 
     @Test
-    public void givenNewReservationType_whenUpdatingConfiguration_shouldUseNewReservationStrategy() {
-        Cafe cafe = new Cafe(SOME_CUBE_NAMES, new CafeConfigurationFixture().withReservationType(ReservationType.Default).build());
+    public void givenNewReservationStrategy_whenUpdatingConfiguration_shouldUseNewReservationStrategy() {
+        Cafe cafe = new Cafe(SOME_CUBE_NAMES, new CafeConfigurationFixture().withReservationStrategy(new DefaultStrategy()).build());
 
-        cafe.updateConfiguration(new CafeConfigurationFixture().withReservationType(ReservationType.FullCubes).build());
+        cafe.updateConfiguration(new CafeConfigurationFixture().withReservationStrategy(new FullCubesStrategy()).build());
 
         cafe.makeReservation(A_RESERVATION_FOR_TWO);
         assertTrue(cafe.getLayout().getCubes().get(0).getSeats().stream().allMatch(Seat::isCurrentlyReserved));

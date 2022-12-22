@@ -16,12 +16,12 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
-import ca.ulaval.glo4002.cafe.domain.reservation.ReservationType;
+import ca.ulaval.glo4002.cafe.domain.reservation.strategies.DefaultStrategy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CafeFactoryTest {
-    private static final CafeConfiguration A_CAFE_CONFIGURATION = new CafeConfiguration(new CubeSize(4), new CafeName("Les 4-Fées"), ReservationType.Default,
+    private static final CafeConfiguration A_CAFE_CONFIGURATION = new CafeConfiguration(new CubeSize(4), new CafeName("Les 4-Fées"), new DefaultStrategy(),
         new Location(Country.None, Optional.empty(), Optional.empty()), new TipRate(0));
 
     private CafeFactory cafeFactory;

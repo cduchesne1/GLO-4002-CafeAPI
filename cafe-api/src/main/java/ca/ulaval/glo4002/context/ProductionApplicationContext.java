@@ -33,7 +33,9 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerFactory;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
 import ca.ulaval.glo4002.cafe.domain.reservation.ReservationFactory;
-import ca.ulaval.glo4002.cafe.domain.reservation.ReservationType;
+import ca.ulaval.glo4002.cafe.domain.reservation.ReservationStrategyFactory;
+import ca.ulaval.glo4002.cafe.domain.reservation.strategies.DefaultStrategy;
+import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
 import ca.ulaval.glo4002.cafe.infrastructure.InMemoryCafeRepository;
 
 public class ProductionApplicationContext implements ApplicationContext {
@@ -43,7 +45,7 @@ public class ProductionApplicationContext implements ApplicationContext {
     private static final CubeSize CUBE_SIZE = new CubeSize(4);
     private static final List<CubeName> CUBE_NAMES =
         List.of(new CubeName("Wanda"), new CubeName("Tinker Bell"), new CubeName("Bloom"), new CubeName("Merryweather"));
-    private static final ReservationType RESERVATION_STRATEGY_TYPE = ReservationType.Default;
+    private static final ReservationStrategy RESERVATION_STRATEGY = new DefaultStrategy();
     private static final TipRate GROUP_TIP_RATE = new TipRate(0);
     private static final Location LOCATION = new Location(Country.None, Optional.empty(), Optional.empty());
 
@@ -54,7 +56,7 @@ public class ProductionApplicationContext implements ApplicationContext {
         CustomerService customersService = new CustomerService(cafeRepository, new CustomerFactory());
         LayoutService layoutService = new LayoutService(cafeRepository);
         InventoryService inventoryService = new InventoryService(cafeRepository);
-        ConfigurationService configurationService = new ConfigurationService(cafeRepository);
+        ConfigurationService configurationService = new ConfigurationService(cafeRepository, new ReservationStrategyFactory());
         OperationService operationService = new OperationService(cafeRepository);
 
         initializeCafe(cafeRepository);
@@ -67,7 +69,7 @@ public class ProductionApplicationContext implements ApplicationContext {
     }
 
     private void initializeCafe(CafeRepository cafeRepository) {
-        CafeConfiguration cafeConfiguration = new CafeConfiguration(CUBE_SIZE, CAFE_NAME, RESERVATION_STRATEGY_TYPE, LOCATION, GROUP_TIP_RATE);
+        CafeConfiguration cafeConfiguration = new CafeConfiguration(CUBE_SIZE, CAFE_NAME, RESERVATION_STRATEGY, LOCATION, GROUP_TIP_RATE);
         Cafe cafe = new CafeFactory().createCafe(CUBE_NAMES, cafeConfiguration);
         cafeRepository.saveOrUpdate(cafe);
     }

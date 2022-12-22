@@ -10,12 +10,13 @@ import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
 import ca.ulaval.glo4002.cafe.domain.location.Province;
 import ca.ulaval.glo4002.cafe.domain.location.State;
-import ca.ulaval.glo4002.cafe.domain.reservation.ReservationType;
+import ca.ulaval.glo4002.cafe.domain.reservation.strategies.DefaultStrategy;
+import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
 
 public class CafeConfigurationFixture {
     private CubeSize cubeSize = new CubeSize(4);
     private CafeName name = new CafeName("Les 4-Fées");
-    private ReservationType reservationType = ReservationType.Default;
+    private ReservationStrategy reservationStrategy = new DefaultStrategy();
     private Country country = Country.CA;
     private Optional<Province> province = Optional.of(Province.QC);
     private Optional<State> state = Optional.empty();
@@ -31,8 +32,8 @@ public class CafeConfigurationFixture {
         return this;
     }
 
-    public CafeConfigurationFixture withReservationType(ReservationType reservationType) {
-        this.reservationType = reservationType;
+    public CafeConfigurationFixture withReservationStrategy(ReservationStrategy reservationStrategy) {
+        this.reservationStrategy = reservationStrategy;
         return this;
     }
 
@@ -57,6 +58,6 @@ public class CafeConfigurationFixture {
     }
 
     public CafeConfiguration build() {
-        return new CafeConfiguration(cubeSize, name, reservationType, new Location(country, province, state), groupTipRate);
+        return new CafeConfiguration(cubeSize, name, reservationStrategy, new Location(country, province, state), groupTipRate);
     }
 }

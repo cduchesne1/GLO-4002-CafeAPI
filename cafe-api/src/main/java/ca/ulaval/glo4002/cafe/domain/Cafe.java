@@ -24,11 +24,9 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Order;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
 import ca.ulaval.glo4002.cafe.domain.reservation.Reservation;
-import ca.ulaval.glo4002.cafe.domain.reservation.ReservationStrategyFactory;
 import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
 
 public class Cafe {
-    private final ReservationStrategyFactory reservationStrategyFactory;
     private final Layout layout;
     private final List<Reservation> reservations = new ArrayList<>();
     private final HashMap<CustomerId, Bill> bills = new HashMap<>();
@@ -40,8 +38,6 @@ public class Cafe {
     private ReservationStrategy reservationStrategy;
 
     public Cafe(List<CubeName> cubeNames, CafeConfiguration cafeConfiguration) {
-        reservationStrategyFactory = new ReservationStrategyFactory();
-
         LayoutFactory layoutFactory = new LayoutFactory();
         this.layout = layoutFactory.createLayout(cafeConfiguration.cubeSize(), cubeNames);
 
@@ -53,7 +49,7 @@ public class Cafe {
     public void updateConfiguration(CafeConfiguration cafeConfiguration) {
         this.cubeSize = cafeConfiguration.cubeSize();
         this.cafeName = cafeConfiguration.cafeName();
-        this.reservationStrategy = reservationStrategyFactory.createReservationStrategy(cafeConfiguration.reservationType());
+        this.reservationStrategy = cafeConfiguration.reservationStrategy();
         this.groupTipRate = cafeConfiguration.groupTipRate();
         this.location = cafeConfiguration.location();
     }

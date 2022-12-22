@@ -11,10 +11,11 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
-import ca.ulaval.glo4002.cafe.domain.reservation.ReservationType;
+import ca.ulaval.glo4002.cafe.domain.reservation.strategies.DefaultStrategy;
+import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
 
 public class CafeFixture {
-    private static final ReservationType RESERVATION_STRATEGY_TYPE = ReservationType.Default;
+    private static final ReservationStrategy RESERVATION_STRATEGY = new DefaultStrategy();
     private List<CubeName> cubeNames =
         List.of(new CubeName("Wanda"), new CubeName("Tinker Bell"), new CubeName("Bloom"), new CubeName("Merryweather"));
     private CafeName name = new CafeName("Les 4-Fées");
@@ -48,7 +49,7 @@ public class CafeFixture {
     }
 
     public Cafe build() {
-        CafeConfiguration cafeConfiguration = new CafeConfiguration(cubeSize, name, RESERVATION_STRATEGY_TYPE, location, groupTipRate);
+        CafeConfiguration cafeConfiguration = new CafeConfiguration(cubeSize, name, RESERVATION_STRATEGY, location, groupTipRate);
         return new Cafe(cubeNames, cafeConfiguration);
     }
 }

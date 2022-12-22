@@ -8,6 +8,7 @@ import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateConfiguratio
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
+import ca.ulaval.glo4002.cafe.domain.reservation.ReservationStrategyFactory;
 import ca.ulaval.glo4002.cafe.util.CafeRepositoryTestUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +24,7 @@ public class ConfigurationServiceTest {
     @BeforeEach
     public void setupService() {
         cafeRepository = CafeRepositoryTestUtil.createCafeRepositoryWithDefaultCafe();
-        configurationService = new ConfigurationService(cafeRepository);
+        configurationService = new ConfigurationService(cafeRepository, new ReservationStrategyFactory());
     }
 
     @Test
