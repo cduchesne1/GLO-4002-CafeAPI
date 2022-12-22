@@ -46,14 +46,6 @@ public class Cafe {
         updateConfiguration(cafeConfiguration);
     }
 
-    public void updateConfiguration(CafeConfiguration cafeConfiguration) {
-        this.cubeSize = cafeConfiguration.cubeSize();
-        this.cafeName = cafeConfiguration.cafeName();
-        this.reservationStrategy = cafeConfiguration.reservationStrategy();
-        this.groupTipRate = cafeConfiguration.groupTipRate();
-        this.location = cafeConfiguration.location();
-    }
-
     public CafeName getName() {
         return cafeName;
     }
@@ -70,11 +62,6 @@ public class Cafe {
         return reservations;
     }
 
-    public void checkIn(Customer customer, Optional<GroupName> groupName) {
-        checkIfCustomerAlreadyVisitedToday(customer.getId());
-        assignSeatToCustomer(customer, groupName);
-    }
-
     public Seat getSeatByCustomerId(CustomerId customerId) {
         return layout.getSeatByCustomerId(customerId);
     }
@@ -89,43 +76,15 @@ public class Cafe {
         reservations.add(reservation);
     }
 
-    public void close() {
-        layout.reset(cubeSize);
-        clearReservations();
-        clearBills();
-        clearInventory();
-    }
-
-    public void checkOut(CustomerId customerId) {
-        Bill bill = layout.checkout(customerId, location, groupTipRate);
-        bills.put(customerId, bill);
-    }
-
-    public void placeOrder(CustomerId customerId, Order order) {
-        layout.placeOrder(customerId, order, inventory);
-    }
-
-    public void addIngredientsToInventory(List<Ingredient> ingredients) {
-        inventory.add(ingredients);
-    }
-
-    public Bill getCustomerBill(CustomerId customerId) {
-        if (!bills.containsKey(customerId)) {
-            if (layout.isCustomerAlreadySeated(customerId)) {
-                throw new CustomerNoBillException();
-            } else {
-                throw new CustomerNotFoundException();
-            }
+    private void checkIfGroupNameAlreadyExists(GroupName name) {
+        if (reservations.stream().map(Reservation::name).toList().contains(name)) {
+            throw new DuplicateGroupNameException();
         }
-        return bills.get(customerId);
     }
 
-    private void clearInventory() {
-        inventory.clear();
-    }
-
-    private void clearBills() {
-        bills.clear();
+    public void checkIn(Customer customer, Optional<GroupName> groupName) {
+        checkIfCustomerAlreadyVisitedToday(customer.getId());
+        assignSeatToCustomer(customer, groupName);
     }
 
     private void checkIfCustomerAlreadyVisitedToday(CustomerId customerId) {
@@ -152,13 +111,42 @@ public class Cafe {
         throw new NoReservationsFoundException();
     }
 
-    private void checkIfGroupNameAlreadyExists(GroupName name) {
-        if (reservations.stream().map(Reservation::name).toList().contains(name)) {
-            throw new DuplicateGroupNameException();
-        }
+    public void placeOrder(CustomerId customerId, Order order) {
+        layout.placeOrder(customerId, order, inventory);
     }
 
-    private void clearReservations() {
+    public void checkOut(CustomerId customerId) {
+        Bill bill = layout.checkout(customerId, location, groupTipRate);
+        bills.put(customerId, bill);
+    }
+
+    public Bill getCustomerBill(CustomerId customerId) {
+        if (!bills.containsKey(customerId)) {
+            if (layout.isCustomerAlreadySeated(customerId)) {
+                throw new CustomerNoBillException();
+            } else {
+                throw new CustomerNotFoundException();
+            }
+        }
+        return bills.get(customerId);
+    }
+
+    public void close() {
+        layout.reset(cubeSize);
         reservations.clear();
+        bills.clear();
+        inventory.clear();
+    }
+
+    public void addIngredientsToInventory(List<Ingredient> ingredients) {
+        inventory.add(ingredients);
+    }
+
+    public void updateConfiguration(CafeConfiguration cafeConfiguration) {
+        this.cubeSize = cafeConfiguration.cubeSize();
+        this.cafeName = cafeConfiguration.cafeName();
+        this.reservationStrategy = cafeConfiguration.reservationStrategy();
+        this.groupTipRate = cafeConfiguration.groupTipRate();
+        this.location = cafeConfiguration.location();
     }
 }
