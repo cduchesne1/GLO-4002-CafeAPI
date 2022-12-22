@@ -27,6 +27,7 @@ import ca.ulaval.glo4002.cafe.domain.CafeFactory;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.TipRate;
+import ca.ulaval.glo4002.cafe.domain.layout.LayoutFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerFactory;
@@ -70,7 +71,7 @@ public class ProductionApplicationContext implements ApplicationContext {
 
     private void initializeCafe(CafeRepository cafeRepository) {
         CafeConfiguration cafeConfiguration = new CafeConfiguration(CUBE_SIZE, CAFE_NAME, RESERVATION_STRATEGY, LOCATION, GROUP_TIP_RATE);
-        Cafe cafe = new CafeFactory().createCafe(CUBE_NAMES, cafeConfiguration);
+        Cafe cafe = new CafeFactory(new LayoutFactory()).createCafe(CUBE_NAMES, cafeConfiguration);
         cafeRepository.saveOrUpdate(cafe);
     }
 

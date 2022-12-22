@@ -13,8 +13,6 @@ import ca.ulaval.glo4002.cafe.domain.exception.NoReservationsFoundException;
 import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
 import ca.ulaval.glo4002.cafe.domain.layout.Layout;
-import ca.ulaval.glo4002.cafe.domain.layout.LayoutFactory;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
@@ -37,12 +35,9 @@ public class Cafe {
     private Location location;
     private ReservationStrategy reservationStrategy;
 
-    public Cafe(List<CubeName> cubeNames, CafeConfiguration cafeConfiguration) {
-        LayoutFactory layoutFactory = new LayoutFactory();
-        this.layout = layoutFactory.createLayout(cafeConfiguration.cubeSize(), cubeNames);
-
-        this.inventory = new Inventory();
-
+    public Cafe(CafeConfiguration cafeConfiguration, Layout layout, Inventory inventory) {
+        this.layout = layout;
+        this.inventory = inventory;
         updateConfiguration(cafeConfiguration);
     }
 
@@ -68,6 +63,18 @@ public class Cafe {
 
     public Order getOrderByCustomerId(CustomerId customerId) {
         return layout.getOrderByCustomerId(customerId);
+    }
+
+    public void updateConfiguration(CafeConfiguration cafeConfiguration) {
+        this.cubeSize = cafeConfiguration.cubeSize();
+        this.cafeName = cafeConfiguration.cafeName();
+        this.reservationStrategy = cafeConfiguration.reservationStrategy();
+        this.groupTipRate = cafeConfiguration.groupTipRate();
+        this.location = cafeConfiguration.location();
+    }
+
+    public void addIngredientsToInventory(List<Ingredient> ingredients) {
+        inventory.add(ingredients);
     }
 
     public void makeReservation(Reservation reservation) {
@@ -136,17 +143,5 @@ public class Cafe {
         reservations.clear();
         bills.clear();
         inventory.clear();
-    }
-
-    public void addIngredientsToInventory(List<Ingredient> ingredients) {
-        inventory.add(ingredients);
-    }
-
-    public void updateConfiguration(CafeConfiguration cafeConfiguration) {
-        this.cubeSize = cafeConfiguration.cubeSize();
-        this.cafeName = cafeConfiguration.cafeName();
-        this.reservationStrategy = cafeConfiguration.reservationStrategy();
-        this.groupTipRate = cafeConfiguration.groupTipRate();
-        this.location = cafeConfiguration.location();
     }
 }
