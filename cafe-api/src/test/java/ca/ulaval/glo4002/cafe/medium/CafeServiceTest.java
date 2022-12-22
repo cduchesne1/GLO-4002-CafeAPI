@@ -8,9 +8,7 @@ import org.junit.jupiter.api.Test;
 import ca.ulaval.glo4002.cafe.application.CafeService;
 import ca.ulaval.glo4002.cafe.application.inventory.InventoryService;
 import ca.ulaval.glo4002.cafe.application.inventory.query.IngredientsQuery;
-import ca.ulaval.glo4002.cafe.application.query.UpdateConfigurationQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
-import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNoBillException;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
@@ -23,12 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CafeServiceTest {
-    private static final CafeName NEW_CAFE_NAME = new CafeName("Les 4-Ogres");
     private static final Customer A_CUSTOMER = new CustomerFixture().build();
     private static final Reservation A_RESERVATION = new ReservationFixture().build();
     private static final IngredientsQuery INGREDIENTS_QUERY = new IngredientsQuery(100, 100, 100, 100);
-    private static final UpdateConfigurationQuery UPDATE_CONFIGURATION_QUERY =
-        new UpdateConfigurationQuery(5, NEW_CAFE_NAME.value(), "Default", "CA", "QC", "", 5);
 
     private CafeService cafeService;
     private InventoryService inventoryService;
@@ -41,13 +36,6 @@ public class CafeServiceTest {
         cafeService = new CafeService(cafeRepository);
         inventoryService = new InventoryService(cafeRepository);
         cafe = cafeRepository.get();
-    }
-
-    @Test
-    public void whenUpdatingConfiguration_shouldUpdateConfiguration() {
-        cafeService.updateConfiguration(UPDATE_CONFIGURATION_QUERY);
-
-        assertEquals(NEW_CAFE_NAME, cafeService.getLayout().name());
     }
 
     @Test

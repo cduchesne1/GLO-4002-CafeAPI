@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.application.query;
+package ca.ulaval.glo4002.cafe.application.configuration.query;
 
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.domain.TipRate;

@@ -16,6 +16,7 @@ import ca.ulaval.glo4002.cafe.api.layout.LayoutResource;
 import ca.ulaval.glo4002.cafe.api.operation.OperationResource;
 import ca.ulaval.glo4002.cafe.api.reservation.ReservationResource;
 import ca.ulaval.glo4002.cafe.application.CafeService;
+import ca.ulaval.glo4002.cafe.application.configuration.ConfigurationService;
 import ca.ulaval.glo4002.cafe.application.customer.CustomerService;
 import ca.ulaval.glo4002.cafe.application.inventory.InventoryService;
 import ca.ulaval.glo4002.cafe.application.reservation.ReservationService;
@@ -52,11 +53,12 @@ public class ProductionApplicationContext implements ApplicationContext {
         CustomerService customersService = new CustomerService(cafeRepository, new CustomerFactory());
         CafeService cafeService = new CafeService(cafeRepository);
         InventoryService inventoryService = new InventoryService(cafeRepository);
+        ConfigurationService configurationService = new ConfigurationService(cafeRepository);
 
         initializeCafe(cafeRepository);
 
         return new ResourceConfig().packages("ca.ulaval.glo4002.cafe").property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true)
-            .register(new ConfigurationResource(cafeService)).register(new LayoutResource(cafeService))
+            .register(new ConfigurationResource(configurationService)).register(new LayoutResource(cafeService))
             .register(new OperationResource(cafeService, customersService)).register(new CustomerResource(customersService))
             .register(new InventoryResource(inventoryService)).register(new ReservationResource(groupService)).register(new CafeExceptionMapper())
             .register(new CatchallExceptionMapper()).register(new ConstraintViolationExceptionMapper());
