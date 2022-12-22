@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.api.request;
+package ca.ulaval.glo4002.cafe.api.inventory.request;
 
 import jakarta.validation.constraints.NotNull;
 

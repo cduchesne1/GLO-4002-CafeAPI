@@ -16,9 +16,7 @@ import ca.ulaval.glo4002.cafe.api.layout.response.LayoutResponse;
 import ca.ulaval.glo4002.cafe.api.request.CheckInRequest;
 import ca.ulaval.glo4002.cafe.api.request.CheckOutRequest;
 import ca.ulaval.glo4002.cafe.api.request.ConfigurationRequest;
-import ca.ulaval.glo4002.cafe.api.request.InventoryRequest;
 import ca.ulaval.glo4002.cafe.api.reservation.request.ReservationRequest;
-import ca.ulaval.glo4002.cafe.api.response.InventoryResponse;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.SeatNumber;
 import ca.ulaval.glo4002.cafe.domain.reservation.ReservationType;
@@ -26,7 +24,6 @@ import ca.ulaval.glo4002.cafe.fixture.CubeResponseFixture;
 import ca.ulaval.glo4002.cafe.fixture.SeatFixture;
 import ca.ulaval.glo4002.cafe.fixture.request.CheckInRequestFixture;
 import ca.ulaval.glo4002.cafe.fixture.request.ConfigurationRequestFixture;
-import ca.ulaval.glo4002.cafe.fixture.request.InventoryRequestFixture;
 import ca.ulaval.glo4002.cafe.fixture.request.ReservationRequestFixture;
 
 import static io.restassured.RestAssured.given;
@@ -40,7 +37,6 @@ class CafeResourceEnd2EndTest {
     private static final String A_VALID_ID = "test_ID";
     private static final String A_VALID_GROUP_NAME = "test_group";
     private static final CheckInRequest A_VALID_CHECK_IN_REQUEST = new CheckInRequestFixture().withCustomerId(A_VALID_ID).build();
-    private static final int A_VALID_STOCK = 100;
 
     private TestServer server;
 
@@ -196,49 +192,6 @@ class CafeResourceEnd2EndTest {
         Response response = given().contentType("application/json").body(checkOutRequest).when().post(BASE_URL + "/checkout");
 
         assertEquals(BASE_URL + "/customers/" + A_VALID_ID + "/bill", response.getHeader("Location"));
-    }
-
-    @Test
-    public void whenGettingInventory_shouldReturn200() {
-        Response response = when().get(BASE_URL + "/inventory");
-
-        assertEquals(200, response.getStatusCode());
-    }
-
-    @Test
-    public void whenGettingInventory_shouldReturnCafeInventoryBody() {
-        Response response = when().get(BASE_URL + "/inventory");
-        InventoryResponse actualBody = response.getBody().as(InventoryResponse.class);
-
-        assertEquals(0, actualBody.Chocolate());
-        assertEquals(0, actualBody.Espresso());
-        assertEquals(0, actualBody.Milk());
-        assertEquals(0, actualBody.Water());
-    }
-
-    @Test
-    public void whenPuttingInventory_shouldReturn200() {
-        InventoryRequest inventoryRequest =
-            new InventoryRequestFixture().withChocolate(A_VALID_STOCK).withEspresso(A_VALID_STOCK).withMilk(A_VALID_STOCK).withWater(A_VALID_STOCK).build();
-
-        Response response = given().contentType("application/json").body(inventoryRequest).when().put(BASE_URL + "/inventory");
-
-        assertEquals(200, response.getStatusCode());
-    }
-
-    @Test
-    public void whenPuttingInventory_shouldAddToInventory() {
-        InventoryRequest inventoryRequest =
-            new InventoryRequestFixture().withChocolate(A_VALID_STOCK).withEspresso(A_VALID_STOCK).withMilk(A_VALID_STOCK).withWater(A_VALID_STOCK).build();
-
-        given().contentType("application/json").body(inventoryRequest).when().put(BASE_URL + "/inventory");
-
-        Response inventoryResponse = given().contentType("application/json").body(inventoryRequest).when().get(BASE_URL + "/inventory");
-        InventoryResponse body = inventoryResponse.getBody().as(InventoryResponse.class);
-        assertEquals(A_VALID_STOCK, body.Chocolate());
-        assertEquals(A_VALID_STOCK, body.Espresso());
-        assertEquals(A_VALID_STOCK, body.Milk());
-        assertEquals(A_VALID_STOCK, body.Water());
     }
 
     private void postCheckInWithCheckInRequest(CheckInRequest checkInRequest) {

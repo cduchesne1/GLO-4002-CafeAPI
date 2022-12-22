@@ -1,7 +1,6 @@
 package ca.ulaval.glo4002.cafe.small.cafe.api;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,31 +9,28 @@ import ca.ulaval.glo4002.cafe.api.CafeResource;
 import ca.ulaval.glo4002.cafe.api.request.CheckInRequest;
 import ca.ulaval.glo4002.cafe.api.request.CheckOutRequest;
 import ca.ulaval.glo4002.cafe.api.request.ConfigurationRequest;
-import ca.ulaval.glo4002.cafe.api.request.InventoryRequest;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.fixture.request.CheckInRequestFixture;
 import ca.ulaval.glo4002.cafe.fixture.request.CheckOutRequestFixture;
 import ca.ulaval.glo4002.cafe.fixture.request.ConfigurationRequestFixture;
-import ca.ulaval.glo4002.cafe.fixture.request.InventoryRequestFixture;
 import ca.ulaval.glo4002.cafe.service.CafeService;
 import ca.ulaval.glo4002.cafe.service.customer.CustomerService;
 import ca.ulaval.glo4002.cafe.service.customer.parameter.CheckInCustomerParams;
 import ca.ulaval.glo4002.cafe.service.customer.parameter.CheckOutCustomerParams;
-import ca.ulaval.glo4002.cafe.service.dto.InventoryDTO;
 import ca.ulaval.glo4002.cafe.service.dto.LayoutDTO;
 import ca.ulaval.glo4002.cafe.service.parameter.ConfigurationParams;
-import ca.ulaval.glo4002.cafe.service.parameter.IngredientsParams;
 
 import jakarta.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class CafeResourceTest {
     private static final CafeName A_CAFE_NAME = new CafeName("Bob");
     private static final LayoutDTO A_LAYOUT_DTO = new LayoutDTO(A_CAFE_NAME, new ArrayList<>());
-    private static final InventoryDTO A_INVENTORY_DTO = new InventoryDTO(new HashMap<>());
     private static final String CUSTOMER_ID = "customerId";
     private static final String CUSTOMER_NAME = "Bob";
     private static final String GROUP_NAME = "team";
@@ -45,10 +41,6 @@ public class CafeResourceTest {
     private static final String PROVINCE = "QC";
     private static final String STATE = "";
     private static final int GROUP_TIP_RATE = 0;
-    private static final int CHOCOLATE = 1;
-    private static final int ESPRESSO = 1;
-    private static final int MILK = 1;
-    private static final int WATER = 1;
 
     private CafeService cafeService;
     private CustomerService customerService;
@@ -199,53 +191,6 @@ public class CafeResourceTest {
             .build();
 
         Response response = cafeResource.updateConfiguration(configurationRequest);
-
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void givenValidRequest_whenAddingIngredients_shouldAddIngredientsToInventory() {
-        InventoryRequest inventoryRequest = new InventoryRequestFixture()
-            .withChocolate(CHOCOLATE)
-            .withMilk(MILK)
-            .withEspresso(ESPRESSO)
-            .withWater(WATER)
-            .build();
-        IngredientsParams ingredientsParams = new IngredientsParams(CHOCOLATE, MILK, WATER, ESPRESSO);
-
-        cafeResource.putInventory(inventoryRequest);
-
-        verify(cafeService).addIngredientsToInventory(ingredientsParams);
-    }
-
-    @Test
-    public void givenValidRequest_whenAddingIngredients_shouldReturn200() {
-        InventoryRequest inventoryRequest = new InventoryRequestFixture()
-            .withChocolate(CHOCOLATE)
-            .withMilk(MILK)
-            .withEspresso(ESPRESSO)
-            .withWater(WATER)
-            .build();
-
-        Response response = cafeResource.putInventory(inventoryRequest);
-
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void whenGettingInventory_shouldGetInventory() {
-        when(cafeService.getInventory()).thenReturn(A_INVENTORY_DTO);
-
-        cafeResource.getInventory();
-
-        verify(cafeService).getInventory();
-    }
-
-    @Test
-    public void whenGettingInventory_shouldReturn200() {
-        when(cafeService.getInventory()).thenReturn(A_INVENTORY_DTO);
-
-        Response response = cafeResource.getInventory();
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }

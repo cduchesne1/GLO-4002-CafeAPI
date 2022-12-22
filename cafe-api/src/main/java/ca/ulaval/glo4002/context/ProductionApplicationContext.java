@@ -8,6 +8,7 @@ import ca.ulaval.glo4002.cafe.api.customer.CustomerResource;
 import ca.ulaval.glo4002.cafe.api.exception.mapper.CafeExceptionMapper;
 import ca.ulaval.glo4002.cafe.api.exception.mapper.CatchallExceptionMapper;
 import ca.ulaval.glo4002.cafe.api.exception.mapper.ConstraintViolationExceptionMapper;
+import ca.ulaval.glo4002.cafe.api.inventory.InventoryResource;
 import ca.ulaval.glo4002.cafe.api.reservation.ReservationResource;
 import ca.ulaval.glo4002.cafe.domain.CafeFactory;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
@@ -32,8 +33,8 @@ public class ProductionApplicationContext implements ApplicationContext {
 
         return new ResourceConfig().packages("ca.ulaval.glo4002.cafe").property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true)
             .register(new CafeResource(cafeService, customersService)).register(new CustomerResource(customersService))
-            .register(new ReservationResource(groupService)).register(new CafeExceptionMapper()).register(new CatchallExceptionMapper())
-            .register(new ConstraintViolationExceptionMapper());
+            .register(new InventoryResource(cafeService)).register(new ReservationResource(groupService)).register(new CafeExceptionMapper())
+            .register(new CatchallExceptionMapper()).register(new ConstraintViolationExceptionMapper());
     }
 
     public int getPort() {

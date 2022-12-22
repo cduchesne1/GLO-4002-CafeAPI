@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.small.cafe.api.assembler;
+package ca.ulaval.glo4002.cafe.small.cafe.api.inventory.assembler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ca.ulaval.glo4002.cafe.api.assembler.InventoryResponseAssembler;
-import ca.ulaval.glo4002.cafe.api.response.InventoryResponse;
+import ca.ulaval.glo4002.cafe.api.inventory.assembler.InventoryResponseAssembler;
+import ca.ulaval.glo4002.cafe.api.inventory.response.InventoryResponse;
 import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
 import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
