@@ -15,7 +15,6 @@ import ca.ulaval.glo4002.cafe.application.customer.query.CheckInCustomerQuery;
 import ca.ulaval.glo4002.cafe.application.customer.query.CheckOutCustomerQuery;
 import ca.ulaval.glo4002.cafe.application.customer.query.CustomerOrderQuery;
 import ca.ulaval.glo4002.cafe.application.query.IngredientsQuery;
-import ca.ulaval.glo4002.cafe.domain.CafeFactory;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.SeatNumber;
@@ -25,7 +24,7 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerName;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Order;
 import ca.ulaval.glo4002.cafe.fixture.OrderFixture;
-import ca.ulaval.glo4002.cafe.infrastructure.InMemoryCafeRepository;
+import ca.ulaval.glo4002.cafe.util.CafeRepositoryTestUtil;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,10 +45,9 @@ public class CustomerServiceTest {
 
     @BeforeEach
     public void instanciateAttributes() {
-        cafeRepository = new InMemoryCafeRepository();
+        cafeRepository = CafeRepositoryTestUtil.createCafeRepositoryWithDefaultCafe();
         customerService = new CustomerService(cafeRepository, new CustomerFactory());
-        cafeService = new CafeService(cafeRepository, new CafeFactory());
-        cafeService.initializeCafe();
+        cafeService = new CafeService(cafeRepository);
     }
 
     @Test

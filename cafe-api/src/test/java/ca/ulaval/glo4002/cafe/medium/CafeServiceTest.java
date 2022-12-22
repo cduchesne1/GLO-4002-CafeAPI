@@ -10,7 +10,6 @@ import ca.ulaval.glo4002.cafe.application.payload.InventoryPayload;
 import ca.ulaval.glo4002.cafe.application.query.IngredientsQuery;
 import ca.ulaval.glo4002.cafe.application.query.UpdateConfigurationQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
-import ca.ulaval.glo4002.cafe.domain.CafeFactory;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNoBillException;
@@ -19,7 +18,7 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.reservation.Reservation;
 import ca.ulaval.glo4002.cafe.fixture.CustomerFixture;
 import ca.ulaval.glo4002.cafe.fixture.ReservationFixture;
-import ca.ulaval.glo4002.cafe.infrastructure.InMemoryCafeRepository;
+import ca.ulaval.glo4002.cafe.util.CafeRepositoryTestUtil;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,9 +37,8 @@ public class CafeServiceTest {
 
     @BeforeEach
     public void instanciateAttributes() {
-        cafeRepository = new InMemoryCafeRepository();
-        cafeService = new CafeService(cafeRepository, new CafeFactory());
-        cafeService.initializeCafe();
+        cafeRepository = CafeRepositoryTestUtil.createCafeRepositoryWithDefaultCafe();
+        cafeService = new CafeService(cafeRepository);
         cafe = cafeRepository.get();
     }
 

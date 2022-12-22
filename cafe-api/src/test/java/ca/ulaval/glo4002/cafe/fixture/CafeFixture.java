@@ -11,7 +11,6 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
-import ca.ulaval.glo4002.cafe.domain.location.Province;
 import ca.ulaval.glo4002.cafe.domain.reservation.ReservationType;
 
 public class CafeFixture {
@@ -20,8 +19,8 @@ public class CafeFixture {
         List.of(new CubeName("Wanda"), new CubeName("Tinker Bell"), new CubeName("Bloom"), new CubeName("Merryweather"));
     private CafeName name = new CafeName("Les 4-Fées");
     private CubeSize cubeSize = new CubeSize(4);
-    private TipRate groupTipRate = new TipRate(0.05f);
-    private Location location = new Location(Country.CA, Optional.of(Province.AB), Optional.empty());
+    private TipRate groupTipRate = new TipRate(0);
+    private Location location = new Location(Country.None, Optional.empty(), Optional.empty());
 
     public CafeFixture withName(CafeName name) {
         this.name = name;

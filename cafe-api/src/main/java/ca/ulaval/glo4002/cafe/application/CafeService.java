@@ -8,21 +8,13 @@ import ca.ulaval.glo4002.cafe.application.query.IngredientsQuery;
 import ca.ulaval.glo4002.cafe.application.query.UpdateConfigurationQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
-import ca.ulaval.glo4002.cafe.domain.CafeFactory;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 
 public class CafeService {
     private final CafeRepository cafeRepository;
-    private final CafeFactory cafeFactory;
 
-    public CafeService(CafeRepository cafeRepository, CafeFactory cafeFactory) {
+    public CafeService(CafeRepository cafeRepository) {
         this.cafeRepository = cafeRepository;
-        this.cafeFactory = cafeFactory;
-    }
-
-    public void initializeCafe() {
-        Cafe cafe = cafeFactory.createCafe();
-        cafeRepository.saveOrUpdate(cafe);
     }
 
     public LayoutPayload getLayout() {

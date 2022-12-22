@@ -14,7 +14,6 @@ import ca.ulaval.glo4002.cafe.application.query.IngredientsQuery;
 import ca.ulaval.glo4002.cafe.application.query.UpdateConfigurationQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
-import ca.ulaval.glo4002.cafe.domain.CafeFactory;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.fixture.CafeFixture;
 
@@ -29,29 +28,11 @@ public class CafeServiceTest {
     private static final IngredientsQuery AN_INGREDIENTS_QUERY = new IngredientsQuery(1, 2, 3, 4);
     private CafeService cafeService;
     private CafeRepository cafeRepository;
-    private CafeFactory cafeFactory;
 
     @BeforeEach
     public void createCafeService() {
-        cafeFactory = mock(CafeFactory.class);
         cafeRepository = mock(CafeRepository.class);
-        cafeService = new CafeService(cafeRepository, cafeFactory);
-    }
-
-    @Test
-    public void whenInitializingCafe_shouldCreateCafe() {
-        cafeService.initializeCafe();
-
-        verify(cafeFactory).createCafe();
-    }
-
-    @Test
-    public void whenInitializingCafe_shouldSaveCafe() {
-        when(cafeFactory.createCafe()).thenReturn(A_CAFE);
-
-        cafeService.initializeCafe();
-
-        verify(cafeRepository).saveOrUpdate(A_CAFE);
+        cafeService = new CafeService(cafeRepository);
     }
 
     @Test

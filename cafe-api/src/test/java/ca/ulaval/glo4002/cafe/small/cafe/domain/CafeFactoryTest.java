@@ -1,21 +1,28 @@
 package ca.ulaval.glo4002.cafe.small.cafe.domain;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.domain.Cafe;
+import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
 import ca.ulaval.glo4002.cafe.domain.CafeFactory;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
+import ca.ulaval.glo4002.cafe.domain.TipRate;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.Cube;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
+import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
+import ca.ulaval.glo4002.cafe.domain.location.Country;
+import ca.ulaval.glo4002.cafe.domain.location.Location;
+import ca.ulaval.glo4002.cafe.domain.reservation.ReservationType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CafeFactoryTest {
-
-    private static final CafeName DEFAULT_CAFE_NAME = new CafeName("Les 4-Fées");
+    private static final CafeConfiguration A_CAFE_CONFIGURATION = new CafeConfiguration(new CubeSize(4), new CafeName("Les 4-Fées"), ReservationType.Default,
+        new Location(Country.None, Optional.empty(), Optional.empty()), new TipRate(0));
 
     private CafeFactory cafeFactory;
 
@@ -25,18 +32,11 @@ public class CafeFactoryTest {
     }
 
     @Test
-    public void whenCreatingCafe_shouldHaveDefaultName() {
-        Cafe cafe = cafeFactory.createCafe();
-
-        assertEquals(DEFAULT_CAFE_NAME, cafe.getName());
-    }
-
-    @Test
     public void whenCreatingCafe_shouldCreateCubesListWithSortedSpecificCubesNames() {
-        List<CubeName> expectedCubeNames = List.of(new CubeName("Bloom"), new CubeName("Merryweather"), new CubeName("Tinker Bell"), new CubeName("Wanda"));
+        List<CubeName> cubeNames = List.of(new CubeName("Merryweather"), new CubeName("Tinker Bell"), new CubeName("Wanda"), new CubeName("Bloom"));
 
-        Cafe cafe = cafeFactory.createCafe();
+        Cafe cafe = cafeFactory.createCafe(cubeNames, A_CAFE_CONFIGURATION);
 
-        assertEquals(expectedCubeNames, cafe.getLayout().getCubes().stream().map(Cube::getName).toList());
+        assertEquals(cubeNames.stream().sorted().toList(), cafe.getLayout().getCubes().stream().map(Cube::getName).toList());
     }
 }
