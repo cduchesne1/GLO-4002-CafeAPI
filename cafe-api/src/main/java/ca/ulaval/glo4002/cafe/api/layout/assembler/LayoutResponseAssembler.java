@@ -4,14 +4,14 @@ import java.util.List;
 
 import ca.ulaval.glo4002.cafe.api.layout.response.CubeResponse;
 import ca.ulaval.glo4002.cafe.api.layout.response.LayoutResponse;
-import ca.ulaval.glo4002.cafe.application.dto.LayoutDTO;
+import ca.ulaval.glo4002.cafe.application.payload.LayoutPayload;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.Cube;
 
 public class LayoutResponseAssembler {
 
-    public LayoutResponse toLayoutResponse(LayoutDTO layoutDTO) {
-        List<CubeResponse> cubeResponses = toCubeResponses(layoutDTO.cubes());
-        return new LayoutResponse(layoutDTO.name().value(), cubeResponses);
+    public LayoutResponse toLayoutResponse(LayoutPayload layoutPayload) {
+        List<CubeResponse> cubeResponses = toCubeResponses(layoutPayload.cubes());
+        return new LayoutResponse(layoutPayload.name().value(), cubeResponses);
     }
 
     private List<CubeResponse> toCubeResponses(List<Cube> cubes) {

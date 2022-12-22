@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import ca.ulaval.glo4002.cafe.application.CafeService;
-import ca.ulaval.glo4002.cafe.application.dto.InventoryDTO;
-import ca.ulaval.glo4002.cafe.application.dto.LayoutDTO;
-import ca.ulaval.glo4002.cafe.application.parameter.ConfigurationParams;
-import ca.ulaval.glo4002.cafe.application.parameter.IngredientsParams;
+import ca.ulaval.glo4002.cafe.application.payload.InventoryPayload;
+import ca.ulaval.glo4002.cafe.application.payload.LayoutPayload;
+import ca.ulaval.glo4002.cafe.application.query.IngredientsQuery;
+import ca.ulaval.glo4002.cafe.application.query.UpdateConfigurationQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
 import ca.ulaval.glo4002.cafe.domain.CafeFactory;
@@ -25,8 +25,8 @@ import static org.mockito.Mockito.when;
 
 public class CafeServiceTest {
     private static final Cafe A_CAFE = new CafeFixture().build();
-    private static final ConfigurationParams A_CONFIGURATION_PARAMS = new ConfigurationParams(4, "Les 4-Fées", "Default", "CA", "QC", "", 5);
-    private static final IngredientsParams AN_INGREDIENTS_PARAMS = new IngredientsParams(1, 2, 3, 4);
+    private static final UpdateConfigurationQuery AN_UPDATE_CONFIGURATION_QUERY = new UpdateConfigurationQuery(4, "Les 4-Fées", "Default", "CA", "QC", "", 5);
+    private static final IngredientsQuery AN_INGREDIENTS_QUERY = new IngredientsQuery(1, 2, 3, 4);
     private CafeService cafeService;
     private CafeRepository cafeRepository;
     private CafeFactory cafeFactory;
@@ -64,13 +64,13 @@ public class CafeServiceTest {
     }
 
     @Test
-    public void whenGettingLayout_shouldReturnLayoutDTO() {
+    public void whenGettingLayout_shouldReturnLayoutPayload() {
         when(cafeRepository.get()).thenReturn(A_CAFE);
-        LayoutDTO expectedLayoutDTO = new LayoutDTO(A_CAFE.getName(), A_CAFE.getLayout().getCubes());
+        LayoutPayload expectedLayoutPayload = new LayoutPayload(A_CAFE.getName(), A_CAFE.getLayout().getCubes());
 
-        LayoutDTO actualLayoutDTO = cafeService.getLayout();
+        LayoutPayload actualLayoutPayload = cafeService.getLayout();
 
-        assertEquals(expectedLayoutDTO, actualLayoutDTO);
+        assertEquals(expectedLayoutPayload, actualLayoutPayload);
     }
 
     @Test
@@ -108,7 +108,7 @@ public class CafeServiceTest {
         Cafe mockCafe = mock(Cafe.class);
         when(cafeRepository.get()).thenReturn(mockCafe);
 
-        cafeService.updateConfiguration(A_CONFIGURATION_PARAMS);
+        cafeService.updateConfiguration(AN_UPDATE_CONFIGURATION_QUERY);
 
         verify(cafeRepository).get();
     }
@@ -118,7 +118,7 @@ public class CafeServiceTest {
         Cafe mockCafe = mock(Cafe.class);
         when(cafeRepository.get()).thenReturn(mockCafe);
 
-        cafeService.updateConfiguration(A_CONFIGURATION_PARAMS);
+        cafeService.updateConfiguration(AN_UPDATE_CONFIGURATION_QUERY);
 
         verify(mockCafe).close();
     }
@@ -128,14 +128,10 @@ public class CafeServiceTest {
         Cafe mockCafe = mock(Cafe.class);
         when(cafeRepository.get()).thenReturn(mockCafe);
         ArgumentCaptor<CafeConfiguration> argument = ArgumentCaptor.forClass(CafeConfiguration.class);
-        CafeConfiguration expectedConfiguration = new CafeConfiguration(
-            A_CONFIGURATION_PARAMS.cubeSize(),
-            A_CONFIGURATION_PARAMS.cafeName(),
-            A_CONFIGURATION_PARAMS.reservationType(),
-            A_CONFIGURATION_PARAMS.location(),
-            A_CONFIGURATION_PARAMS.groupTipRate());
+        CafeConfiguration expectedConfiguration = new CafeConfiguration(AN_UPDATE_CONFIGURATION_QUERY.cubeSize(), AN_UPDATE_CONFIGURATION_QUERY.cafeName(),
+            AN_UPDATE_CONFIGURATION_QUERY.reservationType(), AN_UPDATE_CONFIGURATION_QUERY.location(), AN_UPDATE_CONFIGURATION_QUERY.groupTipRate());
 
-        cafeService.updateConfiguration(A_CONFIGURATION_PARAMS);
+        cafeService.updateConfiguration(AN_UPDATE_CONFIGURATION_QUERY);
 
         verify(mockCafe).updateConfiguration(argument.capture());
         assertEquals(expectedConfiguration, argument.getValue());
@@ -146,7 +142,7 @@ public class CafeServiceTest {
         Cafe mockCafe = mock(Cafe.class);
         when(cafeRepository.get()).thenReturn(mockCafe);
 
-        cafeService.updateConfiguration(A_CONFIGURATION_PARAMS);
+        cafeService.updateConfiguration(AN_UPDATE_CONFIGURATION_QUERY);
 
         verify(cafeRepository).saveOrUpdate(mockCafe);
     }
@@ -156,7 +152,7 @@ public class CafeServiceTest {
         Cafe mockCafe = mock(Cafe.class);
         when(cafeRepository.get()).thenReturn(mockCafe);
 
-        cafeService.addIngredientsToInventory(AN_INGREDIENTS_PARAMS);
+        cafeService.addIngredientsToInventory(AN_INGREDIENTS_QUERY);
 
         verify(cafeRepository).get();
     }
@@ -166,10 +162,10 @@ public class CafeServiceTest {
         Cafe mockCafe = mock(Cafe.class);
         when(cafeRepository.get()).thenReturn(mockCafe);
 
-        cafeService.addIngredientsToInventory(AN_INGREDIENTS_PARAMS);
+        cafeService.addIngredientsToInventory(AN_INGREDIENTS_QUERY);
 
         verify(mockCafe).addIngredientsToInventory(
-            List.of(AN_INGREDIENTS_PARAMS.chocolate(), AN_INGREDIENTS_PARAMS.milk(), AN_INGREDIENTS_PARAMS.water(), AN_INGREDIENTS_PARAMS.espresso()));
+            List.of(AN_INGREDIENTS_QUERY.chocolate(), AN_INGREDIENTS_QUERY.milk(), AN_INGREDIENTS_QUERY.water(), AN_INGREDIENTS_QUERY.espresso()));
     }
 
     @Test
@@ -177,7 +173,7 @@ public class CafeServiceTest {
         Cafe mockCafe = mock(Cafe.class);
         when(cafeRepository.get()).thenReturn(mockCafe);
 
-        cafeService.addIngredientsToInventory(AN_INGREDIENTS_PARAMS);
+        cafeService.addIngredientsToInventory(AN_INGREDIENTS_QUERY);
 
         verify(cafeRepository).saveOrUpdate(mockCafe);
     }
@@ -192,12 +188,12 @@ public class CafeServiceTest {
     }
 
     @Test
-    public void whenGettingInventory_shouldReturnInventoryDTO() {
+    public void whenGettingInventory_shouldReturnInventoryPayload() {
         when(cafeRepository.get()).thenReturn(A_CAFE);
-        InventoryDTO expectedInventoryDTO = new InventoryDTO(new HashMap<>());
+        InventoryPayload expectedInventoryPayload = new InventoryPayload(new HashMap<>());
 
-        InventoryDTO actualInventoryDTO = cafeService.getInventory();
+        InventoryPayload actualInventoryPayload = cafeService.getInventory();
 
-        assertEquals(expectedInventoryDTO, actualInventoryDTO);
+        assertEquals(expectedInventoryPayload, actualInventoryPayload);
     }
 }

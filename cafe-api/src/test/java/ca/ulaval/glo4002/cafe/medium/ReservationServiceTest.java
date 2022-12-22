@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.application.CafeService;
 import ca.ulaval.glo4002.cafe.application.reservation.ReservationService;
-import ca.ulaval.glo4002.cafe.application.reservation.dto.ReservationDTO;
-import ca.ulaval.glo4002.cafe.application.reservation.parameter.ReservationRequestParams;
+import ca.ulaval.glo4002.cafe.application.reservation.payload.ReservationPayload;
+import ca.ulaval.glo4002.cafe.application.reservation.query.ReservationQuery;
 import ca.ulaval.glo4002.cafe.domain.CafeFactory;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ReservationServiceTest {
     private static final GroupSize A_GROUP_SIZE = new GroupSize(4);
     private static final GroupName A_GROUP_NAME = new GroupName("My group");
-    private static final ReservationRequestParams A_RESERVATION_REQUEST_PARAMS = new ReservationRequestParams(A_GROUP_NAME.value(), A_GROUP_SIZE.value());
+    private static final ReservationQuery A_RESERVATION_QUERY = new ReservationQuery(A_GROUP_NAME.value(), A_GROUP_SIZE.value());
 
     private ReservationService reservationService;
 
@@ -33,10 +33,10 @@ public class ReservationServiceTest {
 
     @Test
     public void whenMakingReservation_shouldSaveReservation() {
-        reservationService.makeReservation(A_RESERVATION_REQUEST_PARAMS);
-        ReservationDTO actualReservationDTO = reservationService.getReservations();
+        reservationService.makeReservation(A_RESERVATION_QUERY);
+        ReservationPayload actualReservationPayload = reservationService.getReservations();
 
-        assertEquals(A_GROUP_SIZE, actualReservationDTO.reservations().get(0).size());
-        assertEquals(A_GROUP_NAME, actualReservationDTO.reservations().get(0).name());
+        assertEquals(A_GROUP_SIZE, actualReservationPayload.reservations().get(0).size());
+        assertEquals(A_GROUP_NAME, actualReservationPayload.reservations().get(0).name());
     }
 }

@@ -6,7 +6,7 @@ import ca.ulaval.glo4002.cafe.api.reservation.assembler.ReservationResponseAssem
 import ca.ulaval.glo4002.cafe.api.reservation.request.ReservationRequest;
 import ca.ulaval.glo4002.cafe.api.reservation.response.ReservationResponse;
 import ca.ulaval.glo4002.cafe.application.reservation.ReservationService;
-import ca.ulaval.glo4002.cafe.application.reservation.parameter.ReservationRequestParams;
+import ca.ulaval.glo4002.cafe.application.reservation.query.ReservationQuery;
 
 import jakarta.validation.Valid;
 import jakarta.ws.rs.GET;
@@ -28,8 +28,8 @@ public class ReservationResource {
 
     @POST
     public Response postReservation(@Valid ReservationRequest reservationRequest) {
-        ReservationRequestParams requestParams = ReservationRequestParams.from(reservationRequest.group_name, reservationRequest.group_size);
-        reservationService.makeReservation(requestParams);
+        ReservationQuery reservationQuery = ReservationQuery.from(reservationRequest.group_name, reservationRequest.group_size);
+        reservationService.makeReservation(reservationQuery);
         return Response.ok().build();
     }
 

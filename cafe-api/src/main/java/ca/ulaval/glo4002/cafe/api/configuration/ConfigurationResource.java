@@ -1,8 +1,8 @@
 package ca.ulaval.glo4002.cafe.api.configuration;
 
-import ca.ulaval.glo4002.cafe.api.configuration.request.ConfigurationRequest;
+import ca.ulaval.glo4002.cafe.api.configuration.request.UpdateConfigurationRequest;
 import ca.ulaval.glo4002.cafe.application.CafeService;
-import ca.ulaval.glo4002.cafe.application.parameter.ConfigurationParams;
+import ca.ulaval.glo4002.cafe.application.query.UpdateConfigurationQuery;
 
 import jakarta.validation.Valid;
 import jakarta.ws.rs.POST;
@@ -22,11 +22,12 @@ public class ConfigurationResource {
 
     @POST
     @Path("/config")
-    public Response updateConfiguration(@Valid ConfigurationRequest configurationRequest) {
-        ConfigurationParams configurationParams =
-            ConfigurationParams.from(configurationRequest.cube_size, configurationRequest.organization_name, configurationRequest.group_reservation_method,
-                configurationRequest.country, configurationRequest.province, configurationRequest.state, configurationRequest.group_tip_rate);
-        cafeService.updateConfiguration(configurationParams);
+    public Response updateConfiguration(@Valid UpdateConfigurationRequest updateConfigurationRequest) {
+        UpdateConfigurationQuery updateConfigurationQuery =
+            UpdateConfigurationQuery.from(updateConfigurationRequest.cube_size, updateConfigurationRequest.organization_name,
+                updateConfigurationRequest.group_reservation_method, updateConfigurationRequest.country, updateConfigurationRequest.province,
+                updateConfigurationRequest.state, updateConfigurationRequest.group_tip_rate);
+        cafeService.updateConfiguration(updateConfigurationQuery);
         return Response.ok().build();
     }
 }

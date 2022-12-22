@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.customer.assembler.CustomerResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.customer.response.CustomerResponse;
-import ca.ulaval.glo4002.cafe.application.customer.dto.CustomerDTO;
+import ca.ulaval.glo4002.cafe.application.customer.payload.CustomerPayload;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.SeatNumber;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
@@ -32,12 +32,12 @@ public class CustomerResponseAssemblerTest {
     }
 
     @Test
-    public void givenCustomerWithNoGroupDTO_whenAssemblingCustomerResponse_shouldReturnCustomerResponseWithNullGroupName() {
+    public void givenCustomerWithNoGroupPayload_whenAssemblingCustomerResponse_shouldReturnCustomerResponseWithNullGroupName() {
         Customer customer = new CustomerFixture().withCustomerName(CUSTOMER_NAME).withCustomerId(CUSTOMER_ID).build();
         Seat seat = new SeatFixture().withSeatNumber(SEAT_NUMBER).withCustomer(customer).build();
-        CustomerDTO customerDTO = CustomerDTO.fromSeat(seat);
+        CustomerPayload customerPayload = CustomerPayload.fromSeat(seat);
 
-        CustomerResponse actualCustomerResponse = customerResponseAssembler.toCustomerResponse(customerDTO);
+        CustomerResponse actualCustomerResponse = customerResponseAssembler.toCustomerResponse(customerPayload);
 
         assertEquals(CUSTOMER_NAME.value(), actualCustomerResponse.name());
         assertEquals(SEAT_NUMBER.value(), actualCustomerResponse.seat_number());
@@ -45,14 +45,14 @@ public class CustomerResponseAssemblerTest {
     }
 
     @Test
-    public void givenCustomerWithGroupDTO_whenAssemblingCustomerResponse_shouldReturnCustomerResponseWithGroupName() {
+    public void givenCustomerWithGroupPayload_whenAssemblingCustomerResponse_shouldReturnCustomerResponseWithGroupName() {
         Customer customer = new CustomerFixture().withCustomerName(CUSTOMER_NAME).withCustomerId(CUSTOMER_ID).build();
         Seat seat = new SeatFixture().withSeatNumber(SEAT_NUMBER).build();
         seat.reserveForGroup(GROUP_NAME);
         seat.sitCustomer(customer);
-        CustomerDTO customerDTO = CustomerDTO.fromSeat(seat);
+        CustomerPayload customerPayload = CustomerPayload.fromSeat(seat);
 
-        CustomerResponse actualCustomerResponse = customerResponseAssembler.toCustomerResponse(customerDTO);
+        CustomerResponse actualCustomerResponse = customerResponseAssembler.toCustomerResponse(customerPayload);
 
         assertEquals(CUSTOMER_NAME.value(), actualCustomerResponse.name());
         assertEquals(SEAT_NUMBER.value(), actualCustomerResponse.seat_number());

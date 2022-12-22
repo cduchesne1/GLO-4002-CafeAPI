@@ -4,10 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.configuration.ConfigurationResource;
-import ca.ulaval.glo4002.cafe.api.configuration.request.ConfigurationRequest;
+import ca.ulaval.glo4002.cafe.api.configuration.request.UpdateConfigurationRequest;
 import ca.ulaval.glo4002.cafe.application.CafeService;
-import ca.ulaval.glo4002.cafe.application.parameter.ConfigurationParams;
-import ca.ulaval.glo4002.cafe.fixture.request.ConfigurationRequestFixture;
+import ca.ulaval.glo4002.cafe.application.query.UpdateConfigurationQuery;
+import ca.ulaval.glo4002.cafe.fixture.request.UpdateConfigurationRequestFixture;
 
 import jakarta.ws.rs.core.Response;
 
@@ -35,36 +35,26 @@ public class ConfigurationResourceTest {
 
     @Test
     public void whenUpdatingConfiguration_shouldUpdateConfiguration() {
-        ConfigurationRequest configurationRequest = new ConfigurationRequestFixture()
-            .withCubeSize(CUBE_SIZE)
-            .withOrganizationName(ORGANISATION_NAME)
-            .withGroupReservationMethod(GROUP_RESERVATION_METHOD)
-            .withCountry(COUNTRY)
-            .withProvince(PROVINCE)
-            .withState(STATE)
-            .withTipRate(GROUP_TIP_RATE)
-            .build();
-        ConfigurationParams configurationParams =
-            new ConfigurationParams(CUBE_SIZE, ORGANISATION_NAME, GROUP_RESERVATION_METHOD, COUNTRY, PROVINCE, STATE, GROUP_TIP_RATE);
+        UpdateConfigurationRequest updateConfigurationRequest =
+            new UpdateConfigurationRequestFixture().withCubeSize(CUBE_SIZE).withOrganizationName(ORGANISATION_NAME)
+                .withGroupReservationMethod(GROUP_RESERVATION_METHOD).withCountry(COUNTRY).withProvince(PROVINCE).withState(STATE).withTipRate(GROUP_TIP_RATE)
+                .build();
+        UpdateConfigurationQuery updateConfigurationQuery =
+            new UpdateConfigurationQuery(CUBE_SIZE, ORGANISATION_NAME, GROUP_RESERVATION_METHOD, COUNTRY, PROVINCE, STATE, GROUP_TIP_RATE);
 
-        configurationResource.updateConfiguration(configurationRequest);
+        configurationResource.updateConfiguration(updateConfigurationRequest);
 
-        verify(cafeService).updateConfiguration(configurationParams);
+        verify(cafeService).updateConfiguration(updateConfigurationQuery);
     }
 
     @Test
     public void givenValidRequest_whenUpdatingConfiguration_shouldReturn200() {
-        ConfigurationRequest configurationRequest = new ConfigurationRequestFixture()
-            .withCubeSize(CUBE_SIZE)
-            .withOrganizationName(ORGANISATION_NAME)
-            .withGroupReservationMethod(GROUP_RESERVATION_METHOD)
-            .withCountry(COUNTRY)
-            .withProvince(PROVINCE)
-            .withState(STATE)
-            .withTipRate(GROUP_TIP_RATE)
-            .build();
+        UpdateConfigurationRequest updateConfigurationRequest =
+            new UpdateConfigurationRequestFixture().withCubeSize(CUBE_SIZE).withOrganizationName(ORGANISATION_NAME)
+                .withGroupReservationMethod(GROUP_RESERVATION_METHOD).withCountry(COUNTRY).withProvince(PROVINCE).withState(STATE).withTipRate(GROUP_TIP_RATE)
+                .build();
 
-        Response response = configurationResource.updateConfiguration(configurationRequest);
+        Response response = configurationResource.updateConfiguration(updateConfigurationRequest);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }

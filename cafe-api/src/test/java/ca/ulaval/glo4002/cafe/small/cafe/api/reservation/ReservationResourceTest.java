@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import ca.ulaval.glo4002.cafe.api.reservation.ReservationResource;
 import ca.ulaval.glo4002.cafe.api.reservation.request.ReservationRequest;
 import ca.ulaval.glo4002.cafe.application.reservation.ReservationService;
-import ca.ulaval.glo4002.cafe.application.reservation.dto.ReservationDTO;
-import ca.ulaval.glo4002.cafe.application.reservation.parameter.ReservationRequestParams;
+import ca.ulaval.glo4002.cafe.application.reservation.payload.ReservationPayload;
+import ca.ulaval.glo4002.cafe.application.reservation.query.ReservationQuery;
 import ca.ulaval.glo4002.cafe.fixture.request.ReservationRequestFixture;
 
 import jakarta.ws.rs.core.Response;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 public class ReservationResourceTest {
     private static final String GROUP_NAME = "Les 4-Fées";
     private static final int GROUP_SIZE = 4;
-    private static final ReservationDTO A_RESERVATION_DTO = new ReservationDTO(List.of());
+    private static final ReservationPayload A_RESERVATION_PAYLOAD = new ReservationPayload(List.of());
 
     private ReservationResource reservationResource;
     private ReservationService reservationService;
@@ -35,23 +35,17 @@ public class ReservationResourceTest {
 
     @Test
     public void whenPostingReservation_shouldMakeReservation() {
-        ReservationRequest reservationRequest = new ReservationRequestFixture()
-            .withGroupName(GROUP_NAME)
-            .withGroupSize(GROUP_SIZE)
-            .build();
-        ReservationRequestParams reservationRequestParams = new ReservationRequestParams(GROUP_NAME, GROUP_SIZE);
+        ReservationRequest reservationRequest = new ReservationRequestFixture().withGroupName(GROUP_NAME).withGroupSize(GROUP_SIZE).build();
+        ReservationQuery reservationQuery = new ReservationQuery(GROUP_NAME, GROUP_SIZE);
 
         reservationResource.postReservation(reservationRequest);
 
-        verify(reservationService).makeReservation(reservationRequestParams);
+        verify(reservationService).makeReservation(reservationQuery);
     }
 
     @Test
     public void givenValidRequest_whenPostingReservation_shouldReturn200() {
-        ReservationRequest reservationRequest = new ReservationRequestFixture()
-            .withGroupName(GROUP_NAME)
-            .withGroupSize(GROUP_SIZE)
-            .build();
+        ReservationRequest reservationRequest = new ReservationRequestFixture().withGroupName(GROUP_NAME).withGroupSize(GROUP_SIZE).build();
 
         Response response = reservationResource.postReservation(reservationRequest);
 
@@ -60,7 +54,7 @@ public class ReservationResourceTest {
 
     @Test
     public void whenGettingReservation_shouldGetReservation() {
-        when(reservationService.getReservations()).thenReturn(A_RESERVATION_DTO);
+        when(reservationService.getReservations()).thenReturn(A_RESERVATION_PAYLOAD);
 
         reservationResource.getReservations();
 
@@ -69,7 +63,7 @@ public class ReservationResourceTest {
 
     @Test
     public void whenGettingReservation_shouldReturn200() {
-        when(reservationService.getReservations()).thenReturn(A_RESERVATION_DTO);
+        when(reservationService.getReservations()).thenReturn(A_RESERVATION_PAYLOAD);
 
         Response response = reservationResource.getReservations();
 

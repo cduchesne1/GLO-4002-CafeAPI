@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.application.reservation.ReservationService;
-import ca.ulaval.glo4002.cafe.application.reservation.dto.ReservationDTO;
-import ca.ulaval.glo4002.cafe.application.reservation.parameter.ReservationRequestParams;
+import ca.ulaval.glo4002.cafe.application.reservation.payload.ReservationPayload;
+import ca.ulaval.glo4002.cafe.application.reservation.query.ReservationQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
@@ -15,8 +15,8 @@ import ca.ulaval.glo4002.cafe.domain.reservation.GroupSize;
 import ca.ulaval.glo4002.cafe.domain.reservation.Reservation;
 import ca.ulaval.glo4002.cafe.domain.reservation.ReservationFactory;
 import ca.ulaval.glo4002.cafe.fixture.CafeFixture;
-import ca.ulaval.glo4002.cafe.fixture.ReservationDTOFixture;
 import ca.ulaval.glo4002.cafe.fixture.ReservationFixture;
+import ca.ulaval.glo4002.cafe.fixture.ReservationPayloadFixture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,7 +51,7 @@ public class ReservationServiceTest {
         when(cafeRepository.get()).thenReturn(aCafe);
         when(reservationFactory.createReservation(any(), any())).thenReturn(A_RESERVATION);
 
-        reservationService.makeReservation(new ReservationRequestParams(A_GROUP_NAME.value(), A_GROUP_SIZE.value()));
+        reservationService.makeReservation(new ReservationQuery(A_GROUP_NAME.value(), A_GROUP_SIZE.value()));
 
         verify(cafeRepository).get();
     }
@@ -62,7 +62,7 @@ public class ReservationServiceTest {
         when(cafeRepository.get()).thenReturn(aCafe);
         when(reservationFactory.createReservation(A_GROUP_NAME, A_GROUP_SIZE)).thenReturn(A_RESERVATION);
 
-        reservationService.makeReservation(new ReservationRequestParams(A_GROUP_NAME.value(), A_GROUP_SIZE.value()));
+        reservationService.makeReservation(new ReservationQuery(A_GROUP_NAME.value(), A_GROUP_SIZE.value()));
 
         verify(reservationFactory).createReservation(A_GROUP_NAME, A_GROUP_SIZE);
     }
@@ -73,7 +73,7 @@ public class ReservationServiceTest {
         when(cafeRepository.get()).thenReturn(mockCafe);
         when(reservationFactory.createReservation(any(), any())).thenReturn(A_RESERVATION);
 
-        reservationService.makeReservation(new ReservationRequestParams(A_GROUP_NAME.value(), A_GROUP_SIZE.value()));
+        reservationService.makeReservation(new ReservationQuery(A_GROUP_NAME.value(), A_GROUP_SIZE.value()));
 
         verify(mockCafe).makeReservation(A_RESERVATION);
     }
@@ -84,7 +84,7 @@ public class ReservationServiceTest {
         when(cafeRepository.get()).thenReturn(aCafe);
         when(reservationFactory.createReservation(any(), any())).thenReturn(A_RESERVATION);
 
-        reservationService.makeReservation(new ReservationRequestParams(A_GROUP_NAME.value(), A_GROUP_SIZE.value()));
+        reservationService.makeReservation(new ReservationQuery(A_GROUP_NAME.value(), A_GROUP_SIZE.value()));
 
         verify(cafeRepository).saveOrUpdate(aCafe);
     }
@@ -109,14 +109,14 @@ public class ReservationServiceTest {
     }
 
     @Test
-    public void whenGettingReservations_shouldReturnMatchingReservationDTO() {
+    public void whenGettingReservations_shouldReturnMatchingReservationPayload() {
         Cafe cafe = cafeWithReservations(SOME_RESERVATIONS);
         when(cafeRepository.get()).thenReturn(cafe);
-        ReservationDTO expectedDTO = new ReservationDTOFixture().withReservation(SOME_RESERVATIONS).build();
+        ReservationPayload expectedReservationPayload = new ReservationPayloadFixture().withReservation(SOME_RESERVATIONS).build();
 
-        ReservationDTO reservationDTO = reservationService.getReservations();
+        ReservationPayload reservationPayload = reservationService.getReservations();
 
-        assertEquals(expectedDTO, reservationDTO);
+        assertEquals(expectedReservationPayload, reservationPayload);
     }
 
     private Cafe cafeWithReservations(List<Reservation> reservations) {

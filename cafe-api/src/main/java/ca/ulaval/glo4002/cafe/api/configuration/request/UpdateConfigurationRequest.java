@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ConfigurationRequest {
+public class UpdateConfigurationRequest {
     @NotNull(message = "The group_reservation_method may not be null.")
     public String group_reservation_method;
 

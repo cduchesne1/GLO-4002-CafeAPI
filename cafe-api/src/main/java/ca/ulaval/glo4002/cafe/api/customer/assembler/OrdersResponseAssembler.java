@@ -1,10 +1,10 @@
 package ca.ulaval.glo4002.cafe.api.customer.assembler;
 
 import ca.ulaval.glo4002.cafe.api.customer.response.OrdersResponse;
-import ca.ulaval.glo4002.cafe.application.customer.dto.OrderDTO;
+import ca.ulaval.glo4002.cafe.application.customer.payload.OrderPayload;
 
 public class OrdersResponseAssembler {
-    public OrdersResponse toOrdersResponse(OrderDTO orderDTO) {
-        return new OrdersResponse(orderDTO.coffees().stream().map(coffee -> coffee.coffeeType().toString()).toList());
+    public OrdersResponse toOrdersResponse(OrderPayload orderPayload) {
+        return new OrdersResponse(orderPayload.coffees().stream().map(coffee -> coffee.coffeeType().toString()).toList());
     }
 }

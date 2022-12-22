@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.customer.assembler.BillResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.customer.response.BillResponse;
-import ca.ulaval.glo4002.cafe.application.customer.dto.BillDTO;
+import ca.ulaval.glo4002.cafe.application.customer.payload.BillPayload;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Amount;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Coffee;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.CoffeeType;
@@ -17,8 +17,8 @@ import ca.ulaval.glo4002.cafe.fixture.BillFixture;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BillResponseAssemblerTest {
-    private static final Order A_COFFEE_ORDER = new Order(
-        List.of(new Coffee(CoffeeType.Espresso), new Coffee(CoffeeType.Espresso), new Coffee(CoffeeType.Latte), new Coffee(CoffeeType.Americano)));
+    private static final Order A_COFFEE_ORDER =
+        new Order(List.of(new Coffee(CoffeeType.Espresso), new Coffee(CoffeeType.Espresso), new Coffee(CoffeeType.Latte), new Coffee(CoffeeType.Americano)));
 
     private BillResponseAssembler billResponseAssembler;
 
@@ -28,10 +28,10 @@ public class BillResponseAssemblerTest {
     }
 
     @Test
-    public void givenBillDTO_whenAssemblingBillResponse_shouldAssembleBillResponseWithCoffeeTypeListInSameOrder() {
-        BillDTO billDTO = BillDTO.fromBill(new BillFixture().withCoffeeOrder(A_COFFEE_ORDER).build());
+    public void givenBillPayload_whenAssemblingBillResponse_shouldAssembleBillResponseWithCoffeeTypeListInSameOrder() {
+        BillPayload billPayload = BillPayload.fromBill(new BillFixture().withCoffeeOrder(A_COFFEE_ORDER).build());
 
-        BillResponse actualBillResponse = billResponseAssembler.toBillResponse(billDTO);
+        BillResponse actualBillResponse = billResponseAssembler.toBillResponse(billPayload);
 
         assertEquals(actualBillResponse.orders(), A_COFFEE_ORDER.items().stream().map(coffee -> coffee.coffeeType().toString()).toList());
     }
@@ -39,9 +39,9 @@ public class BillResponseAssemblerTest {
     @Test
     public void givenAmountWithMoreThanTwoDecimal_whenAssemblingBillResponse_shouldAssembleBillAmountsRoundedUp() {
         Amount anAmountWithMoreThanTwoDecimal = new Amount(4.91001f);
-        BillDTO billDTO = BillDTO.fromBill(new BillFixture().withSubtotal(anAmountWithMoreThanTwoDecimal).build());
+        BillPayload billPayload = BillPayload.fromBill(new BillFixture().withSubtotal(anAmountWithMoreThanTwoDecimal).build());
 
-        BillResponse actualBillResponse = billResponseAssembler.toBillResponse(billDTO);
+        BillResponse actualBillResponse = billResponseAssembler.toBillResponse(billPayload);
 
         assertEquals(4.92f, actualBillResponse.subtotal());
     }

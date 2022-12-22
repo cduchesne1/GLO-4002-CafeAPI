@@ -8,8 +8,8 @@ import ca.ulaval.glo4002.cafe.api.operation.request.CheckInRequest;
 import ca.ulaval.glo4002.cafe.api.operation.request.CheckOutRequest;
 import ca.ulaval.glo4002.cafe.application.CafeService;
 import ca.ulaval.glo4002.cafe.application.customer.CustomerService;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CheckInCustomerParams;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CheckOutCustomerParams;
+import ca.ulaval.glo4002.cafe.application.customer.query.CheckInCustomerQuery;
+import ca.ulaval.glo4002.cafe.application.customer.query.CheckOutCustomerQuery;
 import ca.ulaval.glo4002.cafe.fixture.request.CheckInRequestFixture;
 import ca.ulaval.glo4002.cafe.fixture.request.CheckOutRequestFixture;
 
@@ -54,11 +54,11 @@ public class OperationResourceTest {
     public void whenCheckingIn_shouldCheckInCustomer() {
         CheckInRequest checkInRequest =
             new CheckInRequestFixture().withCustomerId(CUSTOMER_ID).withCustomerName(CUSTOMER_NAME).withGroupName(GROUP_NAME).build();
-        CheckInCustomerParams checkInCustomerParams = new CheckInCustomerParams(CUSTOMER_ID, CUSTOMER_NAME, GROUP_NAME);
+        CheckInCustomerQuery checkInCustomerQuery = new CheckInCustomerQuery(CUSTOMER_ID, CUSTOMER_NAME, GROUP_NAME);
 
         operationResource.checkIn(checkInRequest);
 
-        verify(customerService).checkIn(checkInCustomerParams);
+        verify(customerService).checkIn(checkInCustomerQuery);
     }
 
     @Test
@@ -84,11 +84,11 @@ public class OperationResourceTest {
     @Test
     public void whenCheckingOut_shouldCheckOutCustomer() {
         CheckOutRequest checkOutRequest = new CheckOutRequestFixture().withCustomerId(CUSTOMER_ID).build();
-        CheckOutCustomerParams checkOutCustomerParams = new CheckOutCustomerParams(CUSTOMER_ID);
+        CheckOutCustomerQuery checkOutCustomerQuery = new CheckOutCustomerQuery(CUSTOMER_ID);
 
         operationResource.checkOut(checkOutRequest);
 
-        verify(customerService).checkOut(checkOutCustomerParams);
+        verify(customerService).checkOut(checkOutCustomerQuery);
     }
 
     @Test

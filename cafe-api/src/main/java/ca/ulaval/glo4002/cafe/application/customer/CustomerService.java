@@ -1,11 +1,11 @@
 package ca.ulaval.glo4002.cafe.application.customer;
 
-import ca.ulaval.glo4002.cafe.application.customer.dto.BillDTO;
-import ca.ulaval.glo4002.cafe.application.customer.dto.CustomerDTO;
-import ca.ulaval.glo4002.cafe.application.customer.dto.OrderDTO;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CheckInCustomerParams;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CheckOutCustomerParams;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CustomerOrderParams;
+import ca.ulaval.glo4002.cafe.application.customer.payload.BillPayload;
+import ca.ulaval.glo4002.cafe.application.customer.payload.CustomerPayload;
+import ca.ulaval.glo4002.cafe.application.customer.payload.OrderPayload;
+import ca.ulaval.glo4002.cafe.application.customer.query.CheckInCustomerQuery;
+import ca.ulaval.glo4002.cafe.application.customer.query.CheckOutCustomerQuery;
+import ca.ulaval.glo4002.cafe.application.customer.query.CustomerOrderQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
@@ -24,46 +24,46 @@ public class CustomerService {
         this.customerFactory = customerFactory;
     }
 
-    public CustomerDTO getCustomer(CustomerId customerId) {
+    public CustomerPayload getCustomer(CustomerId customerId) {
         Cafe cafe = cafeRepository.get();
         Seat seat = cafe.getSeatByCustomerId(customerId);
 
-        return CustomerDTO.fromSeat(seat);
+        return CustomerPayload.fromSeat(seat);
     }
 
-    public void checkIn(CheckInCustomerParams checkInCustomerParams) {
+    public void checkIn(CheckInCustomerQuery checkInCustomerQuery) {
         Cafe cafe = cafeRepository.get();
 
-        Customer customer = customerFactory.createCustomer(checkInCustomerParams.customerId(), checkInCustomerParams.customerName());
-        cafe.checkIn(customer, checkInCustomerParams.groupName());
+        Customer customer = customerFactory.createCustomer(checkInCustomerQuery.customerId(), checkInCustomerQuery.customerName());
+        cafe.checkIn(customer, checkInCustomerQuery.groupName());
 
         cafeRepository.saveOrUpdate(cafe);
     }
 
-    public OrderDTO getOrder(CustomerId customerId) {
+    public OrderPayload getOrder(CustomerId customerId) {
         Cafe cafe = cafeRepository.get();
 
         Order order = cafe.getOrderByCustomerId(customerId);
 
-        return OrderDTO.fromOrder(order);
+        return OrderPayload.fromOrder(order);
     }
 
-    public void checkOut(CheckOutCustomerParams checkOutCustomerParams) {
+    public void checkOut(CheckOutCustomerQuery checkOutCustomerQuery) {
         Cafe cafe = cafeRepository.get();
-        cafe.checkOut(checkOutCustomerParams.customerId());
+        cafe.checkOut(checkOutCustomerQuery.customerId());
         cafeRepository.saveOrUpdate(cafe);
     }
 
-    public BillDTO getCustomerBill(CustomerId customerId) {
+    public BillPayload getCustomerBill(CustomerId customerId) {
         Cafe cafe = cafeRepository.get();
         Bill bill = cafe.getCustomerBill(customerId);
 
-        return BillDTO.fromBill(bill);
+        return BillPayload.fromBill(bill);
     }
 
-    public void placeOrder(CustomerOrderParams customerOrderParams) {
+    public void placeOrder(CustomerOrderQuery customerOrderQuery) {
         Cafe cafe = cafeRepository.get();
-        cafe.placeOrder(customerOrderParams.customerId(), customerOrderParams.order());
+        cafe.placeOrder(customerOrderQuery.customerId(), customerOrderQuery.order());
         cafeRepository.saveOrUpdate(cafe);
     }
 }

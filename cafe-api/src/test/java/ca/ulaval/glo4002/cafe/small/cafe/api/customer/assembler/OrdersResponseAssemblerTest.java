@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.customer.assembler.OrdersResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.customer.response.OrdersResponse;
-import ca.ulaval.glo4002.cafe.application.customer.dto.OrderDTO;
+import ca.ulaval.glo4002.cafe.application.customer.payload.OrderPayload;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Coffee;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.CoffeeType;
 import ca.ulaval.glo4002.cafe.fixture.OrderFixture;
@@ -27,9 +27,9 @@ public class OrdersResponseAssemblerTest {
 
     @Test
     public void whenAssemblingOrdersResponse_shouldReturnOrdersResponseWithItemsInRightOrder() {
-        OrderDTO orderDTO = OrderDTO.fromOrder(new OrderFixture().withItems(List.of(AN_AMERICANO_COFFEE, A_DARK_ROAST_COFFEE)).build());
+        OrderPayload orderPayload = OrderPayload.fromOrder(new OrderFixture().withItems(List.of(AN_AMERICANO_COFFEE, A_DARK_ROAST_COFFEE)).build());
 
-        OrdersResponse actualOrderResponse = ordersResponseAssembler.toOrdersResponse(orderDTO);
+        OrdersResponse actualOrderResponse = ordersResponseAssembler.toOrdersResponse(orderPayload);
 
         assertEquals(List.of("Americano", "Dark Roast"), actualOrderResponse.orders());
     }

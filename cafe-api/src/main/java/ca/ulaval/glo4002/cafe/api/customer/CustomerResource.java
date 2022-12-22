@@ -8,7 +8,7 @@ import ca.ulaval.glo4002.cafe.api.customer.response.BillResponse;
 import ca.ulaval.glo4002.cafe.api.customer.response.CustomerResponse;
 import ca.ulaval.glo4002.cafe.api.customer.response.OrdersResponse;
 import ca.ulaval.glo4002.cafe.application.customer.CustomerService;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CustomerOrderParams;
+import ca.ulaval.glo4002.cafe.application.customer.query.CustomerOrderQuery;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 
 import jakarta.validation.Valid;
@@ -42,8 +42,8 @@ public class CustomerResource {
     @PUT
     @Path("/{customerId}/orders")
     public Response putOrderForCustomer(@PathParam("customerId") String customerId, @Valid OrderRequest orderRequest) {
-        CustomerOrderParams customerOrderParams = CustomerOrderParams.from(customerId, orderRequest.orders);
-        customersService.placeOrder(customerOrderParams);
+        CustomerOrderQuery customerOrderQuery = CustomerOrderQuery.from(customerId, orderRequest.orders);
+        customersService.placeOrder(customerOrderQuery);
         return Response.ok().build();
     }
 

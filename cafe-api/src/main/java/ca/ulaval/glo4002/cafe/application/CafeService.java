@@ -2,10 +2,10 @@ package ca.ulaval.glo4002.cafe.application;
 
 import java.util.List;
 
-import ca.ulaval.glo4002.cafe.application.dto.InventoryDTO;
-import ca.ulaval.glo4002.cafe.application.dto.LayoutDTO;
-import ca.ulaval.glo4002.cafe.application.parameter.ConfigurationParams;
-import ca.ulaval.glo4002.cafe.application.parameter.IngredientsParams;
+import ca.ulaval.glo4002.cafe.application.payload.InventoryPayload;
+import ca.ulaval.glo4002.cafe.application.payload.LayoutPayload;
+import ca.ulaval.glo4002.cafe.application.query.IngredientsQuery;
+import ca.ulaval.glo4002.cafe.application.query.UpdateConfigurationQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
 import ca.ulaval.glo4002.cafe.domain.CafeFactory;
@@ -25,19 +25,16 @@ public class CafeService {
         cafeRepository.saveOrUpdate(cafe);
     }
 
-    public LayoutDTO getLayout() {
+    public LayoutPayload getLayout() {
         Cafe cafe = cafeRepository.get();
-        return LayoutDTO.fromCafe(cafe);
+        return LayoutPayload.fromCafe(cafe);
     }
 
-    public void updateConfiguration(ConfigurationParams configurationParams) {
+    public void updateConfiguration(UpdateConfigurationQuery updateConfigurationQuery) {
         Cafe cafe = cafeRepository.get();
-        CafeConfiguration cafeConfiguration = new CafeConfiguration(
-            configurationParams.cubeSize(),
-            configurationParams.cafeName(),
-            configurationParams.reservationType(),
-            configurationParams.location(),
-            configurationParams.groupTipRate());
+        CafeConfiguration cafeConfiguration =
+            new CafeConfiguration(updateConfigurationQuery.cubeSize(), updateConfigurationQuery.cafeName(), updateConfigurationQuery.reservationType(),
+                updateConfigurationQuery.location(), updateConfigurationQuery.groupTipRate());
         cafe.updateConfiguration(cafeConfiguration);
         cafe.close();
         cafeRepository.saveOrUpdate(cafe);
@@ -49,15 +46,14 @@ public class CafeService {
         cafeRepository.saveOrUpdate(cafe);
     }
 
-    public void addIngredientsToInventory(IngredientsParams ingredientsParams) {
+    public void addIngredientsToInventory(IngredientsQuery ingredientsQuery) {
         Cafe cafe = cafeRepository.get();
-        cafe.addIngredientsToInventory(
-            List.of(ingredientsParams.chocolate(), ingredientsParams.milk(), ingredientsParams.water(), ingredientsParams.espresso()));
+        cafe.addIngredientsToInventory(List.of(ingredientsQuery.chocolate(), ingredientsQuery.milk(), ingredientsQuery.water(), ingredientsQuery.espresso()));
         cafeRepository.saveOrUpdate(cafe);
     }
 
-    public InventoryDTO getInventory() {
+    public InventoryPayload getInventory() {
         Cafe cafe = cafeRepository.get();
-        return InventoryDTO.fromInventory(cafe.getInventory());
+        return InventoryPayload.fromInventory(cafe.getInventory());
     }
 }

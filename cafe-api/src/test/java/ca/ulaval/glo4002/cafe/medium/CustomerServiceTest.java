@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.application.CafeService;
 import ca.ulaval.glo4002.cafe.application.customer.CustomerService;
-import ca.ulaval.glo4002.cafe.application.customer.dto.BillDTO;
-import ca.ulaval.glo4002.cafe.application.customer.dto.CustomerDTO;
-import ca.ulaval.glo4002.cafe.application.customer.dto.OrderDTO;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CheckInCustomerParams;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CheckOutCustomerParams;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CustomerOrderParams;
-import ca.ulaval.glo4002.cafe.application.parameter.IngredientsParams;
+import ca.ulaval.glo4002.cafe.application.customer.payload.BillPayload;
+import ca.ulaval.glo4002.cafe.application.customer.payload.CustomerPayload;
+import ca.ulaval.glo4002.cafe.application.customer.payload.OrderPayload;
+import ca.ulaval.glo4002.cafe.application.customer.query.CheckInCustomerQuery;
+import ca.ulaval.glo4002.cafe.application.customer.query.CheckOutCustomerQuery;
+import ca.ulaval.glo4002.cafe.application.customer.query.CustomerOrderQuery;
+import ca.ulaval.glo4002.cafe.application.query.IngredientsQuery;
 import ca.ulaval.glo4002.cafe.domain.CafeFactory;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
@@ -35,10 +35,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class CustomerServiceTest {
     private static final CustomerId A_CUSTOMER_ID = new CustomerId("123");
     private static final String A_CUSTOMER_NAME = "Joe";
-    private static final CheckInCustomerParams CHECK_IN_CUSTOMER_PARAMS = new CheckInCustomerParams(A_CUSTOMER_ID.value(), A_CUSTOMER_NAME, null);
-    private static final CheckOutCustomerParams CHECK_OUT_CUSTOMER_PARAMS = new CheckOutCustomerParams(A_CUSTOMER_ID.value());
-    private static final CustomerOrderParams CUSTOMER_ORDER_PARAMS = new CustomerOrderParams(A_CUSTOMER_ID, new OrderFixture().build());
-    private static final IngredientsParams INGREDIENT_PARAMS = new IngredientsParams(100, 100, 100, 100);
+    private static final CheckInCustomerQuery CHECK_IN_CUSTOMER_QUERY = new CheckInCustomerQuery(A_CUSTOMER_ID.value(), A_CUSTOMER_NAME, null);
+    private static final CheckOutCustomerQuery CHECK_OUT_CUSTOMER_QUERY = new CheckOutCustomerQuery(A_CUSTOMER_ID.value());
+    private static final CustomerOrderQuery CUSTOMER_ORDER_QUERY = new CustomerOrderQuery(A_CUSTOMER_ID, new OrderFixture().build());
+    private static final IngredientsQuery INGREDIENTS_QUERY = new IngredientsQuery(100, 100, 100, 100);
 
     CustomerService customerService;
     CafeRepository cafeRepository;
@@ -54,25 +54,25 @@ public class CustomerServiceTest {
 
     @Test
     public void whenCheckingIn_shouldSaveCustomer() {
-        customerService.checkIn(CHECK_IN_CUSTOMER_PARAMS);
+        customerService.checkIn(CHECK_IN_CUSTOMER_QUERY);
 
         assertDoesNotThrow(() -> customerService.getCustomer(A_CUSTOMER_ID));
     }
 
     @Test
     public void givenSavedCustomer_whenCheckingOut_shouldSaveCustomerBill() {
-        customerService.checkIn(CHECK_IN_CUSTOMER_PARAMS);
+        customerService.checkIn(CHECK_IN_CUSTOMER_QUERY);
 
-        customerService.checkOut(CHECK_OUT_CUSTOMER_PARAMS);
+        customerService.checkOut(CHECK_OUT_CUSTOMER_QUERY);
 
         assertNotNull(customerService.getCustomerBill(A_CUSTOMER_ID));
     }
 
     @Test
     public void givenSavedCustomer_whenCheckingOut_shouldRemoveCustomerFromSeat() {
-        customerService.checkIn(CHECK_IN_CUSTOMER_PARAMS);
+        customerService.checkIn(CHECK_IN_CUSTOMER_QUERY);
 
-        customerService.checkOut(CHECK_OUT_CUSTOMER_PARAMS);
+        customerService.checkOut(CHECK_OUT_CUSTOMER_QUERY);
 
         assertThrows(CustomerNotFoundException.class, () -> customerService.getCustomer(A_CUSTOMER_ID));
     }
@@ -80,48 +80,48 @@ public class CustomerServiceTest {
     @Test
     public void givenSavedCustomer_whenPlacingOrder_shouldSaveOrderForCustomer() {
         Order expectedOrder = new OrderFixture().build();
-        customerService.checkIn(CHECK_IN_CUSTOMER_PARAMS);
-        cafeService.addIngredientsToInventory(INGREDIENT_PARAMS);
+        customerService.checkIn(CHECK_IN_CUSTOMER_QUERY);
+        cafeService.addIngredientsToInventory(INGREDIENTS_QUERY);
 
-        customerService.placeOrder(CUSTOMER_ORDER_PARAMS);
-        OrderDTO actualOrder = customerService.getOrder(A_CUSTOMER_ID);
+        customerService.placeOrder(CUSTOMER_ORDER_QUERY);
+        OrderPayload actualOrder = customerService.getOrder(A_CUSTOMER_ID);
 
-        assertEquals(OrderDTO.fromOrder(expectedOrder), actualOrder);
+        assertEquals(OrderPayload.fromOrder(expectedOrder), actualOrder);
     }
 
     @Test
-    public void givenSavedCustomer_whenGettingCustomer_shouldReturnValidCustomerDTO() {
-        CustomerDTO expectedCustomerDTO = new CustomerDTO(new CustomerName(A_CUSTOMER_NAME), new SeatNumber(1), Optional.empty());
-        customerService.checkIn(CHECK_IN_CUSTOMER_PARAMS);
+    public void givenSavedCustomer_whenGettingCustomer_shouldReturnValidCustomerPayload() {
+        CustomerPayload expectedCustomerPayload = new CustomerPayload(new CustomerName(A_CUSTOMER_NAME), new SeatNumber(1), Optional.empty());
+        customerService.checkIn(CHECK_IN_CUSTOMER_QUERY);
 
-        CustomerDTO actualCustomerDTO = customerService.getCustomer(A_CUSTOMER_ID);
+        CustomerPayload actualCustomerPayload = customerService.getCustomer(A_CUSTOMER_ID);
 
-        assertEquals(expectedCustomerDTO, actualCustomerDTO);
+        assertEquals(expectedCustomerPayload, actualCustomerPayload);
     }
 
     @Test
-    public void givenSavedCustomerWithOrder_whenGettingOrder_shouldReturnValidOrderDTO() {
-        OrderDTO expectedOrderDTO = new OrderDTO(CUSTOMER_ORDER_PARAMS.order().items());
-        customerService.checkIn(CHECK_IN_CUSTOMER_PARAMS);
-        cafeService.addIngredientsToInventory(INGREDIENT_PARAMS);
-        customerService.placeOrder(CUSTOMER_ORDER_PARAMS);
+    public void givenSavedCustomerWithOrder_whenGettingOrder_shouldReturnValidOrderPayload() {
+        OrderPayload expectedOrderPayload = new OrderPayload(CUSTOMER_ORDER_QUERY.order().items());
+        customerService.checkIn(CHECK_IN_CUSTOMER_QUERY);
+        cafeService.addIngredientsToInventory(INGREDIENTS_QUERY);
+        customerService.placeOrder(CUSTOMER_ORDER_QUERY);
 
-        OrderDTO actualOrderDTO = customerService.getOrder(CHECK_IN_CUSTOMER_PARAMS.customerId());
+        OrderPayload actualOrderPayload = customerService.getOrder(CHECK_IN_CUSTOMER_QUERY.customerId());
 
-        assertEquals(expectedOrderDTO, actualOrderDTO);
+        assertEquals(expectedOrderPayload, actualOrderPayload);
     }
 
     @Test
-    public void givenSavedBill_whenGettingCustomerBill_shouldReturnValidBillDTO() {
-        BillDTO expectedBillDTO = new BillDTO(new LinkedList<>(CUSTOMER_ORDER_PARAMS.order().items()), new Amount(0),
-            new Amount(2.25f), new Amount(0), new Amount(2.25f));
-        customerService.checkIn(CHECK_IN_CUSTOMER_PARAMS);
-        cafeService.addIngredientsToInventory(INGREDIENT_PARAMS);
-        customerService.placeOrder(CUSTOMER_ORDER_PARAMS);
-        customerService.checkOut(CHECK_OUT_CUSTOMER_PARAMS);
+    public void givenSavedBill_whenGettingCustomerBill_shouldReturnValidBillPayload() {
+        BillPayload expectedBillPayload =
+            new BillPayload(new LinkedList<>(CUSTOMER_ORDER_QUERY.order().items()), new Amount(0), new Amount(2.25f), new Amount(0), new Amount(2.25f));
+        customerService.checkIn(CHECK_IN_CUSTOMER_QUERY);
+        cafeService.addIngredientsToInventory(INGREDIENTS_QUERY);
+        customerService.placeOrder(CUSTOMER_ORDER_QUERY);
+        customerService.checkOut(CHECK_OUT_CUSTOMER_QUERY);
 
-        BillDTO actualBillDTO = customerService.getCustomerBill(CHECK_IN_CUSTOMER_PARAMS.customerId());
+        BillPayload actualBillPayload = customerService.getCustomerBill(CHECK_IN_CUSTOMER_QUERY.customerId());
 
-        assertEquals(expectedBillDTO, actualBillDTO);
+        assertEquals(expectedBillPayload, actualBillPayload);
     }
 }

@@ -6,8 +6,8 @@ import ca.ulaval.glo4002.cafe.api.operation.request.CheckInRequest;
 import ca.ulaval.glo4002.cafe.api.operation.request.CheckOutRequest;
 import ca.ulaval.glo4002.cafe.application.CafeService;
 import ca.ulaval.glo4002.cafe.application.customer.CustomerService;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CheckInCustomerParams;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CheckOutCustomerParams;
+import ca.ulaval.glo4002.cafe.application.customer.query.CheckInCustomerQuery;
+import ca.ulaval.glo4002.cafe.application.customer.query.CheckOutCustomerQuery;
 
 import jakarta.validation.Valid;
 import jakarta.ws.rs.POST;
@@ -37,17 +37,17 @@ public class OperationResource {
     @POST
     @Path("/check-in")
     public Response checkIn(@Valid CheckInRequest checkInRequest) {
-        CheckInCustomerParams checkInCustomerParams =
-            CheckInCustomerParams.from(checkInRequest.customer_id, checkInRequest.customer_name, checkInRequest.group_name);
-        customersService.checkIn(checkInCustomerParams);
-        return Response.created(URI.create("/customers/" + checkInCustomerParams.customerId().value())).build();
+        CheckInCustomerQuery checkInCustomerQuery =
+            CheckInCustomerQuery.from(checkInRequest.customer_id, checkInRequest.customer_name, checkInRequest.group_name);
+        customersService.checkIn(checkInCustomerQuery);
+        return Response.created(URI.create("/customers/" + checkInCustomerQuery.customerId().value())).build();
     }
 
     @POST
     @Path("/checkout")
     public Response checkOut(@Valid CheckOutRequest checkOutRequest) {
-        CheckOutCustomerParams checkOutCustomerParams = CheckOutCustomerParams.from(checkOutRequest.customer_id);
-        customersService.checkOut(checkOutCustomerParams);
-        return Response.created(URI.create("/customers/" + checkOutCustomerParams.customerId().value() + "/bill")).build();
+        CheckOutCustomerQuery checkOutCustomerQuery = CheckOutCustomerQuery.from(checkOutRequest.customer_id);
+        customersService.checkOut(checkOutCustomerQuery);
+        return Response.created(URI.create("/customers/" + checkOutCustomerQuery.customerId().value() + "/bill")).build();
     }
 }

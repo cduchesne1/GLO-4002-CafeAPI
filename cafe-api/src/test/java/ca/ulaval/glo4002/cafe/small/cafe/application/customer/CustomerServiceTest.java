@@ -6,12 +6,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.application.customer.CustomerService;
-import ca.ulaval.glo4002.cafe.application.customer.dto.BillDTO;
-import ca.ulaval.glo4002.cafe.application.customer.dto.CustomerDTO;
-import ca.ulaval.glo4002.cafe.application.customer.dto.OrderDTO;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CheckInCustomerParams;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CheckOutCustomerParams;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CustomerOrderParams;
+import ca.ulaval.glo4002.cafe.application.customer.payload.BillPayload;
+import ca.ulaval.glo4002.cafe.application.customer.payload.CustomerPayload;
+import ca.ulaval.glo4002.cafe.application.customer.payload.OrderPayload;
+import ca.ulaval.glo4002.cafe.application.customer.query.CheckInCustomerQuery;
+import ca.ulaval.glo4002.cafe.application.customer.query.CheckOutCustomerQuery;
+import ca.ulaval.glo4002.cafe.application.customer.query.CustomerOrderQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
@@ -37,8 +37,8 @@ import static org.mockito.Mockito.when;
 public class CustomerServiceTest {
     private static final CustomerName CUSTOMER_NAME = new CustomerName("Bob Bisonette");
     private static final CustomerId CUSTOMER_ID = new CustomerId("ABC273031");
-    private static final CheckInCustomerParams CHECK_IN_CUSTOMER_PARAMS_NO_GROUP = new CheckInCustomerParams(CUSTOMER_ID.value(), CUSTOMER_NAME.value(), null);
-    private static final CheckOutCustomerParams CHECKOUT_CUSTOMER_PARAMS = new CheckOutCustomerParams(CUSTOMER_ID.value());
+    private static final CheckInCustomerQuery CHECK_IN_CUSTOMER_QUERY_NO_GROUP = new CheckInCustomerQuery(CUSTOMER_ID.value(), CUSTOMER_NAME.value(), null);
+    private static final CheckOutCustomerQuery CHECK_OUT_CUSTOMER_QUERY = new CheckOutCustomerQuery(CUSTOMER_ID.value());
     private static final Customer CUSTOMER = new CustomerFixture().withCustomerId(CUSTOMER_ID).withCustomerName(CUSTOMER_NAME).build();
     private static final Seat SEAT_WITH_CUSTOMER = new SeatFixture().withSeatNumber(new SeatNumber(1)).withCustomer(CUSTOMER).build();
     private static final Coffee AN_AMERICANO_COFFEE = new Coffee(CoffeeType.Americano);
@@ -81,20 +81,20 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void whenGettingCustomer_shouldReturnMatchingCustomerDTO() {
+    public void whenGettingCustomer_shouldReturnMatchingCustomerPayload() {
         when(mockCafe.getSeatByCustomerId(CUSTOMER_ID)).thenReturn(SEAT_WITH_CUSTOMER);
 
-        CustomerDTO actualCustomerDTO = customersService.getCustomer(CUSTOMER_ID);
+        CustomerPayload actualCustomerPayload = customersService.getCustomer(CUSTOMER_ID);
 
-        assertEquals(CUSTOMER_NAME, actualCustomerDTO.name());
-        assertEquals(SEAT_WITH_CUSTOMER.getNumber(), actualCustomerDTO.seatNumber());
+        assertEquals(CUSTOMER_NAME, actualCustomerPayload.name());
+        assertEquals(SEAT_WITH_CUSTOMER.getNumber(), actualCustomerPayload.seatNumber());
     }
 
     @Test
     public void whenCheckingInCustomer_shouldGetCafe() {
         when(customerFactory.createCustomer(CUSTOMER_ID, CUSTOMER_NAME)).thenReturn(CUSTOMER);
 
-        customersService.checkIn(CHECK_IN_CUSTOMER_PARAMS_NO_GROUP);
+        customersService.checkIn(CHECK_IN_CUSTOMER_QUERY_NO_GROUP);
 
         verify(cafeRepository).get();
     }
@@ -103,7 +103,7 @@ public class CustomerServiceTest {
     public void whenCheckingInCustomer_shouldCreateNewCustomer() {
         when(customerFactory.createCustomer(CUSTOMER_ID, CUSTOMER_NAME)).thenReturn(CUSTOMER);
 
-        customersService.checkIn(CHECK_IN_CUSTOMER_PARAMS_NO_GROUP);
+        customersService.checkIn(CHECK_IN_CUSTOMER_QUERY_NO_GROUP);
 
         verify(customerFactory).createCustomer(CUSTOMER_ID, CUSTOMER_NAME);
     }
@@ -112,16 +112,16 @@ public class CustomerServiceTest {
     public void whenCheckingInCustomer_shouldCheckInInCafe() {
         when(customerFactory.createCustomer(CUSTOMER_ID, CUSTOMER_NAME)).thenReturn(CUSTOMER);
 
-        customersService.checkIn(CHECK_IN_CUSTOMER_PARAMS_NO_GROUP);
+        customersService.checkIn(CHECK_IN_CUSTOMER_QUERY_NO_GROUP);
 
-        verify(mockCafe).checkIn(CUSTOMER, CHECK_IN_CUSTOMER_PARAMS_NO_GROUP.groupName());
+        verify(mockCafe).checkIn(CUSTOMER, CHECK_IN_CUSTOMER_QUERY_NO_GROUP.groupName());
     }
 
     @Test
     public void whenCheckingInCustomer_shouldUpdateCafe() {
         when(customerFactory.createCustomer(CUSTOMER_ID, CUSTOMER_NAME)).thenReturn(CUSTOMER);
 
-        customersService.checkIn(CHECK_IN_CUSTOMER_PARAMS_NO_GROUP);
+        customersService.checkIn(CHECK_IN_CUSTOMER_QUERY_NO_GROUP);
 
         verify(cafeRepository).saveOrUpdate(mockCafe);
     }
@@ -145,54 +145,54 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void whenGettingOrders_shouldReturnMatchingOrderDTO() {
+    public void whenGettingOrders_shouldReturnMatchingOrderPayload() {
         Order expectedOrders = new OrderFixture().withItems(List.of(AN_AMERICANO_COFFEE, A_DARK_ROAST_COFFEE)).build();
         when(mockCafe.getOrderByCustomerId(CUSTOMER_ID)).thenReturn(expectedOrders);
 
-        OrderDTO actualOrderDTO = customersService.getOrder(CUSTOMER_ID);
+        OrderPayload actualOrderPayload = customersService.getOrder(CUSTOMER_ID);
 
-        assertEquals(expectedOrders.items().get(0), actualOrderDTO.coffees().get(0));
-        assertEquals(expectedOrders.items().get(1), actualOrderDTO.coffees().get(1));
+        assertEquals(expectedOrders.items().get(0), actualOrderPayload.coffees().get(0));
+        assertEquals(expectedOrders.items().get(1), actualOrderPayload.coffees().get(1));
     }
 
     @Test
     public void whenCheckingOut_shouldGetCafe() {
-        customersService.checkOut(CHECKOUT_CUSTOMER_PARAMS);
+        customersService.checkOut(CHECK_OUT_CUSTOMER_QUERY);
 
         verify(cafeRepository).get();
     }
 
     @Test
     public void whenCheckingOut_shouldCheckOutWithCustomerId() {
-        customersService.checkOut(CHECKOUT_CUSTOMER_PARAMS);
+        customersService.checkOut(CHECK_OUT_CUSTOMER_QUERY);
 
         verify(mockCafe).checkOut(CUSTOMER_ID);
     }
 
     @Test
     public void whenCheckingOut_shouldUpdateCafe() {
-        customersService.checkOut(CHECKOUT_CUSTOMER_PARAMS);
+        customersService.checkOut(CHECK_OUT_CUSTOMER_QUERY);
 
         verify(cafeRepository).saveOrUpdate(mockCafe);
     }
 
     @Test
     public void whenPlacingOrder_shouldGetCafe() {
-        customersService.placeOrder(new CustomerOrderParams(CUSTOMER_ID.value(), List.of(CoffeeType.Americano.toString())));
+        customersService.placeOrder(new CustomerOrderQuery(CUSTOMER_ID.value(), List.of(CoffeeType.Americano.toString())));
 
         verify(cafeRepository).get();
     }
 
     @Test
     public void whenPlacingOrder_shouldPlaceOrder() {
-        customersService.placeOrder(new CustomerOrderParams(CUSTOMER_ID.value(), List.of(CoffeeType.Americano.toString())));
+        customersService.placeOrder(new CustomerOrderQuery(CUSTOMER_ID.value(), List.of(CoffeeType.Americano.toString())));
 
         verify(mockCafe).placeOrder(CUSTOMER_ID, new OrderFixture().withItems(List.of(AN_AMERICANO_COFFEE)).build());
     }
 
     @Test
     public void whenPlacingOrder_shouldUpdateCafe() {
-        customersService.placeOrder(new CustomerOrderParams(CUSTOMER_ID.value(), List.of(CoffeeType.Americano.toString())));
+        customersService.placeOrder(new CustomerOrderQuery(CUSTOMER_ID.value(), List.of(CoffeeType.Americano.toString())));
 
         verify(cafeRepository).saveOrUpdate(mockCafe);
     }
@@ -214,15 +214,15 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void whenGettingBill_shouldReturnMatchingBillDTO() {
+    public void whenGettingBill_shouldReturnMatchingBillPayload() {
         when(mockCafe.getCustomerBill(CUSTOMER_ID)).thenReturn(A_VALID_BILL);
 
-        BillDTO actualBillDTO = customersService.getCustomerBill(CUSTOMER_ID);
+        BillPayload actualBillPayload = customersService.getCustomerBill(CUSTOMER_ID);
 
-        assertEquals(A_VALID_BILL.order().items(), actualBillDTO.coffees());
-        assertEquals(A_VALID_BILL.subtotal(), actualBillDTO.subtotal());
-        assertEquals(A_VALID_BILL.taxes(), actualBillDTO.taxes());
-        assertEquals(A_VALID_BILL.total(), actualBillDTO.total());
-        assertEquals(A_VALID_BILL.tip(), actualBillDTO.tip());
+        assertEquals(A_VALID_BILL.order().items(), actualBillPayload.coffees());
+        assertEquals(A_VALID_BILL.subtotal(), actualBillPayload.subtotal());
+        assertEquals(A_VALID_BILL.taxes(), actualBillPayload.taxes());
+        assertEquals(A_VALID_BILL.total(), actualBillPayload.total());
+        assertEquals(A_VALID_BILL.tip(), actualBillPayload.tip());
     }
 }

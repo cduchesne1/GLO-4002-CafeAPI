@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import ca.ulaval.glo4002.cafe.api.customer.CustomerResource;
 import ca.ulaval.glo4002.cafe.api.customer.request.OrderRequest;
 import ca.ulaval.glo4002.cafe.application.customer.CustomerService;
-import ca.ulaval.glo4002.cafe.application.customer.dto.BillDTO;
-import ca.ulaval.glo4002.cafe.application.customer.dto.CustomerDTO;
-import ca.ulaval.glo4002.cafe.application.customer.dto.OrderDTO;
-import ca.ulaval.glo4002.cafe.application.customer.parameter.CustomerOrderParams;
+import ca.ulaval.glo4002.cafe.application.customer.payload.BillPayload;
+import ca.ulaval.glo4002.cafe.application.customer.payload.CustomerPayload;
+import ca.ulaval.glo4002.cafe.application.customer.payload.OrderPayload;
+import ca.ulaval.glo4002.cafe.application.customer.query.CustomerOrderQuery;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.SeatNumber;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Amount;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
@@ -36,9 +36,9 @@ public class CustomerResourceTest {
     private static final SeatNumber SEAT_NUMBER = new SeatNumber(1);
     private static final Amount AMOUNT = new Amount(0);
     private static final Order ORDER = new Order(new ArrayList<>());
-    private static final CustomerDTO A_CUSTOMER_DTO = new CustomerDTO(CUSTOMER_NAME, SEAT_NUMBER, Optional.of(GROUP_NAME));
-    private static final BillDTO A_BILL_DTO = new BillDTO(ORDER.items(), AMOUNT, AMOUNT, AMOUNT, AMOUNT);
-    private static final OrderDTO A_ORDER_DTO = new OrderDTO(new ArrayList<>());
+    private static final CustomerPayload A_CUSTOMER_PAYLOAD = new CustomerPayload(CUSTOMER_NAME, SEAT_NUMBER, Optional.of(GROUP_NAME));
+    private static final BillPayload A_BILL_PAYLOAD = new BillPayload(ORDER.items(), AMOUNT, AMOUNT, AMOUNT, AMOUNT);
+    private static final OrderPayload AN_ORDER_PAYLOAD = new OrderPayload(new ArrayList<>());
     private static final List<String> LIST_OF_COFFEE = List.of("Latte");
 
     private CustomerResource customerResource;
@@ -52,7 +52,7 @@ public class CustomerResourceTest {
 
     @Test
     public void whenGettingCustomer_shouldGetCustomer() {
-        when(customerService.getCustomer(CUSTOMER_ID)).thenReturn(A_CUSTOMER_DTO);
+        when(customerService.getCustomer(CUSTOMER_ID)).thenReturn(A_CUSTOMER_PAYLOAD);
 
         customerResource.getCustomer(CUSTOMER_ID.value());
 
@@ -61,7 +61,7 @@ public class CustomerResourceTest {
 
     @Test
     public void givenValidCustomerID_whenGettingCustomer_shouldReturn200() {
-        when(customerService.getCustomer(CUSTOMER_ID)).thenReturn(A_CUSTOMER_DTO);
+        when(customerService.getCustomer(CUSTOMER_ID)).thenReturn(A_CUSTOMER_PAYLOAD);
 
         Response response = customerResource.getCustomer(CUSTOMER_ID.value());
 
@@ -70,21 +70,17 @@ public class CustomerResourceTest {
 
     @Test
     public void whenPuttingOrderForCustomer_shouldPlaceOrderForCustomer() {
-        OrderRequest orderRequest = new OrderRequestFixture()
-            .withOrders(LIST_OF_COFFEE)
-            .build();
-        CustomerOrderParams customerOrderParams = new CustomerOrderParams(CUSTOMER_ID.value(), orderRequest.orders);
+        OrderRequest orderRequest = new OrderRequestFixture().withOrders(LIST_OF_COFFEE).build();
+        CustomerOrderQuery customerOrderQuery = new CustomerOrderQuery(CUSTOMER_ID.value(), orderRequest.orders);
 
         customerResource.putOrderForCustomer(CUSTOMER_ID.value(), orderRequest);
 
-        verify(customerService).placeOrder(customerOrderParams);
+        verify(customerService).placeOrder(customerOrderQuery);
     }
 
     @Test
     public void givenValidRequestAndValidCustomerID_whenPuttingOrderForCustomer_shouldReturn200() {
-        OrderRequest orderRequest = new OrderRequestFixture()
-            .withOrders(LIST_OF_COFFEE)
-            .build();
+        OrderRequest orderRequest = new OrderRequestFixture().withOrders(LIST_OF_COFFEE).build();
 
         Response response = customerResource.putOrderForCustomer(CUSTOMER_ID.value(), orderRequest);
 
@@ -93,7 +89,7 @@ public class CustomerResourceTest {
 
     @Test
     public void whenGettingCustomerBill_shouldGetCustomerBill() {
-        when(customerService.getCustomerBill(CUSTOMER_ID)).thenReturn(A_BILL_DTO);
+        when(customerService.getCustomerBill(CUSTOMER_ID)).thenReturn(A_BILL_PAYLOAD);
 
         customerResource.getCustomerBill(CUSTOMER_ID.value());
 
@@ -102,7 +98,7 @@ public class CustomerResourceTest {
 
     @Test
     public void givenValidCustomerID_whenGettingBill_shouldReturn200() {
-        when(customerService.getCustomerBill(CUSTOMER_ID)).thenReturn(A_BILL_DTO);
+        when(customerService.getCustomerBill(CUSTOMER_ID)).thenReturn(A_BILL_PAYLOAD);
 
         Response response = customerResource.getCustomerBill(CUSTOMER_ID.value());
 
@@ -111,7 +107,7 @@ public class CustomerResourceTest {
 
     @Test
     public void whenGettingOrders_shouldGetOrders() {
-        when(customerService.getOrder(CUSTOMER_ID)).thenReturn(A_ORDER_DTO);
+        when(customerService.getOrder(CUSTOMER_ID)).thenReturn(AN_ORDER_PAYLOAD);
 
         customerResource.getOrders(CUSTOMER_ID.value());
 
@@ -120,7 +116,7 @@ public class CustomerResourceTest {
 
     @Test
     public void givenValidCustomerID_whenGettingOrders_shouldReturn200() {
-        when(customerService.getOrder(CUSTOMER_ID)).thenReturn(A_ORDER_DTO);
+        when(customerService.getOrder(CUSTOMER_ID)).thenReturn(AN_ORDER_PAYLOAD);
 
         Response response = customerResource.getOrders(CUSTOMER_ID.value());
 

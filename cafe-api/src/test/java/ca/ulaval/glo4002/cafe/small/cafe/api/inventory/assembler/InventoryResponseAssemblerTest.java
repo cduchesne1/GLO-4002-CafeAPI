@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.inventory.assembler.InventoryResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.inventory.response.InventoryResponse;
-import ca.ulaval.glo4002.cafe.application.dto.InventoryDTO;
+import ca.ulaval.glo4002.cafe.application.payload.InventoryPayload;
 import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
 import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
@@ -26,9 +26,9 @@ public class InventoryResponseAssemblerTest {
 
     @Test
     public void givenEmptyInventory_whenAssemblingInventoryResponse_shouldReturnCorrectResponse() {
-        InventoryDTO inventoryDTO = new InventoryDTO(new HashMap<>());
+        InventoryPayload inventoryPayload = new InventoryPayload(new HashMap<>());
 
-        InventoryResponse actualResponse = inventoryResponseAssembler.toInventoryResponse(inventoryDTO);
+        InventoryResponse actualResponse = inventoryResponseAssembler.toInventoryResponse(inventoryPayload);
 
         InventoryResponse expectedResponse = new InventoryResponse(0, 0, 0, 0);
         assertEquals(expectedResponse, actualResponse);
@@ -38,9 +38,9 @@ public class InventoryResponseAssemblerTest {
     public void givenInventory_whenAssemblingInventoryResponse_shouldReturnCorrectResponse() {
         Inventory inventory = new Inventory();
         inventory.add(List.of(new Ingredient(IngredientType.Chocolate, new Quantity(1))));
-        InventoryDTO inventoryDTO = InventoryDTO.fromInventory(inventory);
+        InventoryPayload inventoryPayload = InventoryPayload.fromInventory(inventory);
 
-        InventoryResponse actualResponse = inventoryResponseAssembler.toInventoryResponse(inventoryDTO);
+        InventoryResponse actualResponse = inventoryResponseAssembler.toInventoryResponse(inventoryPayload);
 
         InventoryResponse expectedResponse = new InventoryResponse(1, 0, 0, 0);
         assertEquals(expectedResponse, actualResponse);

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.layout.LayoutResource;
 import ca.ulaval.glo4002.cafe.application.CafeService;
-import ca.ulaval.glo4002.cafe.application.dto.LayoutDTO;
+import ca.ulaval.glo4002.cafe.application.payload.LayoutPayload;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 
 import jakarta.ws.rs.core.Response;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 
 public class LayoutResourceTest {
     private static final CafeName A_CAFE_NAME = new CafeName("Bob");
-    private static final LayoutDTO A_LAYOUT_DTO = new LayoutDTO(A_CAFE_NAME, new ArrayList<>());
+    private static final LayoutPayload A_LAYOUT_PAYLOAD = new LayoutPayload(A_CAFE_NAME, new ArrayList<>());
 
     private CafeService cafeService;
     private LayoutResource cafeResource;
@@ -32,7 +32,7 @@ public class LayoutResourceTest {
 
     @Test
     public void whenGettingLayout_shouldGetLayout() {
-        when(cafeService.getLayout()).thenReturn(A_LAYOUT_DTO);
+        when(cafeService.getLayout()).thenReturn(A_LAYOUT_PAYLOAD);
 
         cafeResource.layout();
 
@@ -41,7 +41,7 @@ public class LayoutResourceTest {
 
     @Test
     public void whenGettingLayout_shouldReturn200() {
-        when(cafeService.getLayout()).thenReturn(A_LAYOUT_DTO);
+        when(cafeService.getLayout()).thenReturn(A_LAYOUT_PAYLOAD);
 
         Response response = cafeResource.layout();
 
