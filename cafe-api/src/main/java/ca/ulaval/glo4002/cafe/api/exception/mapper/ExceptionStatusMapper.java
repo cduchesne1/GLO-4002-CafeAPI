@@ -12,7 +12,6 @@ import ca.ulaval.glo4002.cafe.domain.exception.InsufficientIngredientsException;
 import ca.ulaval.glo4002.cafe.domain.exception.InsufficientSeatsException;
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidConfigurationCountryException;
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidCubeNameException;
-import ca.ulaval.glo4002.cafe.domain.exception.InvalidCubeSizeException;
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidCustomerIdException;
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidCustomerNameException;
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidGroupNameException;
@@ -44,7 +43,6 @@ public class ExceptionStatusMapper {
         exceptionMapper.put(CustomerNotFoundException.class, Response.Status.NOT_FOUND);
 
         exceptionMapper.put(InsufficientIngredientsException.class, Response.Status.BAD_REQUEST);
-        exceptionMapper.put(InvalidCubeSizeException.class, Response.Status.BAD_REQUEST);
         exceptionMapper.put(InvalidGroupReservationMethodException.class, Response.Status.BAD_REQUEST);
         exceptionMapper.put(CustomerAlreadyVisitedException.class, Response.Status.BAD_REQUEST);
         exceptionMapper.put(InvalidCustomerIdException.class, Response.Status.BAD_REQUEST);

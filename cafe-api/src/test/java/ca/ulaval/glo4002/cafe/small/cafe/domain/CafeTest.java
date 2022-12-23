@@ -25,7 +25,6 @@ import ca.ulaval.glo4002.cafe.domain.inventory.Quantity;
 import ca.ulaval.glo4002.cafe.domain.layout.Layout;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.Cube;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.SeatNumber;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Amount;
@@ -58,7 +57,7 @@ public class CafeTest {
     private static final List<CubeName> SOME_UNORDERED_CUBE_NAMES = List.of(new CubeName("B"), new CubeName("A"));
     private static final List<CubeName> A_CUBE_NAME = List.of(new CubeName("aName"));
     private static final List<CubeName> TWO_CUBE_NAMES = List.of(new CubeName("Bob"), new CubeName("John"));
-    private static final CubeSize TWO_SEATS_PER_CUBE = new CubeSize(2);
+    private static final int TWO_SEATS_PER_CUBE = 2;
     private static final Customer A_CUSTOMER = new CustomerFixture().withCustomerId(new CustomerId("125")).build();
     private static final Customer ANOTHER_CUSTOMER = new CustomerFixture().withCustomerId(new CustomerId("121135")).build();
     private static final Reservation A_RESERVATION_FOR_TWO = new ReservationFixture().withGroupSize(new GroupSize(2)).build();
@@ -105,12 +104,12 @@ public class CafeTest {
 
     @Test
     public void whenGettingLayout_shouldHaveCubesWithProvidedNumberOfSeatsInLayout() {
-        CubeSize providedCubeSize = new CubeSize(2);
+        int providedCubeSize = 2;
         cafe = new Cafe(new CafeConfigurationFixture().withCubeSize(providedCubeSize).build(), new Layout(providedCubeSize, SOME_CUBE_NAMES), new Inventory());
 
         Layout layout = cafe.getLayout();
 
-        assertEquals(providedCubeSize.value(), layout.getCubes().get(0).getNumberOfSeats());
+        assertEquals(providedCubeSize, layout.getCubes().get(0).getNumberOfSeats());
     }
 
     @Test
@@ -133,7 +132,7 @@ public class CafeTest {
         Layout layout = cafe.getLayout();
         int numberOfAvailableSeats = (int) layout.getCubes().stream().map(Cube::getSeats).flatMap(List::stream).filter(Seat::isCurrentlyAvailable).count();
 
-        assertEquals(SOME_CUBE_NAMES.size() * TWO_SEATS_PER_CUBE.value(), numberOfAvailableSeats);
+        assertEquals(SOME_CUBE_NAMES.size() * TWO_SEATS_PER_CUBE, numberOfAvailableSeats);
     }
 
     @Test
@@ -150,7 +149,7 @@ public class CafeTest {
 
     @Test
     public void givenNoAvailableSeats_whenCheckingIn_shouldThrowInsufficientSeatsException() {
-        cafe = new Cafe(new CafeConfigurationFixture().withCubeSize(new CubeSize(3)).build(), new Layout(new CubeSize(3), A_CUBE_NAME), new Inventory());
+        cafe = new Cafe(new CafeConfigurationFixture().withCubeSize(3).build(), new Layout(3, A_CUBE_NAME), new Inventory());
         cafe.checkIn(ANOTHER_CUSTOMER, Optional.empty());
         cafe.makeReservation(A_RESERVATION_FOR_TWO);
         Customer aCustomer = new CustomerFixture().build();
@@ -171,7 +170,7 @@ public class CafeTest {
 
     @Test
     public void givenNewCustomerWithReservation_whenCheckingIn_shouldOccupyFirstReservedSeat() {
-        cafe = new Cafe(new CafeConfigurationFixture().withCubeSize(new CubeSize(3)).build(), new Layout(new CubeSize(3), A_CUBE_NAME), new Inventory());
+        cafe = new Cafe(new CafeConfigurationFixture().withCubeSize(3).build(), new Layout(3, A_CUBE_NAME), new Inventory());
         cafe.checkIn(ANOTHER_CUSTOMER, Optional.empty());
         cafe.makeReservation(A_RESERVATION_FOR_TWO);
         Customer aCustomer = new CustomerFixture().build();
@@ -183,7 +182,7 @@ public class CafeTest {
 
     @Test
     public void givenNewCustomerWithReservationButNoMoreReservedSeats_whenCheckingIn_shouldThrowNoGroupSeatsException() {
-        cafe = new Cafe(new CafeConfigurationFixture().withCubeSize(new CubeSize(3)).build(), new Layout(new CubeSize(3), A_CUBE_NAME), new Inventory());
+        cafe = new Cafe(new CafeConfigurationFixture().withCubeSize(3).build(), new Layout(3, A_CUBE_NAME), new Inventory());
         cafe.makeReservation(A_RESERVATION_FOR_TWO);
         cafe.checkIn(A_CUSTOMER, Optional.of(A_RESERVATION_FOR_TWO.name()));
         cafe.checkIn(ANOTHER_CUSTOMER, Optional.of(A_RESERVATION_FOR_TWO.name()));
@@ -193,7 +192,7 @@ public class CafeTest {
 
     @Test
     public void givenNewCustomerWithInvalidReservation_whenCheckingIn_shouldThrowNoReservationFoundException() {
-        cafe = new Cafe(new CafeConfigurationFixture().withCubeSize(new CubeSize(3)).build(), new Layout(new CubeSize(3), A_CUBE_NAME), new Inventory());
+        cafe = new Cafe(new CafeConfigurationFixture().withCubeSize(3).build(), new Layout(3, A_CUBE_NAME), new Inventory());
         cafe.makeReservation(A_RESERVATION_FOR_TWO);
         Customer aCustomer = new CustomerFixture().build();
 
@@ -291,12 +290,12 @@ public class CafeTest {
     public void givenNewCubeSize_whenUpdatingConfiguration_shouldUpdateCubeSize() {
         Layout layout = new Layout(A_DEFAULT_CONFIGURATION.cubeSize(), SOME_CUBE_NAMES);
         cafe = new Cafe(new CafeConfigurationFixture().withCubeSize(TWO_SEATS_PER_CUBE).build(), layout, new Inventory());
-        CubeSize newCubeSize = new CubeSize(3);
+        int newCubeSize = 3;
 
         cafe.updateConfiguration(new CafeConfigurationFixture().withCubeSize(newCubeSize).build());
         cafe.close();
 
-        assertEquals(newCubeSize.value(), cafe.getLayout().getCubes().get(0).getNumberOfSeats());
+        assertEquals(newCubeSize, cafe.getLayout().getCubes().get(0).getNumberOfSeats());
     }
 
     @Test
@@ -617,7 +616,7 @@ public class CafeTest {
 
         Layout layout = cafe.getLayout();
         int numberOfAvailableSeats = (int) layout.getCubes().stream().map(Cube::getSeats).flatMap(List::stream).filter(Seat::isCurrentlyAvailable).count();
-        assertEquals(SOME_CUBE_NAMES.size() * A_DEFAULT_CONFIGURATION.cubeSize().value(), numberOfAvailableSeats);
+        assertEquals(SOME_CUBE_NAMES.size() * A_DEFAULT_CONFIGURATION.cubeSize(), numberOfAvailableSeats);
     }
 
     @Test

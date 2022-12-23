@@ -15,7 +15,6 @@ import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.Cube;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.SeatNumber;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
@@ -29,7 +28,7 @@ public class Layout {
     private final CubeFactory cubeFactory;
     private final List<Cube> cubes = new ArrayList<>();
 
-    public Layout(CubeSize cubeSize, List<CubeName> cubeNames) {
+    public Layout(int cubeSize, List<CubeName> cubeNames) {
         this.cubeFactory = new CubeFactory();
         this.cubes.addAll(createCubes(cubeSize, cubeNames));
     }
@@ -72,13 +71,13 @@ public class Layout {
         throw new NoGroupSeatsException();
     }
 
-    public void reset(CubeSize cubeSize) {
+    public void reset(int cubeSize) {
         List<CubeName> cubeNames = cubes.stream().map(Cube::getName).toList();
         cubes.clear();
         cubes.addAll(createCubes(cubeSize, cubeNames));
     }
 
-    private List<Cube> createCubes(CubeSize cubeSize, List<CubeName> cubeNames) {
+    private List<Cube> createCubes(int cubeSize, List<CubeName> cubeNames) {
         List<Cube> createdCubes = new ArrayList<>();
         int firstSeatNumber = 1;
         checkForDuplicateCubeName(cubeNames);

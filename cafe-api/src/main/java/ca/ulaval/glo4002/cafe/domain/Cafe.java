@@ -10,7 +10,6 @@ import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
 import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
 import ca.ulaval.glo4002.cafe.domain.layout.Layout;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
@@ -28,7 +27,7 @@ public class Cafe {
     private final HashMap<CustomerId, Bill> bills = new HashMap<>();
     private final Inventory inventory;
     private TipRate groupTipRate;
-    private CubeSize cubeSize;
+    private int cubeSize;
     private CafeName cafeName;
     private Location location;
     private ReservationStrategy reservationStrategy;

@@ -29,7 +29,6 @@ import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.TipRate;
 import ca.ulaval.glo4002.cafe.domain.layout.LayoutFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerFactory;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
@@ -43,7 +42,7 @@ public class ProductionApplicationContext implements ApplicationContext {
     private static final int PORT = 8181;
 
     private static final CafeName CAFE_NAME = new CafeName("Les 4-Fées");
-    private static final CubeSize CUBE_SIZE = new CubeSize(4);
+    private static final int CUBE_SIZE = 4;
     private static final List<CubeName> CUBE_NAMES =
         List.of(new CubeName("Wanda"), new CubeName("Tinker Bell"), new CubeName("Bloom"), new CubeName("Merryweather"));
     private static final ReservationStrategy RESERVATION_STRATEGY = new DefaultStrategy();

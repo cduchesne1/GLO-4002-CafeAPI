@@ -11,7 +11,6 @@ import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
 import ca.ulaval.glo4002.cafe.domain.layout.Layout;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.Cube;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
 import ca.ulaval.glo4002.cafe.domain.reservation.strategies.DefaultStrategy;
@@ -20,7 +19,7 @@ import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
 public class CafeFixture {
     private static final ReservationStrategy RESERVATION_STRATEGY = new DefaultStrategy();
     private CafeConfiguration cafeConfiguration =
-        new CafeConfiguration(new CubeSize(4), new CafeName("Les 4-Fées"), RESERVATION_STRATEGY, new Location(Country.None, Optional.empty(), Optional.empty()),
+        new CafeConfiguration(4, new CafeName("Les 4-Fées"), RESERVATION_STRATEGY, new Location(Country.None, Optional.empty(), Optional.empty()),
             new TipRate(0));
     private Layout layout = new Layout(cafeConfiguration.cubeSize(),
         List.of(new CubeName("Wanda"), new CubeName("Tinker Bell"), new CubeName("Bloom"), new CubeName("Merryweather")));
@@ -36,7 +35,7 @@ public class CafeFixture {
         return this;
     }
 
-    public CafeFixture withCubeSize(CubeSize cubeSize) {
+    public CafeFixture withCubeSize(int cubeSize) {
         this.cafeConfiguration =
             new CafeConfiguration(cubeSize, cafeConfiguration.cafeName(), RESERVATION_STRATEGY, cafeConfiguration.location(), cafeConfiguration.groupTipRate());
         this.layout = new Layout(cubeSize, layout.getCubes().stream().map(Cube::getName).toList());

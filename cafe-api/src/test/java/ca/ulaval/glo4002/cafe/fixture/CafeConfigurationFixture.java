@@ -5,7 +5,6 @@ import java.util.Optional;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.domain.TipRate;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
 import ca.ulaval.glo4002.cafe.domain.location.Province;
@@ -14,7 +13,7 @@ import ca.ulaval.glo4002.cafe.domain.reservation.strategies.DefaultStrategy;
 import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
 
 public class CafeConfigurationFixture {
-    private CubeSize cubeSize = new CubeSize(4);
+    private int cubeSize = 4;
     private CafeName name = new CafeName("Les 4-Fées");
     private ReservationStrategy reservationStrategy = new DefaultStrategy();
     private Country country = Country.CA;
@@ -22,7 +21,7 @@ public class CafeConfigurationFixture {
     private Optional<State> state = Optional.empty();
     private TipRate groupTipRate = new TipRate(0.05f);
 
-    public CafeConfigurationFixture withCubeSize(CubeSize cubeSize) {
+    public CafeConfigurationFixture withCubeSize(int cubeSize) {
         this.cubeSize = cubeSize;
         return this;
     }

@@ -7,15 +7,15 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.SeatNumber;
 
 public class CubeFactory {
-    public Cube createCube(SeatNumber firstSeat, CubeName cubeName, CubeSize cubeSize) {
+    public Cube createCube(SeatNumber firstSeat, CubeName cubeName, int cubeSize) {
         List<Seat> seats = createCubeSeats(firstSeat.value(), cubeSize);
         return new Cube(cubeName, seats);
     }
 
-    private List<Seat> createCubeSeats(int firstSeat, CubeSize cubeSize) {
+    private List<Seat> createCubeSeats(int firstSeat, int cubeSize) {
         List<Seat> seats = new ArrayList<>();
 
-        for (int i = firstSeat; i < firstSeat + cubeSize.value(); i++) {
+        for (int i = firstSeat; i < firstSeat + cubeSize; i++) {
             seats.add(createSeat(new SeatNumber(i)));
         }
 

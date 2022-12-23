@@ -2,6 +2,7 @@ package ca.ulaval.glo4002.cafe.api.configuration.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -21,9 +22,8 @@ public class UpdateConfigurationRequest {
     @NotNull(message = "The state may not be null.")
     public String state;
 
-    @NotNull(message = "The cube_size may not be null.")
+    @Min(value = 1, message = "The cube_size must be greater than 0.")
     public int cube_size;
 
-    @NotNull(message = "The group_tip_rate may not be null.")
     public float group_tip_rate;
 }

@@ -15,7 +15,6 @@ import ca.ulaval.glo4002.cafe.domain.exception.DuplicateCubeNameException;
 import ca.ulaval.glo4002.cafe.domain.layout.LayoutFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.Cube;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeSize;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
 import ca.ulaval.glo4002.cafe.domain.reservation.strategies.DefaultStrategy;
@@ -25,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CafeFactoryTest {
-    private static final CafeConfiguration A_CAFE_CONFIGURATION = new CafeConfiguration(new CubeSize(4), new CafeName("Les 4-Fées"), new DefaultStrategy(),
+    private static final CafeConfiguration A_CAFE_CONFIGURATION = new CafeConfiguration(4, new CafeName("Les 4-Fées"), new DefaultStrategy(),
         new Location(Country.None, Optional.empty(), Optional.empty()), new TipRate(0));
     private static final List<CubeName> DUPLICATE_CUBE_NAMES = List.of(new CubeName("Bob"), new CubeName("Bob"));
     private static final List<CubeName> SOME_CUBE_NAMES = List.of(new CubeName("John"), new CubeName("Bob"));
