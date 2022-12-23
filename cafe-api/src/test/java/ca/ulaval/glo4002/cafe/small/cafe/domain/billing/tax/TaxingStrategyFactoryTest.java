@@ -1,14 +1,14 @@
-package ca.ulaval.glo4002.cafe.small.cafe.domain.bill.tax;
+package ca.ulaval.glo4002.cafe.small.cafe.domain.billing.tax;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import ca.ulaval.glo4002.cafe.domain.bill.tax.TaxingStrategyFactory;
-import ca.ulaval.glo4002.cafe.domain.bill.tax.strategies.AmericanTaxingStrategy;
-import ca.ulaval.glo4002.cafe.domain.bill.tax.strategies.CanadianTaxingStrategy;
-import ca.ulaval.glo4002.cafe.domain.bill.tax.strategies.ChileanTaxingStrategy;
-import ca.ulaval.glo4002.cafe.domain.bill.tax.strategies.NoTaxTaxingStrategy;
-import ca.ulaval.glo4002.cafe.domain.bill.tax.strategies.TaxingStrategy;
+import ca.ulaval.glo4002.cafe.domain.billing.tax.TaxingStrategyFactory;
+import ca.ulaval.glo4002.cafe.domain.billing.tax.strategies.AmericanTaxingStrategy;
+import ca.ulaval.glo4002.cafe.domain.billing.tax.strategies.CanadianTaxingStrategy;
+import ca.ulaval.glo4002.cafe.domain.billing.tax.strategies.ChileanTaxingStrategy;
+import ca.ulaval.glo4002.cafe.domain.billing.tax.strategies.NoTaxTaxingStrategy;
+import ca.ulaval.glo4002.cafe.domain.billing.tax.strategies.TaxingStrategy;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

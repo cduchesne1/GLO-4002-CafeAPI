@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.small.cafe.domain.bill.tax.strategies;
+package ca.ulaval.glo4002.cafe.small.cafe.domain.billing.tax.strategies;
 
 import java.util.Optional;
 
@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.domain.Amount;
-import ca.ulaval.glo4002.cafe.domain.bill.tax.strategies.CanadianTaxingStrategy;
-import ca.ulaval.glo4002.cafe.domain.bill.tax.strategies.TaxingStrategy;
+import ca.ulaval.glo4002.cafe.domain.billing.tax.strategies.CanadianTaxingStrategy;
+import ca.ulaval.glo4002.cafe.domain.billing.tax.strategies.TaxingStrategy;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
 import ca.ulaval.glo4002.cafe.domain.location.Province;

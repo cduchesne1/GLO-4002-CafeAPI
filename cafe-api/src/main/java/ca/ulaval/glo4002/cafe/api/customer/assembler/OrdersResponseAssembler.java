@@ -2,7 +2,7 @@ package ca.ulaval.glo4002.cafe.api.customer.assembler;
 
 import ca.ulaval.glo4002.cafe.api.customer.response.OrdersResponse;
 import ca.ulaval.glo4002.cafe.application.customer.payload.OrderPayload;
-import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
+import ca.ulaval.glo4002.cafe.domain.ordering.CoffeeName;
 
 public class OrdersResponseAssembler {
     public OrdersResponse toOrdersResponse(OrderPayload orderPayload) {

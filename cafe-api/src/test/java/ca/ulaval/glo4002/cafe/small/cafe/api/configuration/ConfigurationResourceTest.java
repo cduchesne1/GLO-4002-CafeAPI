@@ -9,6 +9,7 @@ import ca.ulaval.glo4002.cafe.api.configuration.request.UpdateMenuRequest;
 import ca.ulaval.glo4002.cafe.application.configuration.ConfigurationService;
 import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateConfigurationQuery;
 import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateMenuQuery;
+import ca.ulaval.glo4002.cafe.application.inventory.query.IngredientsQuery;
 import ca.ulaval.glo4002.cafe.fixture.request.UpdateConfigurationRequestFixture;
 import ca.ulaval.glo4002.cafe.fixture.request.UpdateMenuRequestFixture;
 
@@ -65,7 +66,10 @@ public class ConfigurationResourceTest {
     @Test
     public void whenUpdatingMenu_shouldUpdateMenu() {
         UpdateMenuRequest updateMenuRequest = new UpdateMenuRequestFixture().build();
-        UpdateMenuQuery updateMenuQuery = new UpdateMenuQuery(updateMenuRequest.name, updateMenuRequest.ingredients, updateMenuRequest.cost);
+        IngredientsQuery ingredientsQuery =
+            IngredientsQuery.from(updateMenuRequest.ingredients.Chocolate, updateMenuRequest.ingredients.Milk, updateMenuRequest.ingredients.Water,
+                updateMenuRequest.ingredients.Espresso);
+        UpdateMenuQuery updateMenuQuery = new UpdateMenuQuery(updateMenuRequest.name, ingredientsQuery, updateMenuRequest.cost);
 
         configurationResource.updateMenu(updateMenuRequest);
 

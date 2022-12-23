@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.domain.order;
+package ca.ulaval.glo4002.cafe.domain.ordering;
 
 import java.util.List;
 import java.util.stream.Stream;

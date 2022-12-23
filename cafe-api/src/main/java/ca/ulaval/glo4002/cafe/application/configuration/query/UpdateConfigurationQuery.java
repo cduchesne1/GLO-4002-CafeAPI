@@ -1,7 +1,7 @@
 package ca.ulaval.glo4002.cafe.application.configuration.query;
 
 import ca.ulaval.glo4002.cafe.domain.CafeName;
-import ca.ulaval.glo4002.cafe.domain.bill.TipRate;
+import ca.ulaval.glo4002.cafe.domain.billing.TipRate;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
 import ca.ulaval.glo4002.cafe.domain.reservation.ReservationType;
 

@@ -1,12 +1,12 @@
-package ca.ulaval.glo4002.cafe.domain.bill;
+package ca.ulaval.glo4002.cafe.domain.billing;
 
 import java.util.List;
 
 import ca.ulaval.glo4002.cafe.domain.Amount;
-import ca.ulaval.glo4002.cafe.domain.bill.tax.TaxingStrategyFactory;
-import ca.ulaval.glo4002.cafe.domain.bill.tax.strategies.TaxingStrategy;
+import ca.ulaval.glo4002.cafe.domain.billing.tax.TaxingStrategyFactory;
+import ca.ulaval.glo4002.cafe.domain.billing.tax.strategies.TaxingStrategy;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
-import ca.ulaval.glo4002.cafe.domain.order.Order;
+import ca.ulaval.glo4002.cafe.domain.ordering.Order;
 
 public class BillFactory {
     private final TaxingStrategyFactory taxingStrategyFactory = new TaxingStrategyFactory();

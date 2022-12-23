@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.domain.menu;
+package ca.ulaval.glo4002.cafe.domain.ordering.menu;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,8 +8,8 @@ import ca.ulaval.glo4002.cafe.domain.Amount;
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidMenuOrderException;
 import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
 import ca.ulaval.glo4002.cafe.domain.inventory.Quantity;
-import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
-import ca.ulaval.glo4002.cafe.domain.order.Order;
+import ca.ulaval.glo4002.cafe.domain.ordering.CoffeeName;
+import ca.ulaval.glo4002.cafe.domain.ordering.Order;
 
 public class Menu {
     private final Map<CoffeeName, Coffee> coffees;

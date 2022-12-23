@@ -9,14 +9,14 @@ import org.junit.jupiter.api.Test;
 import ca.ulaval.glo4002.cafe.application.configuration.ConfigurationService;
 import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateConfigurationQuery;
 import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateMenuQuery;
+import ca.ulaval.glo4002.cafe.application.inventory.query.IngredientsQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
-import ca.ulaval.glo4002.cafe.domain.order.Order;
+import ca.ulaval.glo4002.cafe.domain.ordering.Order;
 import ca.ulaval.glo4002.cafe.domain.reservation.ReservationStrategyFactory;
 import ca.ulaval.glo4002.cafe.fixture.CustomerFixture;
-import ca.ulaval.glo4002.cafe.fixture.request.InventoryRequestFixture;
 import ca.ulaval.glo4002.cafe.util.CafeRepositoryTestUtil;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -27,7 +27,7 @@ public class ConfigurationServiceTest {
     private static final UpdateConfigurationQuery UPDATE_CONFIGURATION_QUERY =
         new UpdateConfigurationQuery(5, NEW_CAFE_NAME.value(), "Default", "CA", "QC", "", 5);
     private static final UpdateMenuQuery AN_UPDATE_MENU_QUERY =
-        new UpdateMenuQuery("Pumpkin Latte", new InventoryRequestFixture().withEspresso(50).withMilk(50).build(), 4);
+        new UpdateMenuQuery("Pumpkin Latte", new IngredientsQuery(0, 0, 50, 50), 4);
 
     private ConfigurationService configurationService;
     private CafeRepository cafeRepository;

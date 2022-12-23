@@ -3,13 +3,13 @@ package ca.ulaval.glo4002.cafe.domain;
 import java.util.List;
 import java.util.Map;
 
-import ca.ulaval.glo4002.cafe.domain.bill.BillFactory;
+import ca.ulaval.glo4002.cafe.domain.billing.BillFactory;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
 import ca.ulaval.glo4002.cafe.domain.layout.LayoutFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
-import ca.ulaval.glo4002.cafe.domain.menu.Coffee;
-import ca.ulaval.glo4002.cafe.domain.menu.MenuFactory;
-import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
+import ca.ulaval.glo4002.cafe.domain.ordering.CoffeeName;
+import ca.ulaval.glo4002.cafe.domain.ordering.menu.Coffee;
+import ca.ulaval.glo4002.cafe.domain.ordering.menu.MenuFactory;
 import ca.ulaval.glo4002.cafe.domain.reservation.BookingRegister;
 
 public class CafeFactory {

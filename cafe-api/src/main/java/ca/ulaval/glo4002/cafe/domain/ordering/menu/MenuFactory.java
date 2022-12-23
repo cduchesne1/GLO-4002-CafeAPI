@@ -1,8 +1,8 @@
-package ca.ulaval.glo4002.cafe.domain.menu;
+package ca.ulaval.glo4002.cafe.domain.ordering.menu;
 
 import java.util.Map;
 
-import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
+import ca.ulaval.glo4002.cafe.domain.ordering.CoffeeName;
 
 public class MenuFactory {
     public Menu createMenu(Map<CoffeeName, Coffee> coffees) {

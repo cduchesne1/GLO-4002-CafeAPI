@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.domain.bill.tax.strategies;
+package ca.ulaval.glo4002.cafe.domain.billing.tax.strategies;
 
 import ca.ulaval.glo4002.cafe.domain.Amount;
 import ca.ulaval.glo4002.cafe.domain.location.Location;

@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.domain.bill;
+package ca.ulaval.glo4002.cafe.domain.billing;
 
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidGroupTipRateException;
 

@@ -3,9 +3,9 @@ package ca.ulaval.glo4002.cafe.fixture;
 import java.util.List;
 
 import ca.ulaval.glo4002.cafe.domain.Amount;
-import ca.ulaval.glo4002.cafe.domain.bill.Bill;
-import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
-import ca.ulaval.glo4002.cafe.domain.order.Order;
+import ca.ulaval.glo4002.cafe.domain.billing.Bill;
+import ca.ulaval.glo4002.cafe.domain.ordering.CoffeeName;
+import ca.ulaval.glo4002.cafe.domain.ordering.Order;
 
 public class BillFixture {
     private Order coffeeOrder = new Order(List.of(new CoffeeName("Americano"), new CoffeeName("Espresso"), new CoffeeName("Latte")));

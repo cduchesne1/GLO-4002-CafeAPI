@@ -1,8 +1,8 @@
-package ca.ulaval.glo4002.cafe.small.cafe.domain.bill;
+package ca.ulaval.glo4002.cafe.small.cafe.domain.billing;
 
 import org.junit.jupiter.api.Test;
 
-import ca.ulaval.glo4002.cafe.domain.bill.TipRate;
+import ca.ulaval.glo4002.cafe.domain.billing.TipRate;
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidGroupTipRateException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

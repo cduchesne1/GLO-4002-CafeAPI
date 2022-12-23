@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import ca.ulaval.glo4002.cafe.domain.bill.Bill;
-import ca.ulaval.glo4002.cafe.domain.bill.BillFactory;
-import ca.ulaval.glo4002.cafe.domain.bill.TipRate;
+import ca.ulaval.glo4002.cafe.domain.billing.Bill;
+import ca.ulaval.glo4002.cafe.domain.billing.BillFactory;
+import ca.ulaval.glo4002.cafe.domain.billing.TipRate;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNoBillException;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
 import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
@@ -17,8 +17,8 @@ import ca.ulaval.glo4002.cafe.domain.inventory.Quantity;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
-import ca.ulaval.glo4002.cafe.domain.menu.Menu;
-import ca.ulaval.glo4002.cafe.domain.order.Order;
+import ca.ulaval.glo4002.cafe.domain.ordering.Order;
+import ca.ulaval.glo4002.cafe.domain.ordering.menu.Menu;
 
 public class PointOfSale {
     private final BillFactory billFactory;

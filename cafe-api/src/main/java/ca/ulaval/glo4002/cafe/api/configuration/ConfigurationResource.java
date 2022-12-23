@@ -5,6 +5,7 @@ import ca.ulaval.glo4002.cafe.api.configuration.request.UpdateMenuRequest;
 import ca.ulaval.glo4002.cafe.application.configuration.ConfigurationService;
 import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateConfigurationQuery;
 import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateMenuQuery;
+import ca.ulaval.glo4002.cafe.application.inventory.query.IngredientsQuery;
 
 import jakarta.validation.Valid;
 import jakarta.ws.rs.POST;
@@ -36,7 +37,10 @@ public class ConfigurationResource {
     @POST
     @Path("/menu")
     public Response updateMenu(@Valid UpdateMenuRequest updateMenuRequest) {
-        UpdateMenuQuery updateMenuQuery = UpdateMenuQuery.from(updateMenuRequest.name, updateMenuRequest.ingredients, updateMenuRequest.cost);
+        IngredientsQuery ingredientsQuery =
+            IngredientsQuery.from(updateMenuRequest.ingredients.Chocolate, updateMenuRequest.ingredients.Milk, updateMenuRequest.ingredients.Water,
+                updateMenuRequest.ingredients.Espresso);
+        UpdateMenuQuery updateMenuQuery = UpdateMenuQuery.from(updateMenuRequest.name, ingredientsQuery, updateMenuRequest.cost);
         configurationService.updateMenu(updateMenuQuery);
         return Response.ok().build();
     }
