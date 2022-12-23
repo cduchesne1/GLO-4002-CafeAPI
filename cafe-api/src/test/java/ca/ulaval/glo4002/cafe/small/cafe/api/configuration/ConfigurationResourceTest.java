@@ -5,9 +5,12 @@ import org.junit.jupiter.api.Test;
 
 import ca.ulaval.glo4002.cafe.api.configuration.ConfigurationResource;
 import ca.ulaval.glo4002.cafe.api.configuration.request.UpdateConfigurationRequest;
+import ca.ulaval.glo4002.cafe.api.configuration.request.UpdateMenuRequest;
 import ca.ulaval.glo4002.cafe.application.configuration.ConfigurationService;
 import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateConfigurationQuery;
+import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateMenuQuery;
 import ca.ulaval.glo4002.cafe.fixture.request.UpdateConfigurationRequestFixture;
+import ca.ulaval.glo4002.cafe.fixture.request.UpdateMenuRequestFixture;
 
 import jakarta.ws.rs.core.Response;
 
@@ -55,6 +58,25 @@ public class ConfigurationResourceTest {
                 .build();
 
         Response response = configurationResource.updateConfiguration(updateConfigurationRequest);
+
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+    }
+
+    @Test
+    public void whenUpdatingMenu_shouldUpdateMenu() {
+        UpdateMenuRequest updateMenuRequest = new UpdateMenuRequestFixture().build();
+        UpdateMenuQuery updateMenuQuery = new UpdateMenuQuery(updateMenuRequest.name, updateMenuRequest.ingredients, updateMenuRequest.cost);
+
+        configurationResource.updateMenu(updateMenuRequest);
+
+        verify(configurationService).updateMenu(updateMenuQuery);
+    }
+
+    @Test
+    public void givenValidRequest_whenUpdatingMenu_shouldReturn200() {
+        UpdateMenuRequest updateMenuRequest = new UpdateMenuRequestFixture().build();
+
+        Response response = configurationResource.updateMenu(updateMenuRequest);
 
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }

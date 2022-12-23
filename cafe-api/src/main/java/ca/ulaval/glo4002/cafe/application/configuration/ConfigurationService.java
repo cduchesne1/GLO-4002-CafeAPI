@@ -1,6 +1,7 @@
 package ca.ulaval.glo4002.cafe.application.configuration;
 
 import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateConfigurationQuery;
+import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateMenuQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
@@ -27,5 +28,9 @@ public class ConfigurationService {
 
         cafe.close();
         cafeRepository.saveOrUpdate(cafe);
+    }
+
+    public void updateMenu(UpdateMenuQuery updateMenuQuery) {
+        Cafe cafe = cafeRepository.get();
     }
 }

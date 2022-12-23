@@ -1,8 +1,10 @@
 package ca.ulaval.glo4002.cafe.api.configuration;
 
 import ca.ulaval.glo4002.cafe.api.configuration.request.UpdateConfigurationRequest;
+import ca.ulaval.glo4002.cafe.api.configuration.request.UpdateMenuRequest;
 import ca.ulaval.glo4002.cafe.application.configuration.ConfigurationService;
 import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateConfigurationQuery;
+import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateMenuQuery;
 
 import jakarta.validation.Valid;
 import jakarta.ws.rs.POST;
@@ -28,6 +30,14 @@ public class ConfigurationResource {
                 updateConfigurationRequest.group_reservation_method, updateConfigurationRequest.country, updateConfigurationRequest.province,
                 updateConfigurationRequest.state, updateConfigurationRequest.group_tip_rate);
         configurationService.updateConfiguration(updateConfigurationQuery);
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("/menu")
+    public Response updateMenu(@Valid UpdateMenuRequest updateMenuRequest) {
+        UpdateMenuQuery updateMenuQuery = UpdateMenuQuery.from(updateMenuRequest.name, updateMenuRequest.ingredients, updateMenuRequest.cost);
+        configurationService.updateMenu(updateMenuQuery);
         return Response.ok().build();
     }
 }
