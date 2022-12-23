@@ -31,12 +31,12 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Amount;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill.Bill;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Coffee;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.CoffeeType;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Order;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Province;
 import ca.ulaval.glo4002.cafe.domain.location.State;
+import ca.ulaval.glo4002.cafe.domain.order.Coffee;
+import ca.ulaval.glo4002.cafe.domain.order.CoffeeType;
+import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupSize;
 import ca.ulaval.glo4002.cafe.domain.reservation.Reservation;
@@ -349,7 +349,7 @@ public class CafeTest {
 
         cafe.placeOrder(aCustomer.getId(), ANOTHER_ORDER);
 
-        assertEquals(AN_ORDER.addAll(ANOTHER_ORDER), cafe.getOrderByCustomerId(aCustomer.getId()));
+        assertEquals(AN_ORDER.addAllItems(ANOTHER_ORDER), cafe.getOrderByCustomerId(aCustomer.getId()));
     }
 
     @Test
@@ -385,7 +385,7 @@ public class CafeTest {
         cafe.addIngredientsToInventory(AN_ORDER.ingredientsNeeded());
 
         try {
-            cafe.placeOrder(aCustomer.getId(), AN_ORDER.addAll(AN_ORDER));
+            cafe.placeOrder(aCustomer.getId(), AN_ORDER.addAllItems(AN_ORDER));
         } catch (InsufficientIngredientsException ignored) {
         }
 
@@ -399,7 +399,7 @@ public class CafeTest {
         cafe.addIngredientsToInventory(AN_ORDER.ingredientsNeeded());
 
         try {
-            cafe.placeOrder(aCustomer.getId(), AN_ORDER.addAll(AN_ORDER));
+            cafe.placeOrder(aCustomer.getId(), AN_ORDER.addAllItems(AN_ORDER));
         } catch (InsufficientIngredientsException ignored) {
         }
 

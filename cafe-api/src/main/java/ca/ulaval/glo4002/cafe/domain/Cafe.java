@@ -14,8 +14,8 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill.Bill;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Order;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
+import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.domain.reservation.BookingRegister;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
 import ca.ulaval.glo4002.cafe.domain.reservation.Reservation;
@@ -25,6 +25,7 @@ public class Cafe {
     private final Layout layout;
     private final BookingRegister bookingRegister = new BookingRegister();
     private final HashMap<CustomerId, Bill> bills = new HashMap<>();
+    private final HashMap<CustomerId, Order> orders = new HashMap<>();
     private final Inventory inventory;
     private TipRate groupTipRate;
     private int cubeSize;
@@ -59,7 +60,8 @@ public class Cafe {
     }
 
     public Order getOrderByCustomerId(CustomerId customerId) {
-        return layout.getOrderByCustomerId(customerId);
+        Optional<Order> customerOrder = Optional.ofNullable(orders.get(customerId));
+        return customerOrder.orElseThrow(CustomerNotFoundException::new);
     }
 
     public void updateConfiguration(CafeConfiguration cafeConfiguration) {
@@ -81,6 +83,7 @@ public class Cafe {
     public void checkIn(Customer customer, Optional<GroupName> groupName) {
         checkIfCustomerAlreadyVisitedToday(customer.getId());
         assignSeatToCustomer(customer, groupName);
+        createEmptyOrderForCustomer(customer);
     }
 
     private void checkIfCustomerAlreadyVisitedToday(CustomerId customerId) {
@@ -98,15 +101,24 @@ public class Cafe {
         }
     }
 
+    private void createEmptyOrderForCustomer(Customer customer) {
+        orders.put(customer.getId(), new Order(List.of()));
+    }
+
     public void placeOrder(CustomerId customerId, Order order) {
-        Seat seat = getSeatByCustomerId(customerId);
-        inventory.useIngredients(order.ingredientsNeeded());
-        seat.placeOrder(order);
+        if (orders.containsKey(customerId)) {
+            inventory.useIngredients(order.ingredientsNeeded());
+            Order modifiedOrder = orders.get(customerId).addAllItems(order);
+            orders.put(customerId, modifiedOrder);
+        } else {
+            throw new CustomerNotFoundException();
+        }
     }
 
     public void checkOut(CustomerId customerId) {
-        Bill bill = layout.checkout(customerId, location, groupTipRate);
+        Bill bill = layout.checkout(customerId, location, groupTipRate, getOrderByCustomerId(customerId));
         bills.put(customerId, bill);
+        orders.remove(customerId);
     }
 
     public Bill getCustomerBill(CustomerId customerId) {
@@ -124,6 +136,7 @@ public class Cafe {
         layout.reset(cubeSize);
         bookingRegister.clearReservations();
         bills.clear();
+        orders.clear();
         inventory.clear();
     }
 }

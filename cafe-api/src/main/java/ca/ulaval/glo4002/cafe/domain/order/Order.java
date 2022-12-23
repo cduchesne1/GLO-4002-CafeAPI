@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order;
+package ca.ulaval.glo4002.cafe.domain.order;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
 
 public record Order(List<Coffee> items) {
-    public Order addAll(Order otherOrder) {
+    public Order addAllItems(Order otherOrder) {
         return new Order(Stream.concat(items().stream(), otherOrder.items().stream()).toList());
     }
 

@@ -19,8 +19,8 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.SeatNumber;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill.Bill;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Order;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
+import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
 
 public class Layout {
@@ -39,13 +39,6 @@ public class Layout {
     public Seat getSeatByCustomerId(CustomerId customerId) {
         return getSeatsFromCubes().stream().filter(Seat::isCurrentlyOccupied).filter(seat -> customerId.equals(seat.getCustomer().get().getId())).findFirst()
             .orElseThrow(CustomerNotFoundException::new);
-    }
-
-    public Order getOrderByCustomerId(CustomerId customerId) {
-        Seat seatWithCustomer =
-            getSeatsFromCubes().stream().filter(Seat::isCurrentlyOccupied).filter(seat -> customerId.equals(seat.getCustomer().get().getId())).findFirst()
-                .orElseThrow(CustomerNotFoundException::new);
-        return seatWithCustomer.getCustomer().get().getOrder();
     }
 
     public void assignSeatToIndividual(Customer customer) {
@@ -103,10 +96,10 @@ public class Layout {
         return cubes.stream().map(Cube::getSeats).flatMap(List::stream).toList();
     }
 
-    public Bill checkout(CustomerId customerId, Location location, TipRate groupTipRate) {
+    public Bill checkout(CustomerId customerId, Location location, TipRate groupTipRate, Order order) {
         Seat seat = getSeatByCustomerId(customerId);
         removeReservationIfLastMember(seat);
-        return seat.checkout(location, groupTipRate);
+        return seat.checkout(location, groupTipRate, order);
     }
 
     private void removeReservationIfLastMember(Seat seat) {

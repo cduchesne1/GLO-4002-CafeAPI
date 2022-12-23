@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order;
+package ca.ulaval.glo4002.cafe.domain.order;
 
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Amount;
 

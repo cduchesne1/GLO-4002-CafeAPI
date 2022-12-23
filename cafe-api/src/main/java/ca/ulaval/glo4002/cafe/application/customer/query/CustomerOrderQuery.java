@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Coffee;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.CoffeeType;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Order;
+import ca.ulaval.glo4002.cafe.domain.order.Coffee;
+import ca.ulaval.glo4002.cafe.domain.order.CoffeeType;
+import ca.ulaval.glo4002.cafe.domain.order.Order;
 
 public record CustomerOrderQuery(CustomerId customerId, Order order) {
     public CustomerOrderQuery(String customerId, List<String> orders) {

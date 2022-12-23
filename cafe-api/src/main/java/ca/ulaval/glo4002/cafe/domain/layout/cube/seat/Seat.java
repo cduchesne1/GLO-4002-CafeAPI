@@ -7,8 +7,8 @@ import ca.ulaval.glo4002.cafe.domain.exception.SeatAlreadyOccupiedException;
 import ca.ulaval.glo4002.cafe.domain.exception.SeatAlreadyReservedException;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill.Bill;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Order;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
+import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
 
 public class Seat {
@@ -65,8 +65,8 @@ public class Seat {
         return this.groupName.isPresent();
     }
 
-    public Bill checkout(Location location, TipRate groupTipRate) {
-        Bill bill = customer.get().createBill(location, groupTipRate, isReservedForGroup());
+    public Bill checkout(Location location, TipRate groupTipRate, Order order) {
+        Bill bill = customer.get().createBill(location, groupTipRate, isReservedForGroup(), order);
         this.customer = Optional.empty();
         this.groupName = Optional.empty();
         return bill;
@@ -74,9 +74,5 @@ public class Seat {
 
     public void removeReservation() {
         this.groupName = Optional.empty();
-    }
-
-    public void placeOrder(Order order) {
-        customer.get().placeOrder(order);
     }
 }
