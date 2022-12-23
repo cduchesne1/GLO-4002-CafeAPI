@@ -11,7 +11,6 @@ import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
 import ca.ulaval.glo4002.cafe.domain.exception.DuplicateCubeNameException;
 import ca.ulaval.glo4002.cafe.domain.exception.InsufficientSeatsException;
 import ca.ulaval.glo4002.cafe.domain.exception.NoGroupSeatsException;
-import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.Cube;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
@@ -129,11 +128,5 @@ public class Layout {
 
     public boolean isCustomerAlreadySeated(CustomerId customerId) {
         return getSeatsFromCubes().stream().filter(Seat::isCurrentlyOccupied).anyMatch(seat -> customerId.equals(seat.getCustomer().get().getId()));
-    }
-
-    public void placeOrder(CustomerId customerId, Order order, Inventory inventory) {
-        Seat seat = getSeatByCustomerId(customerId);
-        inventory.useIngredients(order.ingredientsNeeded());
-        seat.placeOrder(order);
     }
 }

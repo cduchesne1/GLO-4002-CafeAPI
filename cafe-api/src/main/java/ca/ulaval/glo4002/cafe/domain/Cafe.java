@@ -99,7 +99,9 @@ public class Cafe {
     }
 
     public void placeOrder(CustomerId customerId, Order order) {
-        layout.placeOrder(customerId, order, inventory);
+        Seat seat = getSeatByCustomerId(customerId);
+        inventory.useIngredients(order.ingredientsNeeded());
+        seat.placeOrder(order);
     }
 
     public void checkOut(CustomerId customerId) {
