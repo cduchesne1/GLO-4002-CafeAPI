@@ -1,6 +1,6 @@
-package ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill;
+package ca.ulaval.glo4002.cafe.domain.bill;
 
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Amount;
+import ca.ulaval.glo4002.cafe.domain.Amount;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 
 public record Bill(Order order, Amount subtotal, Amount taxes, Amount tip, Amount total) {

@@ -2,11 +2,11 @@ package ca.ulaval.glo4002.cafe.domain.order;
 
 import java.util.List;
 
+import ca.ulaval.glo4002.cafe.domain.Amount;
 import ca.ulaval.glo4002.cafe.domain.exception.InvalidMenuOrderException;
 import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
 import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
 import ca.ulaval.glo4002.cafe.domain.inventory.Quantity;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Amount;
 
 public enum CoffeeType {
     Americano("Americano", new Amount(2.25f), new Recipe(List.of(

@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import ca.ulaval.glo4002.cafe.domain.bill.Bill;
+import ca.ulaval.glo4002.cafe.domain.bill.BillFactory;
+import ca.ulaval.glo4002.cafe.domain.bill.TipRate;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerAlreadyVisitedException;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNoBillException;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
@@ -13,7 +16,6 @@ import ca.ulaval.glo4002.cafe.domain.layout.Layout;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill.Bill;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.domain.reservation.BookingRegister;
@@ -23,6 +25,7 @@ import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
 
 public class Cafe {
     private final Layout layout;
+    private final BillFactory billFactory;
     private final BookingRegister bookingRegister = new BookingRegister();
     private final HashMap<CustomerId, Bill> bills = new HashMap<>();
     private final HashMap<CustomerId, Order> orders = new HashMap<>();
@@ -33,8 +36,9 @@ public class Cafe {
     private Location location;
     private ReservationStrategy reservationStrategy;
 
-    public Cafe(CafeConfiguration cafeConfiguration, Layout layout, Inventory inventory) {
+    public Cafe(CafeConfiguration cafeConfiguration, Layout layout, BillFactory billFactory, Inventory inventory) {
         this.layout = layout;
+        this.billFactory = billFactory;
         this.inventory = inventory;
         updateConfiguration(cafeConfiguration);
     }
@@ -116,9 +120,11 @@ public class Cafe {
     }
 
     public void checkOut(CustomerId customerId) {
-        Bill bill = layout.checkout(customerId, location, groupTipRate, getOrderByCustomerId(customerId));
+        Seat seat = layout.getSeatByCustomerId(customerId);
+        Bill bill = billFactory.createBill(orders.get(customerId), location, groupTipRate, seat.isReservedForGroup());
         bills.put(customerId, bill);
         orders.remove(customerId);
+        layout.checkout(customerId);
     }
 
     public Bill getCustomerBill(CustomerId customerId) {

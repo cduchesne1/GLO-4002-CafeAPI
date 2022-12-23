@@ -16,7 +16,7 @@ import ca.ulaval.glo4002.cafe.api.inventory.request.InventoryRequest;
 import ca.ulaval.glo4002.cafe.api.operation.request.CheckInRequest;
 import ca.ulaval.glo4002.cafe.api.operation.request.CheckOutRequest;
 import ca.ulaval.glo4002.cafe.api.reservation.request.ReservationRequest;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Amount;
+import ca.ulaval.glo4002.cafe.domain.Amount;
 import ca.ulaval.glo4002.cafe.domain.order.Coffee;
 import ca.ulaval.glo4002.cafe.domain.order.CoffeeType;
 import ca.ulaval.glo4002.cafe.domain.order.Order;

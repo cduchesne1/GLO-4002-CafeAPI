@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import ca.ulaval.glo4002.cafe.domain.TipRate;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
 import ca.ulaval.glo4002.cafe.domain.exception.DuplicateCubeNameException;
 import ca.ulaval.glo4002.cafe.domain.exception.InsufficientSeatsException;
@@ -18,9 +17,6 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.SeatNumber;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill.Bill;
-import ca.ulaval.glo4002.cafe.domain.location.Location;
-import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
 
 public class Layout {
@@ -96,10 +92,10 @@ public class Layout {
         return cubes.stream().map(Cube::getSeats).flatMap(List::stream).toList();
     }
 
-    public Bill checkout(CustomerId customerId, Location location, TipRate groupTipRate, Order order) {
+    public void checkout(CustomerId customerId) {
         Seat seat = getSeatByCustomerId(customerId);
         removeReservationIfLastMember(seat);
-        return seat.checkout(location, groupTipRate, order);
+        seat.checkout();
     }
 
     private void removeReservationIfLastMember(Seat seat) {

@@ -10,7 +10,8 @@ import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
 import ca.ulaval.glo4002.cafe.domain.CafeFactory;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
-import ca.ulaval.glo4002.cafe.domain.TipRate;
+import ca.ulaval.glo4002.cafe.domain.bill.BillFactory;
+import ca.ulaval.glo4002.cafe.domain.bill.TipRate;
 import ca.ulaval.glo4002.cafe.domain.exception.DuplicateCubeNameException;
 import ca.ulaval.glo4002.cafe.domain.layout.LayoutFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.Cube;
@@ -24,18 +25,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CafeFactoryTest {
-    private static final CafeConfiguration A_CAFE_CONFIGURATION = new CafeConfiguration(4, new CafeName("Les 4-Fées"), new DefaultStrategy(),
-        new Location(Country.None, Optional.empty(), Optional.empty()), new TipRate(0));
+    private static final CafeConfiguration A_CAFE_CONFIGURATION =
+        new CafeConfiguration(4, new CafeName("Les 4-Fées"), new DefaultStrategy(), new Location(Country.None, Optional.empty(), Optional.empty()),
+            new TipRate(0));
     private static final List<CubeName> DUPLICATE_CUBE_NAMES = List.of(new CubeName("Bob"), new CubeName("Bob"));
     private static final List<CubeName> SOME_CUBE_NAMES = List.of(new CubeName("John"), new CubeName("Bob"));
-
-    private LayoutFactory layoutFactory;
     private CafeFactory cafeFactory;
 
     @BeforeEach
     public void createCafeFactory() {
-        LayoutFactory layoutFactory = new LayoutFactory();
-        cafeFactory = new CafeFactory(layoutFactory);
+        cafeFactory = new CafeFactory(new LayoutFactory(), new BillFactory());
     }
 
     @Test

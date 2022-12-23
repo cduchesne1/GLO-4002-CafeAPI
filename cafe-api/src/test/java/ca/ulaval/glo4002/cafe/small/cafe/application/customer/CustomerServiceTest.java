@@ -14,13 +14,14 @@ import ca.ulaval.glo4002.cafe.application.customer.query.CheckOutCustomerQuery;
 import ca.ulaval.glo4002.cafe.application.customer.query.CustomerOrderQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
+import ca.ulaval.glo4002.cafe.domain.bill.Bill;
+import ca.ulaval.glo4002.cafe.domain.bill.BillFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.SeatNumber;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerName;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill.Bill;
 import ca.ulaval.glo4002.cafe.domain.order.Coffee;
 import ca.ulaval.glo4002.cafe.domain.order.CoffeeType;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
@@ -48,6 +49,7 @@ public class CustomerServiceTest {
 
     private CustomerService customersService;
     private CustomerFactory customerFactory;
+    private BillFactory billFactory;
 
     private CafeRepository cafeRepository;
     private Cafe mockCafe;
@@ -56,7 +58,8 @@ public class CustomerServiceTest {
     public void createCustomersService() {
         cafeRepository = mock(CafeRepository.class);
         customerFactory = mock(CustomerFactory.class);
-        customersService = new CustomerService(cafeRepository, customerFactory);
+        billFactory = mock(BillFactory.class);
+        customersService = new CustomerService(cafeRepository, customerFactory, billFactory);
 
         mockCafe = mock(Cafe.class);
         when(cafeRepository.get()).thenReturn(mockCafe);

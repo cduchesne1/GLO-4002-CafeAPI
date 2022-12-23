@@ -8,20 +8,23 @@ import ca.ulaval.glo4002.cafe.application.customer.query.CheckOutCustomerQuery;
 import ca.ulaval.glo4002.cafe.application.customer.query.CustomerOrderQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
+import ca.ulaval.glo4002.cafe.domain.bill.Bill;
+import ca.ulaval.glo4002.cafe.domain.bill.BillFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill.Bill;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 
 public class CustomerService {
     private final CafeRepository cafeRepository;
     private final CustomerFactory customerFactory;
+    private final BillFactory billFactory;
 
-    public CustomerService(CafeRepository cafeRepository, CustomerFactory customerFactory) {
+    public CustomerService(CafeRepository cafeRepository, CustomerFactory customerFactory, BillFactory billFactory) {
         this.cafeRepository = cafeRepository;
         this.customerFactory = customerFactory;
+        this.billFactory = billFactory;
     }
 
     public CustomerPayload getCustomer(CustomerId customerId) {

@@ -1,6 +1,6 @@
 package ca.ulaval.glo4002.cafe.domain.order;
 
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Amount;
+import ca.ulaval.glo4002.cafe.domain.Amount;
 
 public record Coffee(CoffeeType coffeeType) {
     public Amount price() {

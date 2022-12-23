@@ -15,10 +15,11 @@ import ca.ulaval.glo4002.cafe.application.customer.query.CheckOutCustomerQuery;
 import ca.ulaval.glo4002.cafe.application.customer.query.CustomerOrderQuery;
 import ca.ulaval.glo4002.cafe.application.inventory.InventoryService;
 import ca.ulaval.glo4002.cafe.application.inventory.query.IngredientsQuery;
+import ca.ulaval.glo4002.cafe.domain.Amount;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
+import ca.ulaval.glo4002.cafe.domain.bill.BillFactory;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.SeatNumber;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Amount;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerName;
@@ -46,7 +47,7 @@ public class CustomerServiceTest {
     @BeforeEach
     public void setupCustomerService() {
         cafeRepository = CafeRepositoryTestUtil.createCafeRepositoryWithDefaultCafe();
-        customerService = new CustomerService(cafeRepository, new CustomerFactory());
+        customerService = new CustomerService(cafeRepository, new CustomerFactory(), new BillFactory());
         inventoryService = new InventoryService(cafeRepository);
     }
 

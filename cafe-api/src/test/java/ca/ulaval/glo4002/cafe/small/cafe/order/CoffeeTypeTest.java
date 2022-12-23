@@ -1,4 +1,4 @@
-package ca.ulaval.glo4002.cafe.small.cafe.domain.layout.cube.seat.customer.order;
+package ca.ulaval.glo4002.cafe.small.cafe.order;
 
 import org.junit.jupiter.api.Test;
 

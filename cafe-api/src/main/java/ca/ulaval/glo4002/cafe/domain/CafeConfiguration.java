@@ -1,5 +1,6 @@
 package ca.ulaval.glo4002.cafe.domain;
 
+import ca.ulaval.glo4002.cafe.domain.bill.TipRate;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
 import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
 

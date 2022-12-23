@@ -1,8 +1,6 @@
-package ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill;
+package ca.ulaval.glo4002.cafe.domain.bill;
 
-import ca.ulaval.glo4002.cafe.domain.TipRate;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Amount;
-import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Tax;
+import ca.ulaval.glo4002.cafe.domain.Amount;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 
