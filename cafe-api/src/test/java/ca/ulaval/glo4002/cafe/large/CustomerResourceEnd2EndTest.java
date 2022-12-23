@@ -18,7 +18,6 @@ import ca.ulaval.glo4002.cafe.api.operation.request.CheckOutRequest;
 import ca.ulaval.glo4002.cafe.api.reservation.request.ReservationRequest;
 import ca.ulaval.glo4002.cafe.domain.Amount;
 import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
-import ca.ulaval.glo4002.cafe.domain.order.CoffeeType;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.fixture.request.CheckInRequestFixture;
 import ca.ulaval.glo4002.cafe.fixture.request.InventoryRequestFixture;
@@ -36,8 +35,8 @@ public class CustomerResourceEnd2EndTest {
     private static final String GROUP_NAME = "Rise Against the Machine";
     private static final int FIRST_SEAT_NUMBER = 1;
     private static final Order ORDERS = new Order(
-        List.of(new CoffeeName(CoffeeType.Espresso.toString()), new CoffeeName(CoffeeType.Espresso.toString()), new CoffeeName(CoffeeType.Latte.toString()),
-            new CoffeeName(CoffeeType.Americano.toString())));
+        List.of(new CoffeeName("Espresso"), new CoffeeName("Espresso"), new CoffeeName("Latte"),
+            new CoffeeName("Americano")));
     private static final String A_VALID_COFFEE = "Latte";
     private static final String ANOTHER_VALID_COFFEE = "Americano";
     private static final Amount SUBTOTAL = new Amount(11.1f);

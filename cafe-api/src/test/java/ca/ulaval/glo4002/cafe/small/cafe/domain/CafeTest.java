@@ -21,6 +21,7 @@ import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
 import ca.ulaval.glo4002.cafe.domain.exception.DuplicateGroupNameException;
 import ca.ulaval.glo4002.cafe.domain.exception.InsufficientIngredientsException;
 import ca.ulaval.glo4002.cafe.domain.exception.InsufficientSeatsException;
+import ca.ulaval.glo4002.cafe.domain.exception.InvalidMenuOrderException;
 import ca.ulaval.glo4002.cafe.domain.exception.NoGroupSeatsException;
 import ca.ulaval.glo4002.cafe.domain.exception.NoReservationsFoundException;
 import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
@@ -39,7 +40,6 @@ import ca.ulaval.glo4002.cafe.domain.location.State;
 import ca.ulaval.glo4002.cafe.domain.menu.Coffee;
 import ca.ulaval.glo4002.cafe.domain.menu.Menu;
 import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
-import ca.ulaval.glo4002.cafe.domain.order.CoffeeType;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.domain.reservation.BookingRegister;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
@@ -52,6 +52,7 @@ import ca.ulaval.glo4002.cafe.fixture.CustomerFixture;
 import ca.ulaval.glo4002.cafe.fixture.OrderFixture;
 import ca.ulaval.glo4002.cafe.fixture.ReservationFixture;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -69,10 +70,13 @@ public class CafeTest {
     private static final Reservation ANOTHER_RESERVATION_FOR_TWO =
         new ReservationFixture().withGroupName(new GroupName("Another")).withGroupSize(new GroupSize(2)).build();
     private static final Order AN_ORDER = new OrderFixture().build();
-    private static final Order ANOTHER_ORDER = new OrderFixture().withItems(List.of(new CoffeeName(CoffeeType.Espresso.toString()))).build();
+    private static final Order ANOTHER_ORDER = new OrderFixture().withItems(List.of(new CoffeeName("Espresso"))).build();
+    private static final Order AN_ORDER_WITH_ITEM_NOT_IN_MENU =
+        new OrderFixture().withItems(List.of(new CoffeeName("Espresso"), new CoffeeName("NotInMenu"))).build();
     private static final CafeConfiguration A_DEFAULT_CONFIGURATION = new CafeConfigurationFixture().build();
     private static final Map<CoffeeName, Coffee> DEFAULT_COFFEES = Map.ofEntries(Map.entry(new CoffeeName("Americano"),
-            new Coffee(new CoffeeName("Americano"), new Amount(2.25f), Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Water, new Quantity(50)))),
+            new Coffee(new CoffeeName("Americano"), new Amount(2.25f),
+                Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Water, new Quantity(50)))),
 
         Map.entry(new CoffeeName("Dark Roast"), new Coffee(new CoffeeName("Dark Roast"), new Amount(2.10f),
             Map.of(IngredientType.Espresso, new Quantity(40), IngredientType.Water, new Quantity(40), IngredientType.Chocolate, new Quantity(10),
@@ -404,6 +408,15 @@ public class CafeTest {
     }
 
     @Test
+    public void givenOrderWithItemNotInMenu_whenPlacingOrder_shouldThrowInvalidMenuOrderException() {
+        Cafe cafe = cafeWithEnoughInventory();
+        Customer aCustomer = new CustomerFixture().build();
+        cafe.checkIn(aCustomer, Optional.empty());
+
+        assertThrows(InvalidMenuOrderException.class, () -> cafe.placeOrder(aCustomer.getId(), AN_ORDER_WITH_ITEM_NOT_IN_MENU));
+    }
+
+    @Test
     public void givenEnoughIngredients_whenPlacingOrder_shouldConsumeIngredientsFromInventory() {
         cafe.addIngredientsToInventory(menu.getIngredientsNeeded(AN_ORDER));
         Customer aCustomer = new CustomerFixture().build();
@@ -658,6 +671,18 @@ public class CafeTest {
     }
 
     @Test
+    public void whenUpdatingMenu_shouldAddCoffeeToMenu() {
+        Cafe cafe = cafeWithEnoughInventory();
+        CoffeeName newCoffeeName = new CoffeeName("New Coffee");
+        Customer aCustomer = new CustomerFixture().build();
+        cafe.checkIn(aCustomer, Optional.empty());
+
+        cafe.updateMenu(newCoffeeName, Map.of(IngredientType.Chocolate, new Quantity(10)), new Amount(10));
+
+        assertDoesNotThrow(() -> cafe.placeOrder(aCustomer.getId(), new Order(List.of(newCoffeeName))));
+    }
+
+    @Test
     public void whenClosingCafe_shouldClearAllSeats() {
         Customer aCustomer = new CustomerFixture().build();
         cafe.checkIn(aCustomer, Optional.empty());
@@ -725,6 +750,35 @@ public class CafeTest {
         cafe.checkIn(aCustomer, Optional.empty());
 
         assertThrows(CustomerNoBillException.class, () -> cafe.getCustomerBill(aCustomer.getId()));
+    }
+
+    @Test
+    public void whenClosingCafe_shouldKeepDefaultCoffeesFromMenu() {
+        CoffeeName coffeeName = new CoffeeName("Americano");
+        Customer aCustomer = new CustomerFixture().build();
+        Layout layout = new Layout(A_DEFAULT_CONFIGURATION.cubeSize(), SOME_CUBE_NAMES);
+        Menu menu = new Menu(
+            Map.of(coffeeName, new Coffee(coffeeName, new Amount(10), Map.of(IngredientType.Water, new Quantity(10)))));
+        cafe = new Cafe(A_DEFAULT_CONFIGURATION, menu, layout, new BookingRegister(), new PointOfSale(new BillFactory()), new Inventory());
+
+        cafe.close();
+        cafe.addIngredientsToInventory(Map.of(IngredientType.Water, new Quantity(10)));
+        cafe.checkIn(aCustomer, Optional.empty());
+
+        assertDoesNotThrow(() -> cafe.placeOrder(aCustomer.getId(), new Order(List.of(coffeeName))));
+    }
+
+    @Test
+    public void whenClosingCafe_shouldRemoveAllCustomCoffeesFromMenu() {
+        CoffeeName newCoffeeName = new CoffeeName("New Coffee");
+        Customer aCustomer = new CustomerFixture().build();
+        cafe.updateMenu(newCoffeeName, Map.of(IngredientType.Chocolate, new Quantity(10)), new Amount(10));
+
+        cafe.close();
+        cafe.addIngredientsToInventory(Map.of(IngredientType.Chocolate, new Quantity(10)));
+        cafe.checkIn(aCustomer, Optional.empty());
+
+        assertThrows(InvalidMenuOrderException.class, () -> cafe.placeOrder(aCustomer.getId(), new Order(List.of(newCoffeeName))));
     }
 
     private Cafe cafeWithEnoughInventory() {

@@ -23,7 +23,6 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerName;
 import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
-import ca.ulaval.glo4002.cafe.domain.order.CoffeeType;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.fixture.BillFixture;
 import ca.ulaval.glo4002.cafe.fixture.CustomerFixture;
@@ -42,8 +41,8 @@ public class CustomerServiceTest {
     private static final CheckOutCustomerQuery CHECK_OUT_CUSTOMER_QUERY = new CheckOutCustomerQuery(CUSTOMER_ID.value());
     private static final Customer CUSTOMER = new CustomerFixture().withCustomerId(CUSTOMER_ID).withCustomerName(CUSTOMER_NAME).build();
     private static final Seat SEAT_WITH_CUSTOMER = new SeatFixture().withSeatNumber(new SeatNumber(1)).withCustomer(CUSTOMER).build();
-    private static final CoffeeName AN_AMERICANO_COFFEE = new CoffeeName(CoffeeType.Americano.toString());
-    private static final CoffeeName A_DARK_ROAST_COFFEE = new CoffeeName(CoffeeType.DarkRoast.toString());
+    private static final CoffeeName AN_AMERICANO_COFFEE = new CoffeeName("Americano");
+    private static final CoffeeName A_DARK_ROAST_COFFEE = new CoffeeName("Dark Roast");
     private static final Order A_ORDER = new OrderFixture().build();
     private static final Bill A_VALID_BILL = new BillFixture().build();
 
@@ -181,21 +180,21 @@ public class CustomerServiceTest {
 
     @Test
     public void whenPlacingOrder_shouldGetCafe() {
-        customersService.placeOrder(new CustomerOrderQuery(CUSTOMER_ID.value(), List.of(CoffeeType.Americano.toString())));
+        customersService.placeOrder(new CustomerOrderQuery(CUSTOMER_ID.value(), List.of("Americano")));
 
         verify(cafeRepository).get();
     }
 
     @Test
     public void whenPlacingOrder_shouldPlaceOrder() {
-        customersService.placeOrder(new CustomerOrderQuery(CUSTOMER_ID.value(), List.of(CoffeeType.Americano.toString())));
+        customersService.placeOrder(new CustomerOrderQuery(CUSTOMER_ID.value(), List.of("Americano")));
 
         verify(mockCafe).placeOrder(CUSTOMER_ID, new OrderFixture().withItems(List.of(AN_AMERICANO_COFFEE)).build());
     }
 
     @Test
     public void whenPlacingOrder_shouldUpdateCafe() {
-        customersService.placeOrder(new CustomerOrderQuery(CUSTOMER_ID.value(), List.of(CoffeeType.Americano.toString())));
+        customersService.placeOrder(new CustomerOrderQuery(CUSTOMER_ID.value(), List.of("Americano")));
 
         verify(cafeRepository).saveOrUpdate(mockCafe);
     }

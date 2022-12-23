@@ -6,12 +6,14 @@ import org.mockito.ArgumentCaptor;
 
 import ca.ulaval.glo4002.cafe.application.configuration.ConfigurationService;
 import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateConfigurationQuery;
+import ca.ulaval.glo4002.cafe.application.configuration.query.UpdateMenuQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.reservation.ReservationStrategyFactory;
 import ca.ulaval.glo4002.cafe.domain.reservation.strategies.DefaultStrategy;
 import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
+import ca.ulaval.glo4002.cafe.fixture.request.InventoryRequestFixture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -21,6 +23,8 @@ import static org.mockito.Mockito.when;
 
 public class ConfigurationServiceTest {
     private static final UpdateConfigurationQuery AN_UPDATE_CONFIGURATION_QUERY = new UpdateConfigurationQuery(4, "Les 4-Fées", "Default", "CA", "QC", "", 5);
+    private static final UpdateMenuQuery AN_UPDATE_MENU_QUERY =
+        new UpdateMenuQuery("Pumpkin Latte", new InventoryRequestFixture().withEspresso(50).withMilk(50).build(), 4);
 
     private ConfigurationService configurationService;
     private CafeRepository cafeRepository;
@@ -87,6 +91,36 @@ public class ConfigurationServiceTest {
         when(cafeRepository.get()).thenReturn(mockCafe);
 
         configurationService.updateConfiguration(AN_UPDATE_CONFIGURATION_QUERY);
+
+        verify(cafeRepository).saveOrUpdate(mockCafe);
+    }
+
+    @Test
+    public void whenUpdatingMenu_shouldGetCafe() {
+        Cafe mockCafe = mock(Cafe.class);
+        when(cafeRepository.get()).thenReturn(mockCafe);
+
+        configurationService.updateMenu(AN_UPDATE_MENU_QUERY);
+
+        verify(cafeRepository).get();
+    }
+
+    @Test
+    public void whenUpdatingMenu_shouldUpdateCafeMenu() {
+        Cafe mockCafe = mock(Cafe.class);
+        when(cafeRepository.get()).thenReturn(mockCafe);
+
+        configurationService.updateMenu(AN_UPDATE_MENU_QUERY);
+
+        verify(mockCafe).updateMenu(AN_UPDATE_MENU_QUERY.name(), AN_UPDATE_MENU_QUERY.ingredients(), AN_UPDATE_MENU_QUERY.cost());
+    }
+
+    @Test
+    public void whenUpdatingMenu_shouldUpdateCafe() {
+        Cafe mockCafe = mock(Cafe.class);
+        when(cafeRepository.get()).thenReturn(mockCafe);
+
+        configurationService.updateMenu(AN_UPDATE_MENU_QUERY);
 
         verify(cafeRepository).saveOrUpdate(mockCafe);
     }

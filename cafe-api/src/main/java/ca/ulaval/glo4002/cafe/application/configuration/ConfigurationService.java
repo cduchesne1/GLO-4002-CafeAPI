@@ -32,5 +32,9 @@ public class ConfigurationService {
 
     public void updateMenu(UpdateMenuQuery updateMenuQuery) {
         Cafe cafe = cafeRepository.get();
+
+        cafe.updateMenu(updateMenuQuery.name(), updateMenuQuery.ingredients(), updateMenuQuery.cost());
+
+        cafeRepository.saveOrUpdate(cafe);
     }
 }

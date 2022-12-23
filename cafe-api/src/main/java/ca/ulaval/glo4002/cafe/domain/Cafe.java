@@ -16,6 +16,7 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
 import ca.ulaval.glo4002.cafe.domain.menu.Menu;
+import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.domain.reservation.BookingRegister;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
@@ -75,6 +76,10 @@ public class Cafe {
         this.location = cafeConfiguration.location();
     }
 
+    public void updateMenu(CoffeeName name, Map<IngredientType, Quantity> ingredients, Amount cost) {
+        menu.addItemToMenu(name, ingredients, cost);
+    }
+
     public void addIngredientsToInventory(Map<IngredientType, Quantity> ingredients) {
         inventory.add(ingredients);
     }
@@ -105,6 +110,7 @@ public class Cafe {
     }
 
     public void placeOrder(CustomerId customerId, Order order) {
+        menu.validateItemsAreInMenu(order);
         pointOfSale.placeOrder(customerId, order, menu.getIngredientsNeeded(order), inventory);
     }
 
@@ -123,5 +129,6 @@ public class Cafe {
         bookingRegister.clearReservations();
         pointOfSale.clear();
         inventory.clear();
+        menu.removeCustomCoffees();
     }
 }

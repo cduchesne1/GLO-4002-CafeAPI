@@ -9,14 +9,13 @@ import ca.ulaval.glo4002.cafe.api.customer.assembler.OrdersResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.customer.response.OrdersResponse;
 import ca.ulaval.glo4002.cafe.application.customer.payload.OrderPayload;
 import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
-import ca.ulaval.glo4002.cafe.domain.order.CoffeeType;
 import ca.ulaval.glo4002.cafe.fixture.OrderFixture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OrdersResponseAssemblerTest {
-    private static final CoffeeName AN_AMERICANO_COFFEE = new CoffeeName(CoffeeType.Americano.toString());
-    private static final CoffeeName A_DARK_ROAST_COFFEE = new CoffeeName(CoffeeType.DarkRoast.toString());
+    private static final CoffeeName AN_AMERICANO_COFFEE = new CoffeeName("Americano");
+    private static final CoffeeName A_DARK_ROAST_COFFEE = new CoffeeName("Dark Roast");
 
     private OrdersResponseAssembler ordersResponseAssembler;
 

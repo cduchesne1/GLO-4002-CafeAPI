@@ -10,7 +10,6 @@ import ca.ulaval.glo4002.cafe.api.customer.response.BillResponse;
 import ca.ulaval.glo4002.cafe.application.customer.payload.BillPayload;
 import ca.ulaval.glo4002.cafe.domain.Amount;
 import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
-import ca.ulaval.glo4002.cafe.domain.order.CoffeeType;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.fixture.BillFixture;
 
@@ -19,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BillResponseAssemblerTest {
     private static final Order A_COFFEE_ORDER =
         new Order(
-            List.of(new CoffeeName(CoffeeType.Espresso.toString()), new CoffeeName(CoffeeType.Espresso.toString()), new CoffeeName(CoffeeType.Latte.toString()),
-                new CoffeeName(CoffeeType.Americano.toString())));
+            List.of(new CoffeeName("Espresso"), new CoffeeName("Espresso"), new CoffeeName("Latte"),
+                new CoffeeName("Americano")));
 
     private BillResponseAssembler billResponseAssembler;
 
