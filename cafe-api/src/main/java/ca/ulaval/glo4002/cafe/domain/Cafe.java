@@ -1,15 +1,11 @@
 package ca.ulaval.glo4002.cafe.domain;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import ca.ulaval.glo4002.cafe.domain.bill.Bill;
-import ca.ulaval.glo4002.cafe.domain.bill.BillFactory;
 import ca.ulaval.glo4002.cafe.domain.bill.TipRate;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerAlreadyVisitedException;
-import ca.ulaval.glo4002.cafe.domain.exception.CustomerNoBillException;
-import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
 import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
 import ca.ulaval.glo4002.cafe.domain.layout.Layout;
@@ -25,10 +21,8 @@ import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
 
 public class Cafe {
     private final Layout layout;
-    private final BillFactory billFactory;
-    private final BookingRegister bookingRegister = new BookingRegister();
-    private final HashMap<CustomerId, Bill> bills = new HashMap<>();
-    private final HashMap<CustomerId, Order> orders = new HashMap<>();
+    private final BookingRegister bookingRegister;
+    private final PointOfSale pointOfSale;
     private final Inventory inventory;
     private TipRate groupTipRate;
     private int cubeSize;
@@ -36,9 +30,10 @@ public class Cafe {
     private Location location;
     private ReservationStrategy reservationStrategy;
 
-    public Cafe(CafeConfiguration cafeConfiguration, Layout layout, BillFactory billFactory, Inventory inventory) {
+    public Cafe(CafeConfiguration cafeConfiguration, Layout layout, BookingRegister bookingRegister, PointOfSale pointOfSale, Inventory inventory) {
         this.layout = layout;
-        this.billFactory = billFactory;
+        this.bookingRegister = bookingRegister;
+        this.pointOfSale = pointOfSale;
         this.inventory = inventory;
         updateConfiguration(cafeConfiguration);
     }
@@ -64,8 +59,7 @@ public class Cafe {
     }
 
     public Order getOrderByCustomerId(CustomerId customerId) {
-        Optional<Order> customerOrder = Optional.ofNullable(orders.get(customerId));
-        return customerOrder.orElseThrow(CustomerNotFoundException::new);
+        return pointOfSale.getOrderByCustomerId(customerId);
     }
 
     public void updateConfiguration(CafeConfiguration cafeConfiguration) {
@@ -87,11 +81,11 @@ public class Cafe {
     public void checkIn(Customer customer, Optional<GroupName> groupName) {
         checkIfCustomerAlreadyVisitedToday(customer.getId());
         assignSeatToCustomer(customer, groupName);
-        createEmptyOrderForCustomer(customer);
+        pointOfSale.createEmptyOrderForCustomer(customer);
     }
 
     private void checkIfCustomerAlreadyVisitedToday(CustomerId customerId) {
-        if (bills.containsKey(customerId) || layout.isCustomerAlreadySeated(customerId)) {
+        if (pointOfSale.customerHasBill(customerId) || layout.isCustomerAlreadySeated(customerId)) {
             throw new CustomerAlreadyVisitedException();
         }
     }
@@ -105,44 +99,24 @@ public class Cafe {
         }
     }
 
-    private void createEmptyOrderForCustomer(Customer customer) {
-        orders.put(customer.getId(), new Order(List.of()));
-    }
-
     public void placeOrder(CustomerId customerId, Order order) {
-        if (orders.containsKey(customerId)) {
-            inventory.useIngredients(order.ingredientsNeeded());
-            Order modifiedOrder = orders.get(customerId).addAllItems(order);
-            orders.put(customerId, modifiedOrder);
-        } else {
-            throw new CustomerNotFoundException();
-        }
+        pointOfSale.placeOrder(customerId, order, inventory);
     }
 
     public void checkOut(CustomerId customerId) {
         Seat seat = layout.getSeatByCustomerId(customerId);
-        Bill bill = billFactory.createBill(orders.get(customerId), location, groupTipRate, seat.isReservedForGroup());
-        bills.put(customerId, bill);
-        orders.remove(customerId);
+        pointOfSale.createBillForCustomer(customerId, location, groupTipRate, seat.isReservedForGroup());
         layout.checkout(customerId);
     }
 
     public Bill getCustomerBill(CustomerId customerId) {
-        if (!bills.containsKey(customerId)) {
-            if (layout.isCustomerAlreadySeated(customerId)) {
-                throw new CustomerNoBillException();
-            } else {
-                throw new CustomerNotFoundException();
-            }
-        }
-        return bills.get(customerId);
+        return pointOfSale.getCustomerBill(customerId, layout.isCustomerAlreadySeated(customerId));
     }
 
     public void close() {
         layout.reset(cubeSize);
         bookingRegister.clearReservations();
-        bills.clear();
-        orders.clear();
+        pointOfSale.clear();
         inventory.clear();
     }
 }

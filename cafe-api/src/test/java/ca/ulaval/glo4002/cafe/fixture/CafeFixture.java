@@ -6,6 +6,7 @@ import java.util.Optional;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
 import ca.ulaval.glo4002.cafe.domain.CafeName;
+import ca.ulaval.glo4002.cafe.domain.PointOfSale;
 import ca.ulaval.glo4002.cafe.domain.bill.BillFactory;
 import ca.ulaval.glo4002.cafe.domain.bill.TipRate;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
@@ -14,6 +15,7 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.Cube;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
+import ca.ulaval.glo4002.cafe.domain.reservation.BookingRegister;
 import ca.ulaval.glo4002.cafe.domain.reservation.strategies.DefaultStrategy;
 import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
 
@@ -56,6 +58,6 @@ public class CafeFixture {
     }
 
     public Cafe build() {
-        return new Cafe(this.cafeConfiguration, this.layout, new BillFactory(), new Inventory());
+        return new Cafe(this.cafeConfiguration, this.layout, new BookingRegister(), new PointOfSale(new BillFactory()), new Inventory());
     }
 }
