@@ -1,6 +1,5 @@
 package ca.ulaval.glo4002.cafe.domain;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -8,8 +7,6 @@ import java.util.Optional;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerAlreadyVisitedException;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNoBillException;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
-import ca.ulaval.glo4002.cafe.domain.exception.DuplicateGroupNameException;
-import ca.ulaval.glo4002.cafe.domain.exception.NoReservationsFoundException;
 import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
 import ca.ulaval.glo4002.cafe.domain.layout.Layout;
@@ -20,13 +17,14 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.bill.Bill;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.order.Order;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
+import ca.ulaval.glo4002.cafe.domain.reservation.BookingRegister;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
 import ca.ulaval.glo4002.cafe.domain.reservation.Reservation;
 import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
 
 public class Cafe {
     private final Layout layout;
-    private final List<Reservation> reservations = new ArrayList<>();
+    private final BookingRegister bookingRegister = new BookingRegister();
     private final HashMap<CustomerId, Bill> bills = new HashMap<>();
     private final Inventory inventory;
     private TipRate groupTipRate;
@@ -54,7 +52,7 @@ public class Cafe {
     }
 
     public List<Reservation> getReservations() {
-        return reservations;
+        return bookingRegister.getReservations();
     }
 
     public Seat getSeatByCustomerId(CustomerId customerId) {
@@ -78,15 +76,7 @@ public class Cafe {
     }
 
     public void makeReservation(Reservation reservation) {
-        checkIfGroupNameAlreadyExists(reservation.name());
-        reservationStrategy.makeReservation(reservation, layout.getCubes());
-        reservations.add(reservation);
-    }
-
-    private void checkIfGroupNameAlreadyExists(GroupName name) {
-        if (reservations.stream().map(Reservation::name).toList().contains(name)) {
-            throw new DuplicateGroupNameException();
-        }
+        bookingRegister.makeReservation(reservation, reservationStrategy, layout.getCubes());
     }
 
     public void checkIn(Customer customer, Optional<GroupName> groupName) {
@@ -102,20 +92,11 @@ public class Cafe {
 
     private void assignSeatToCustomer(Customer customer, Optional<GroupName> groupName) {
         if (groupName.isPresent()) {
-            validateHasReservation(groupName.get());
+            bookingRegister.validateHasReservation(groupName.get());
             layout.assignSeatToGroupMember(customer, groupName.get());
         } else {
             layout.assignSeatToIndividual(customer);
         }
-    }
-
-    private void validateHasReservation(GroupName groupName) {
-        for (Reservation reservation : reservations) {
-            if (reservation.name().equals(groupName)) {
-                return;
-            }
-        }
-        throw new NoReservationsFoundException();
     }
 
     public void placeOrder(CustomerId customerId, Order order) {
@@ -140,7 +121,7 @@ public class Cafe {
 
     public void close() {
         layout.reset(cubeSize);
-        reservations.clear();
+        bookingRegister.clearReservations();
         bills.clear();
         inventory.clear();
     }
