@@ -1,6 +1,7 @@
 package ca.ulaval.glo4002.context;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.glassfish.jersey.server.ResourceConfig;
@@ -21,6 +22,7 @@ import ca.ulaval.glo4002.cafe.application.inventory.InventoryService;
 import ca.ulaval.glo4002.cafe.application.layout.LayoutService;
 import ca.ulaval.glo4002.cafe.application.operation.OperationService;
 import ca.ulaval.glo4002.cafe.application.reservation.ReservationService;
+import ca.ulaval.glo4002.cafe.domain.Amount;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
 import ca.ulaval.glo4002.cafe.domain.CafeConfiguration;
 import ca.ulaval.glo4002.cafe.domain.CafeFactory;
@@ -28,11 +30,16 @@ import ca.ulaval.glo4002.cafe.domain.CafeName;
 import ca.ulaval.glo4002.cafe.domain.CafeRepository;
 import ca.ulaval.glo4002.cafe.domain.bill.BillFactory;
 import ca.ulaval.glo4002.cafe.domain.bill.TipRate;
+import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
+import ca.ulaval.glo4002.cafe.domain.inventory.Quantity;
 import ca.ulaval.glo4002.cafe.domain.layout.LayoutFactory;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.CubeName;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerFactory;
 import ca.ulaval.glo4002.cafe.domain.location.Country;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
+import ca.ulaval.glo4002.cafe.domain.menu.Coffee;
+import ca.ulaval.glo4002.cafe.domain.menu.MenuFactory;
+import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
 import ca.ulaval.glo4002.cafe.domain.reservation.ReservationFactory;
 import ca.ulaval.glo4002.cafe.domain.reservation.ReservationStrategyFactory;
 import ca.ulaval.glo4002.cafe.domain.reservation.strategies.DefaultStrategy;
@@ -49,6 +56,31 @@ public class ProductionApplicationContext implements ApplicationContext {
     private static final ReservationStrategy RESERVATION_STRATEGY = new DefaultStrategy();
     private static final TipRate GROUP_TIP_RATE = new TipRate(0);
     private static final Location LOCATION = new Location(Country.None, Optional.empty(), Optional.empty());
+
+    private static final Map<CoffeeName, Coffee> DEFAULT_COFFEES = Map.ofEntries(Map.entry(new CoffeeName("Americano"),
+            new Coffee(new CoffeeName("Americano"), new Amount(2.25f),
+                Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Water, new Quantity(50)))),
+
+        Map.entry(new CoffeeName("Dark Roast"), new Coffee(new CoffeeName("Dark Roast"), new Amount(2.10f),
+            Map.of(IngredientType.Espresso, new Quantity(40), IngredientType.Water, new Quantity(40), IngredientType.Chocolate, new Quantity(10),
+                IngredientType.Milk, new Quantity(10)))),
+
+        Map.entry(new CoffeeName("Cappuccino"), new Coffee(new CoffeeName("Cappuccino"), new Amount(3.29f),
+            Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Water, new Quantity(40), IngredientType.Milk, new Quantity(10)))),
+
+        Map.entry(new CoffeeName("Espresso"), new Coffee(new CoffeeName("Espresso"), new Amount(2.95f), Map.of(IngredientType.Espresso, new Quantity(60)))),
+
+        Map.entry(new CoffeeName("Flat White"), new Coffee(new CoffeeName("Flat White"), new Amount(3.75f),
+            Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Milk, new Quantity(50)))),
+
+        Map.entry(new CoffeeName("Latte"),
+            new Coffee(new CoffeeName("Latte"), new Amount(2.95f), Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Milk, new Quantity(50)))),
+
+        Map.entry(new CoffeeName("Macchiato"), new Coffee(new CoffeeName("Macchiato"), new Amount(4.75f),
+            Map.of(IngredientType.Espresso, new Quantity(80), IngredientType.Milk, new Quantity(20)))),
+
+        Map.entry(new CoffeeName("Mocha"), new Coffee(new CoffeeName("Mocha"), new Amount(4.15f),
+            Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Milk, new Quantity(40), IngredientType.Chocolate, new Quantity(10)))));
 
     public ResourceConfig initializeResourceConfig() {
         CafeRepository cafeRepository = new InMemoryCafeRepository();
@@ -71,7 +103,7 @@ public class ProductionApplicationContext implements ApplicationContext {
 
     private void initializeCafe(CafeRepository cafeRepository) {
         CafeConfiguration cafeConfiguration = new CafeConfiguration(CUBE_SIZE, CAFE_NAME, RESERVATION_STRATEGY, LOCATION, GROUP_TIP_RATE);
-        Cafe cafe = new CafeFactory(new LayoutFactory(), new BillFactory()).createCafe(CUBE_NAMES, cafeConfiguration);
+        Cafe cafe = new CafeFactory(new LayoutFactory(), new MenuFactory(), new BillFactory()).createCafe(CUBE_NAMES, cafeConfiguration, DEFAULT_COFFEES);
         cafeRepository.saveOrUpdate(cafe);
     }
 

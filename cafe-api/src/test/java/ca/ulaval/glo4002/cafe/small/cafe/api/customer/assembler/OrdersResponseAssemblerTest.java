@@ -8,15 +8,15 @@ import org.junit.jupiter.api.Test;
 import ca.ulaval.glo4002.cafe.api.customer.assembler.OrdersResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.customer.response.OrdersResponse;
 import ca.ulaval.glo4002.cafe.application.customer.payload.OrderPayload;
-import ca.ulaval.glo4002.cafe.domain.order.Coffee;
+import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
 import ca.ulaval.glo4002.cafe.domain.order.CoffeeType;
 import ca.ulaval.glo4002.cafe.fixture.OrderFixture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OrdersResponseAssemblerTest {
-    private static final Coffee AN_AMERICANO_COFFEE = new Coffee(CoffeeType.Americano);
-    private static final Coffee A_DARK_ROAST_COFFEE = new Coffee(CoffeeType.DarkRoast);
+    private static final CoffeeName AN_AMERICANO_COFFEE = new CoffeeName(CoffeeType.Americano.toString());
+    private static final CoffeeName A_DARK_ROAST_COFFEE = new CoffeeName(CoffeeType.DarkRoast.toString());
 
     private OrdersResponseAssembler ordersResponseAssembler;
 

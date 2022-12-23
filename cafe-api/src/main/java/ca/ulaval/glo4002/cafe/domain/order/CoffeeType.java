@@ -8,34 +8,34 @@ import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
 import ca.ulaval.glo4002.cafe.domain.inventory.Quantity;
 
 public enum CoffeeType {
-    Americano("Americano", new Amount(2.25f), new Recipe(Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Water, new Quantity(50)))),
+    Americano("Americano", new Amount(2.25f), Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Water, new Quantity(50))),
 
-    DarkRoast("Dark Roast", new Amount(2.10f), new Recipe(
+    DarkRoast("Dark Roast", new Amount(2.10f),
         Map.of(IngredientType.Espresso, new Quantity(40), IngredientType.Water, new Quantity(40), IngredientType.Chocolate, new Quantity(10),
-            IngredientType.Milk, new Quantity(10)))),
+            IngredientType.Milk, new Quantity(10))),
 
     Cappuccino("Cappuccino", new Amount(3.29f),
-        new Recipe(Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Water, new Quantity(40), IngredientType.Milk, new Quantity(10)))),
+        Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Water, new Quantity(40), IngredientType.Milk, new Quantity(10))),
 
-    Espresso("Espresso", new Amount(2.95f), new Recipe(Map.of(IngredientType.Espresso, new Quantity(60)))),
+    Espresso("Espresso", new Amount(2.95f), Map.of(IngredientType.Espresso, new Quantity(60))),
 
-    FlatWhite("Flat White", new Amount(3.75f), new Recipe(Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Milk, new Quantity(50)))),
+    FlatWhite("Flat White", new Amount(3.75f), Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Milk, new Quantity(50))),
 
-    Latte("Latte", new Amount(2.95f), new Recipe(Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Milk, new Quantity(50)))),
+    Latte("Latte", new Amount(2.95f), Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Milk, new Quantity(50))),
 
-    Macchiato("Macchiato", new Amount(4.75f), new Recipe(Map.of(IngredientType.Espresso, new Quantity(80), IngredientType.Milk, new Quantity(20)))),
+    Macchiato("Macchiato", new Amount(4.75f), Map.of(IngredientType.Espresso, new Quantity(80), IngredientType.Milk, new Quantity(20))),
 
     Mocha("Mocha", new Amount(4.15f),
-        new Recipe(Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Milk, new Quantity(40), IngredientType.Chocolate, new Quantity(10))));
+        Map.of(IngredientType.Espresso, new Quantity(50), IngredientType.Milk, new Quantity(40), IngredientType.Chocolate, new Quantity(10)));
 
     private final String type;
     private final Amount price;
-    private final Recipe recipe;
+    private final Map<IngredientType, Quantity> ingredients;
 
-    CoffeeType(String type, Amount price, Recipe recipe) {
+    CoffeeType(String type, Amount price, Map<IngredientType, Quantity> ingredients) {
         this.type = type;
         this.price = price;
-        this.recipe = recipe;
+        this.ingredients = ingredients;
     }
 
     private static boolean contains(String other) {
@@ -61,9 +61,5 @@ public enum CoffeeType {
 
     public Amount getPrice() {
         return price;
-    }
-
-    public Recipe getRecipe() {
-        return recipe;
     }
 }

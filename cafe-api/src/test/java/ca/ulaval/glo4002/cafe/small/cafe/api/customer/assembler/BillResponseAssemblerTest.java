@@ -9,7 +9,7 @@ import ca.ulaval.glo4002.cafe.api.customer.assembler.BillResponseAssembler;
 import ca.ulaval.glo4002.cafe.api.customer.response.BillResponse;
 import ca.ulaval.glo4002.cafe.application.customer.payload.BillPayload;
 import ca.ulaval.glo4002.cafe.domain.Amount;
-import ca.ulaval.glo4002.cafe.domain.order.Coffee;
+import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
 import ca.ulaval.glo4002.cafe.domain.order.CoffeeType;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.fixture.BillFixture;
@@ -18,7 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BillResponseAssemblerTest {
     private static final Order A_COFFEE_ORDER =
-        new Order(List.of(new Coffee(CoffeeType.Espresso), new Coffee(CoffeeType.Espresso), new Coffee(CoffeeType.Latte), new Coffee(CoffeeType.Americano)));
+        new Order(
+            List.of(new CoffeeName(CoffeeType.Espresso.toString()), new CoffeeName(CoffeeType.Espresso.toString()), new CoffeeName(CoffeeType.Latte.toString()),
+                new CoffeeName(CoffeeType.Americano.toString())));
 
     private BillResponseAssembler billResponseAssembler;
 
@@ -33,7 +35,7 @@ public class BillResponseAssemblerTest {
 
         BillResponse actualBillResponse = billResponseAssembler.toBillResponse(billPayload);
 
-        assertEquals(actualBillResponse.orders(), A_COFFEE_ORDER.items().stream().map(coffee -> coffee.coffeeType().toString()).toList());
+        assertEquals(actualBillResponse.orders(), A_COFFEE_ORDER.items().stream().map(CoffeeName::value).toList());
     }
 
     @Test

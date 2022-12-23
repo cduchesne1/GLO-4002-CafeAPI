@@ -15,6 +15,7 @@ import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
+import ca.ulaval.glo4002.cafe.domain.menu.Menu;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 import ca.ulaval.glo4002.cafe.domain.reservation.BookingRegister;
 import ca.ulaval.glo4002.cafe.domain.reservation.GroupName;
@@ -23,6 +24,7 @@ import ca.ulaval.glo4002.cafe.domain.reservation.strategies.ReservationStrategy;
 
 public class Cafe {
     private final Layout layout;
+    private final Menu menu;
     private final BookingRegister bookingRegister;
     private final PointOfSale pointOfSale;
     private final Inventory inventory;
@@ -32,8 +34,9 @@ public class Cafe {
     private Location location;
     private ReservationStrategy reservationStrategy;
 
-    public Cafe(CafeConfiguration cafeConfiguration, Layout layout, BookingRegister bookingRegister, PointOfSale pointOfSale, Inventory inventory) {
+    public Cafe(CafeConfiguration cafeConfiguration, Menu menu, Layout layout, BookingRegister bookingRegister, PointOfSale pointOfSale, Inventory inventory) {
         this.layout = layout;
+        this.menu = menu;
         this.bookingRegister = bookingRegister;
         this.pointOfSale = pointOfSale;
         this.inventory = inventory;
@@ -102,12 +105,12 @@ public class Cafe {
     }
 
     public void placeOrder(CustomerId customerId, Order order) {
-        pointOfSale.placeOrder(customerId, order, inventory);
+        pointOfSale.placeOrder(customerId, order, menu.getIngredientsNeeded(order), inventory);
     }
 
     public void checkOut(CustomerId customerId) {
         Seat seat = layout.getSeatByCustomerId(customerId);
-        pointOfSale.createBillForCustomer(customerId, location, groupTipRate, seat.isReservedForGroup());
+        pointOfSale.createBillForCustomer(customerId, menu, location, groupTipRate, seat.isReservedForGroup());
         layout.checkout(customerId);
     }
 

@@ -4,13 +4,14 @@ import java.util.List;
 
 import ca.ulaval.glo4002.cafe.domain.Amount;
 import ca.ulaval.glo4002.cafe.domain.bill.Bill;
-import ca.ulaval.glo4002.cafe.domain.order.Coffee;
+import ca.ulaval.glo4002.cafe.domain.order.CoffeeName;
 import ca.ulaval.glo4002.cafe.domain.order.CoffeeType;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 
 public class BillFixture {
     private Order coffeeOrder =
-        new Order(List.of(new Coffee(CoffeeType.Americano), new Coffee(CoffeeType.Espresso), new Coffee(CoffeeType.Latte)));
+        new Order(List.of(new CoffeeName(CoffeeType.Americano.toString()), new CoffeeName(CoffeeType.Espresso.toString()),
+            new CoffeeName(CoffeeType.Latte.toString())));
     private Amount subtotal = new Amount(10.0f);
     private Amount taxes = new Amount(1.0f);
     private Amount tip = new Amount(2.0f);

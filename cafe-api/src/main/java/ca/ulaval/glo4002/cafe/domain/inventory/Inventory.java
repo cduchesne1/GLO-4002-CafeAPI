@@ -19,7 +19,7 @@ public class Inventory {
     public void add(Map<IngredientType, Quantity> newIngredients) {
         newIngredients.forEach((ingredientType, quantity) -> {
             if (ingredients.containsKey(ingredientType)) {
-                ingredients.get(ingredientType).add(quantity);
+                ingredients.put(ingredientType, ingredients.get(ingredientType).add(quantity));
             } else {
                 ingredients.put(ingredientType, quantity);
             }

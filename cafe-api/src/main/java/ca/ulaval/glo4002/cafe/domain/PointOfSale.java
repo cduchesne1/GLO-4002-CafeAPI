@@ -2,17 +2,22 @@ package ca.ulaval.glo4002.cafe.domain;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import ca.ulaval.glo4002.cafe.domain.bill.Bill;
 import ca.ulaval.glo4002.cafe.domain.bill.BillFactory;
 import ca.ulaval.glo4002.cafe.domain.bill.TipRate;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNoBillException;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerNotFoundException;
+import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
+import ca.ulaval.glo4002.cafe.domain.inventory.Quantity;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.CustomerId;
 import ca.ulaval.glo4002.cafe.domain.location.Location;
+import ca.ulaval.glo4002.cafe.domain.menu.Menu;
 import ca.ulaval.glo4002.cafe.domain.order.Order;
 
 public class PointOfSale {
@@ -44,9 +49,9 @@ public class PointOfSale {
         orders.put(customer.getId(), new Order(List.of()));
     }
 
-    public void placeOrder(CustomerId customerId, Order order, Inventory inventory) {
+    public void placeOrder(CustomerId customerId, Order order, Map<IngredientType, Quantity> ingredientsNeeded, Inventory inventory) {
         if (orders.containsKey(customerId)) {
-            inventory.useIngredients(order.ingredientsNeeded());
+            inventory.useIngredients(ingredientsNeeded);
             Order modifiedOrder = orders.get(customerId).addAllItems(order);
             orders.put(customerId, modifiedOrder);
         } else {
@@ -58,10 +63,15 @@ public class PointOfSale {
         return bills.containsKey(customerId);
     }
 
-    public void createBillForCustomer(CustomerId customerId, Location location, TipRate groupTipRate, boolean isReservedForGroup) {
-        Bill bill = billFactory.createBill(orders.get(customerId), location, groupTipRate, isReservedForGroup);
+    public void createBillForCustomer(CustomerId customerId, Menu menu, Location location, TipRate groupTipRate, boolean isReservedForGroup) {
+        Order order = orders.get(customerId);
+        Bill bill = billFactory.createBill(order, getOrderItemsPrice(order, menu), location, groupTipRate, isReservedForGroup);
         bills.put(customerId, bill);
         orders.remove(customerId);
+    }
+
+    private List<Amount> getOrderItemsPrice(Order order, Menu menu) {
+        return order.items().stream().map(menu::getItemPrice).collect(Collectors.toList());
     }
 
     public void clear() {
