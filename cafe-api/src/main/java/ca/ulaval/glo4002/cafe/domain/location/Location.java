@@ -2,8 +2,6 @@ package ca.ulaval.glo4002.cafe.domain.location;
 
 import java.util.Optional;
 
-import ca.ulaval.glo4002.cafe.domain.bill.Tax;
-
 public record Location(Country country, Optional<Province> province, Optional<State> state) {
     public static Location fromDetails(String countryString, String provinceString, String stateString) {
         Country country = Country.fromString(countryString);
@@ -16,15 +14,5 @@ public record Location(Country country, Optional<Province> province, Optional<St
         }
 
         return new Location(country, province, state);
-    }
-
-    public Tax getTaxPercentage() {
-        Tax taxPercentage = country.getTax();
-        switch (country) {
-            case CA -> taxPercentage = taxPercentage.add(province.get().getTax());
-            case US -> taxPercentage = taxPercentage.add(state.get().getTax());
-        }
-
-        return taxPercentage;
     }
 }
