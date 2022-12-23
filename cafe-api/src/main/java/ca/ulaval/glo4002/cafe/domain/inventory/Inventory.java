@@ -1,14 +1,14 @@
 package ca.ulaval.glo4002.cafe.domain.inventory;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 import ca.ulaval.glo4002.cafe.domain.exception.InsufficientIngredientsException;
 
 public class Inventory {
-    private HashMap<IngredientType, Ingredient> ingredients = new HashMap<>();
+    private Map<IngredientType, Quantity> ingredients = new HashMap<>();
 
-    public HashMap<IngredientType, Ingredient> getIngredients() {
+    public Map<IngredientType, Quantity> getIngredients() {
         return ingredients;
     }
 
@@ -16,36 +16,35 @@ public class Inventory {
         ingredients = new HashMap<>();
     }
 
-    public void add(List<Ingredient> newIngredients) {
-        newIngredients.forEach(ingredient -> ingredients.put(ingredient.type(),
-            ingredients.containsKey(ingredient.type()) ? ingredients.get(ingredient.type()).add(ingredient) : ingredient));
+    public void add(Map<IngredientType, Quantity> newIngredients) {
+        newIngredients.forEach((ingredientType, quantity) -> {
+            if (ingredients.containsKey(ingredientType)) {
+                ingredients.get(ingredientType).add(quantity);
+            } else {
+                ingredients.put(ingredientType, quantity);
+            }
+        });
     }
 
-    public void useIngredients(List<Ingredient> ingredients) {
-        List<Ingredient> mergedIngredients = mergeIngredients(ingredients);
-        validateIfEnoughIngredients(mergedIngredients);
-        removeIngredients(mergedIngredients);
+    public void useIngredients(Map<IngredientType, Quantity> ingredients) {
+        validateIfEnoughIngredients(ingredients);
+        removeIngredients(ingredients);
     }
 
-    private void validateIfEnoughIngredients(List<Ingredient> ingredientsNeeded) {
-        for (Ingredient ingredientNeeded : ingredientsNeeded) {
-            if (!ingredients.containsKey(ingredientNeeded.type()) ||
-                ingredientNeeded.quantity().isGreaterThan(ingredients.get(ingredientNeeded.type()).quantity())) {
+    private void validateIfEnoughIngredients(Map<IngredientType, Quantity> ingredientsNeeded) {
+        ingredientsNeeded.forEach((ingredientType, quantity) -> {
+            if (!ingredients.containsKey(ingredientType) || quantity.isGreaterThan(ingredients.get(ingredientType))) {
                 throw new InsufficientIngredientsException();
             }
-        }
+        });
     }
 
-    private void removeIngredients(List<Ingredient> ingredientsToRemove) {
-        ingredientsToRemove.forEach(ingredient -> ingredients.put(ingredient.type(), ingredients.get(ingredient.type()).remove(ingredient)));
-    }
-
-    private List<Ingredient> mergeIngredients(List<Ingredient> ingredientsNeeded) {
-        HashMap<IngredientType, Ingredient> ingredients = new HashMap<>();
-        for (Ingredient ingredient : ingredientsNeeded) {
-            Ingredient newIngredient = ingredients.containsKey(ingredient.type()) ? ingredients.get(ingredient.type()).add(ingredient) : ingredient;
-            ingredients.put(ingredient.type(), newIngredient);
-        }
-        return ingredients.values().stream().toList();
+    private void removeIngredients(Map<IngredientType, Quantity> ingredientsToRemove) {
+        ingredientsToRemove.forEach((ingredientType, quantity) -> {
+            ingredients.put(ingredientType, ingredients.get(ingredientType).remove(quantity));
+            if (ingredients.get(ingredientType).value() == 0) {
+                ingredients.remove(ingredientType);
+            }
+        });
     }
 }

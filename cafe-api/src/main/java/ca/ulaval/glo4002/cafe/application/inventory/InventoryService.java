@@ -1,7 +1,5 @@
 package ca.ulaval.glo4002.cafe.application.inventory;
 
-import java.util.List;
-
 import ca.ulaval.glo4002.cafe.application.inventory.payload.InventoryPayload;
 import ca.ulaval.glo4002.cafe.application.inventory.query.IngredientsQuery;
 import ca.ulaval.glo4002.cafe.domain.Cafe;
@@ -21,7 +19,7 @@ public class InventoryService {
 
     public void addIngredientsToInventory(IngredientsQuery ingredientsQuery) {
         Cafe cafe = cafeRepository.get();
-        cafe.addIngredientsToInventory(List.of(ingredientsQuery.chocolate(), ingredientsQuery.milk(), ingredientsQuery.water(), ingredientsQuery.espresso()));
+        cafe.addIngredientsToInventory(ingredientsQuery.ingredients());
         cafeRepository.saveOrUpdate(cafe);
     }
 }

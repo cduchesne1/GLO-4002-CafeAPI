@@ -1,13 +1,15 @@
 package ca.ulaval.glo4002.cafe.domain;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import ca.ulaval.glo4002.cafe.domain.bill.Bill;
 import ca.ulaval.glo4002.cafe.domain.bill.TipRate;
 import ca.ulaval.glo4002.cafe.domain.exception.CustomerAlreadyVisitedException;
-import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
+import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
+import ca.ulaval.glo4002.cafe.domain.inventory.Quantity;
 import ca.ulaval.glo4002.cafe.domain.layout.Layout;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.Seat;
 import ca.ulaval.glo4002.cafe.domain.layout.cube.seat.customer.Customer;
@@ -70,7 +72,7 @@ public class Cafe {
         this.location = cafeConfiguration.location();
     }
 
-    public void addIngredientsToInventory(List<Ingredient> ingredients) {
+    public void addIngredientsToInventory(Map<IngredientType, Quantity> ingredients) {
         inventory.add(ingredients);
     }
 

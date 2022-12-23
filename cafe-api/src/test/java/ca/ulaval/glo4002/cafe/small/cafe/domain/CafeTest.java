@@ -1,6 +1,7 @@
 package ca.ulaval.glo4002.cafe.small.cafe.domain;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +23,6 @@ import ca.ulaval.glo4002.cafe.domain.exception.InsufficientIngredientsException;
 import ca.ulaval.glo4002.cafe.domain.exception.InsufficientSeatsException;
 import ca.ulaval.glo4002.cafe.domain.exception.NoGroupSeatsException;
 import ca.ulaval.glo4002.cafe.domain.exception.NoReservationsFoundException;
-import ca.ulaval.glo4002.cafe.domain.inventory.Ingredient;
 import ca.ulaval.glo4002.cafe.domain.inventory.IngredientType;
 import ca.ulaval.glo4002.cafe.domain.inventory.Inventory;
 import ca.ulaval.glo4002.cafe.domain.inventory.Quantity;
@@ -383,7 +383,7 @@ public class CafeTest {
 
         cafe.placeOrder(aCustomer.getId(), AN_ORDER);
 
-        assertTrue(cafe.getInventory().getIngredients().values().stream().allMatch(ingredient -> ingredient.quantity().value() == 0));
+        assertTrue(cafe.getInventory().getIngredients().isEmpty());
     }
 
     @Test
@@ -405,7 +405,7 @@ public class CafeTest {
         } catch (InsufficientIngredientsException ignored) {
         }
 
-        assertTrue(cafe.getInventory().getIngredients().values().containsAll(AN_ORDER.ingredientsNeeded()));
+        assertEquals(cafe.getInventory().getIngredients(), AN_ORDER.ingredientsNeeded());
     }
 
     @Test
@@ -615,11 +615,9 @@ public class CafeTest {
 
     @Test
     public void whenAddingIngredients_shouldBeAddedToInventory() {
-        Ingredient anIngredient = new Ingredient(IngredientType.Chocolate, new Quantity(10));
+        cafe.addIngredientsToInventory(Map.of(IngredientType.Chocolate, new Quantity(10)));
 
-        cafe.addIngredientsToInventory(List.of(anIngredient));
-
-        assertTrue(cafe.getInventory().getIngredients().containsValue(anIngredient));
+        assertEquals(new Quantity(10), cafe.getInventory().getIngredients().get(IngredientType.Chocolate));
     }
 
     @Test
@@ -694,8 +692,8 @@ public class CafeTest {
 
     private Cafe cafeWithEnoughInventory() {
         cafe.addIngredientsToInventory(
-            List.of(new Ingredient(IngredientType.Milk, new Quantity(1000)), new Ingredient(IngredientType.Chocolate, new Quantity(1000)),
-                new Ingredient(IngredientType.Water, new Quantity(1000)), new Ingredient(IngredientType.Espresso, new Quantity(1000))));
+            Map.of(IngredientType.Milk, new Quantity(1000), IngredientType.Chocolate, new Quantity(1000), IngredientType.Water, new Quantity(1000),
+                IngredientType.Espresso, new Quantity(1000)));
         return cafe;
     }
 }
