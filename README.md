@@ -1,3 +1,10 @@
+# Introduction
+Ce projet est un projet académique réalisé dans le cadre du cours _Qualité et métriques du logiciel (GLO-4002)_ de l'Université Laval à l'automne 2022.
+
+Le projet consiste en un _API REST_ permettant la gestion d'un café. Différentes fonctionnalités ont été implémentées dans le but de pratiquer les bonnes pratiques de développement et de tests vues au courant de la session (principes SOLID, architecture hexagonale, pyramide de tests, etc.)
+
+Il est à noter que la majorité du code a été développé en équipe (voir `CONTRIBUTORS.md` pour la liste des membres de l'équipe) et ce code se retrouve groupé dans le commit `Initial commit` du `github-classroom[bot]`. Le reste du code a été développé par la suite par moi-même pour la remise finale individuelle.
+
 # Requis
 
 * Java 18 (openJDK seulement)
@@ -14,7 +21,7 @@
 
 _Le setup est recommandé pour IntelliJ_
 
-* À partir du [Github](https://github.com/GLO4002UL/projet2022-eq14.git) du projet, cloner le projet sur votre poste de travail.
+* À partir du [Github](https://github.com/cduchesne1/GLO-4002-CafeAPI) du projet, cloner le projet sur votre poste de travail.
 
 * Installer la bonne version de Java.
 
@@ -82,5 +89,5 @@ Sélectionner le fichier checkstyle.xml à la root du projet
 
 # Conventions et Processus
 
-Pour plus de détails sur les méthodologies, conventions et processus employés par l'équipe, consultez le [wiki](https://github.com/GLO4002UL/projet2022-eq14/wiki).
+Pour plus de détails sur les méthodologies, conventions et processus employés par l'équipe, consultez le [wiki](https://github.com/cduchesne1/GLO-4002-CafeAPI/wiki).
 
